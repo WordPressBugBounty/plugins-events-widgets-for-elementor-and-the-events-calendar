@@ -1,0 +1,19 @@
+i.ectbe-eicons-logo{
+    background: url(../images/icon-events-widgets.svg)no-repeat center center;
+    width: 128px;
+    height: 26px;
+        display: inline-block;
+    font-family: eicons;
+    font-size: inherit;
+    font-weight: 400;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.elementor-navigator__element__element-type i.ectbe-eicons-logo {
+    width: 16px;
+    height: 16px;
+}

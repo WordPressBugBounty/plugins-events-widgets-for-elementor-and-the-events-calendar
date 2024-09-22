@@ -1,0 +1,231 @@
+#ectbe-popup-wraper {
+  display: none;
+}
+
+
+@media screen and (max-width:800px) {
+  .ectbe-calendar-wrapper {
+      flex-wrap: nowrap;
+  }
+}
+.ectbe-calendar-wrapper .ectbe-modal{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    z-index: -1;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal .ectbe-ec-modal-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: #000000;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal.ectbe-ec-popup-ready {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 1;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-content {
+    position: relative;
+    margin: auto;
+    border: 1px solid #888;
+    max-width: 900px;
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #fefefe;
+  /*   padding: 20px 0; */
+    width: 50%;
+    border-radius: 10px;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-header {
+    /* padding: 0px 30px; */
+    color: white;
+    border-color: #009900;
+    overflow: auto;
+    margin-top: 8px;
+  }
+  .ectbe-calendar-wrapper .ectbe-featured-img .ectbe-img {
+    width: -webkit-fill-available;
+    object-fit: cover;
+    height: 300px;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-header h2 {
+    color: #242424;
+    margin: 0;
+    padding: 0;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-header .ectbe-event-popup-date {
+    color: #555;
+    padding-top: 2px;
+   /*  display: inline-block; */
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-header .ectbe-event-popup-date i {
+    color: #5725ff;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-close {
+    position: absolute;
+    right:22px;
+    top: 22px;
+    font-size: 24px;
+    z-index: 9999;
+    cursor: pointer;
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+    overflow: visible;
+    border: 2px solid #fff;
+    background: #fff;
+    text-align: center;
+    -webkit-box-shadow: 2px 0px 12px 3px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            box-shadow: 2px 0px 12px 3px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #000 !important;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    border-radius: 50%;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-close > span {
+    font-size: 20px;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-close:hover,
+  .ectbe-calendar-wrapper .ectbe-modal-close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-body {
+    /* padding: 0 10px 0 35px; */
+    margin: 10px 0;
+    color: #555555;
+    height: auto;
+    overflow-y: auto;
+    word-break: break-word;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-body::-webkit-scrollbar {
+    width: 6px;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-body::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 10px;
+  }
+  .ectbe-calendar-wrapper .ectbe-modal-footer {
+    /* padding: 0px 10px 0 35px; */
+    color: white;
+    border: 0px solid #ff0000;
+  }
+  .ectbe-calendar-wrapper .ectbe-event-date-start,
+  .ectbe-calendar-wrapper .ectbe-event-date-end {
+    font-size: 15px;
+  }
+  
+.ectbe-modal.ectbe-zoom-in {
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+  }
+  .ectbe-modal.ectbe-zoom-in .ectbe-modal-content {
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    -webkit-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+  .ectbe-modal.ectbe-zoom-in.ectbe-ec-popup-ready .ectbe-ec-modal-bg {
+    opacity: 0.7;
+  }
+  .ectbe-modal.ectbe-zoom-in.ectbe-ec-popup-ready .ectbe-modal-content {
+    width: 98%;
+    max-width: 500px;
+    padding: 20px;
+    opacity: 1;
+    -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+            transform: scale(0.9);
+  }
+  .ectbe-modal.ectbe-zoom-in.ectbe-ec-modal-removing .ectbe-modal-content {
+    -webkit-transform: scale(0.5);
+        -ms-transform: scale(0.5);
+            transform: scale(0.5);
+    opacity: 0;
+  }
+  .ectbe-modal.ectbe-zoom-in.ectbe-ec-modal-removing .ectbe-ec-modal-bg {
+    opacity: 0;
+  }
+
+  .ectbe_calendar_events_spinner {
+    display: none;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    z-index: 99;
+    left: calc(50% - 25px);
+    bottom: calc(50% - 25px);
+    border-radius: 50%;
+    overflow: hidden;
+}
+.fc-scroller.fc-scroller-liquid-absolute {
+  overflow: hidden !important;
+}
+
+.ectbe-calendar-wrapper .fc .fc-scrollgrid-section,
+.fc .fc-scrollgrid-section table,
+.fc .fc-scrollgrid-section>td {
+    margin-bottom: 0px;
+}
+
+.ectbe-calendar-wrapper .fc .fc-daygrid-day-events {
+    cursor: pointer;
+}
+
+
+@media screen and (max-width:767px) {
+  .ectbe-calendar-wrapper .ectbe-event-calendar-cls.fc .fc-toolbar {
+      flex-direction: column;
+      gap: 5px;
+  }
+  .ectbe-calendar-wrapper .fc .fc-daygrid-day-bottom {
+      font-size: 10px;
+      margin: 0px 3px;
+  }
+}
+
+@media screen and (max-width:425px) {
+  .ectbe-calendar-wrapper .fc-view-harness {
+      height: 300px !important;
+      padding: 3px;
+  }
+  .ectbe-calendar-wrapper .fc .fc-daygrid-body-balanced .fc-daygrid-day-events {
+      top: 20px;
+      font-size: 10px;
+  }
+}

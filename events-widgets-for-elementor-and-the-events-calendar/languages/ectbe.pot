@@ -1,0 +1,373 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Events Widgets For Elementor And The Events Calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-17 04:26+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.2; wp-6.0.2\n"
+"X-Domain: ectbe"
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:128
+msgid ""
+" must be installed and activated for \"<strong>Events Calendar Templates "
+"Builder For Elementor</strong>\" to work"
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:114
+#, php-format
+msgid "%1$s %2$s"
+msgstr ""
+
+#: widgets/ectbe-widget.php:94
+msgid "All (Upcoming + Past)"
+msgstr ""
+
+#: includes/functions.php:258 includes/functions.php:260
+msgid "All day"
+msgstr ""
+
+#: widgets/ectbe-widget.php:125
+msgid "All Events"
+msgstr ""
+
+#: widgets/ectbe-widget.php:309
+msgid "ASC"
+msgstr ""
+
+#: widgets/ectbe-widget.php:250
+msgid "Background Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:253
+msgid "Background Color of Multidays Event"
+msgstr ""
+
+#: widgets/ectbe-widget.php:165
+msgid "Calendar"
+msgstr ""
+
+#: widgets/ectbe-widget.php:396 widgets/ectbe-widget.php:449
+#: widgets/ectbe-widget.php:471 widgets/ectbe-widget.php:501
+#: widgets/ectbe-widget.php:531 widgets/ectbe-widget.php:567
+#: widgets/ectbe-widget.php:600
+msgid "Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:376
+msgid "Color & Typography Settings"
+msgstr ""
+
+#. Author of the plugin
+msgid "Cool Plugins"
+msgstr ""
+
+#: widgets/ectbe-widget.php:288
+msgid "d.F (01. January)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:287
+msgid "d.FY (01. January 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:291
+msgid "d.Ml (01. Jan Monday)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:273
+msgid "Date Format"
+msgstr ""
+
+#: widgets/ectbe-widget.php:204
+msgid "Day"
+msgstr ""
+
+#: widgets/ectbe-widget.php:277
+msgid "Default (01 January 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:200
+msgid "Default View"
+msgstr ""
+
+#: widgets/ectbe-widget.php:310
+msgid "DESC"
+msgstr ""
+
+#: widgets/ectbe-widget.php:282
+msgid "dF (01 January)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:292
+msgid "dFT (01 January 8:00am-5:00pm)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:356
+msgid "Display Category"
+msgstr ""
+
+#: widgets/ectbe-widget.php:338
+msgid "Display Description"
+msgstr ""
+
+#: widgets/ectbe-widget.php:280
+msgid "dM (01 Jan))"
+msgstr ""
+
+#: widgets/ectbe-widget.php:281
+msgid "dMl (01 Jan Monday)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:146
+msgid "End Date"
+msgstr ""
+
+#: widgets/ectbe-widget.php:152
+msgid "End Date of Date Range"
+msgstr ""
+
+#: widgets/ectbe-widget.php:104
+msgid "Event Category"
+msgstr ""
+
+#: includes/class-ectbe.php:13
+msgid "Events Calendar Addon For Elementor"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Events Calendar Templates Builder For Elementor to create a beautiful "
+"calendar in  page and post."
+msgstr ""
+
+#: widgets/ectbe-widget.php:126
+msgid "Events in between Date Range"
+msgstr ""
+
+#: widgets/ectbe-widget.php:305
+msgid "Events Order"
+msgstr ""
+
+#: widgets/ectbe-widget.php:120
+msgid "Events Time"
+msgstr ""
+
+#: widgets/ectbe-widget.php:69
+msgid "Events Widgets"
+msgstr ""
+
+#. Name of the plugin
+msgid "Events Widgets For Elementor And The Events Calendar"
+msgstr ""
+
+#: widgets/ectbe-widget.php:81
+msgid "Events Widgets Settings"
+msgstr ""
+
+#: widgets/ectbe-widget.php:279
+msgid "Fd,Y (January 01, 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:757
+msgid "Find out more"
+msgstr ""
+
+#: widgets/ectbe-widget.php:217
+msgid "First Day of Week"
+msgstr ""
+
+#: widgets/ectbe-widget.php:427
+msgid "Font Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:225
+msgid "Friday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:285
+msgid "Full (01 January 2019 8:00am-5:00pm)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:237
+msgid "Hide Read More Link"
+msgstr ""
+
+#: widgets/ectbe-widget.php:241
+msgid "Hide Read More link in event popup"
+msgstr ""
+
+#: widgets/ectbe-widget.php:320
+msgid "Hide Venue"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://coolplugins.net"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://coolplugins.net/"
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:115
+msgid "In order to use our plugin, Please first install the latest version of"
+msgstr ""
+
+#: widgets/ectbe-widget.php:286
+msgid "jMl"
+msgstr ""
+
+#: widgets/ectbe-widget.php:158
+msgid "Layout"
+msgstr ""
+
+#: widgets/ectbe-widget.php:289
+msgid "ldF (Monday 01 January)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:163 widgets/ectbe-widget.php:206
+msgid "List"
+msgstr ""
+
+#: widgets/ectbe-widget.php:194
+msgid "Maximum number of events to display"
+msgstr ""
+
+#: widgets/ectbe-widget.php:283
+msgid "Md (Jan 01)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:278
+msgid "Md,Y (Jan 01, 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:284
+msgid "Md,YT (Jan 01, 2019 8:00am-5:00pm)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:290
+msgid "Mdl (Jan 01 Monday)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:164
+msgid "Minimal List"
+msgstr ""
+
+#: widgets/ectbe-widget.php:221
+msgid "Monday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:203
+msgid "Month"
+msgstr ""
+
+#: widgets/ectbe-widget.php:324 widgets/ectbe-widget.php:343
+#: widgets/ectbe-widget.php:361
+msgid "NO"
+msgstr ""
+
+#: includes/functions.php:92
+msgid "No Title"
+msgstr ""
+
+#: widgets/ectbe-widget.php:190
+msgid "Number of Events"
+msgstr ""
+
+#: widgets/ectbe-widget.php:93
+msgid "Past Events"
+msgstr ""
+
+#: widgets/ectbe-widget.php:619
+msgid "Please share your valuable feedback"
+msgstr ""
+
+#: widgets/layouts/ectbe-calendar.php:37
+msgid "Read More"
+msgstr ""
+
+#: widgets/ectbe-widget.php:226
+msgid "Saturday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:172
+msgid "Select Style"
+msgstr ""
+
+#: widgets/ectbe-widget.php:417
+msgid "Skin Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:134
+msgid "Start Date"
+msgstr ""
+
+#: widgets/ectbe-widget.php:140
+msgid "Start date of date range"
+msgstr ""
+
+#: widgets/ectbe-widget.php:175
+msgid "Style 1"
+msgstr ""
+
+#: widgets/ectbe-widget.php:176
+msgid "Style 2"
+msgstr ""
+
+#: widgets/ectbe-widget.php:220
+msgid "Sunday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:262
+msgid "Text Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:771
+msgid "There is no Event"
+msgstr ""
+
+#: widgets/ectbe-widget.php:224
+msgid "Thursday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:222
+msgid "Tuesday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:88
+msgid "Type of Events"
+msgstr ""
+
+#: widgets/ectbe-widget.php:482 widgets/ectbe-widget.php:512
+#: widgets/ectbe-widget.php:545 widgets/ectbe-widget.php:581
+#: widgets/ectbe-widget.php:611
+msgid "Typography"
+msgstr ""
+
+#: widgets/ectbe-widget.php:92
+msgid "Upcoming Events"
+msgstr ""
+
+#: widgets/ectbe-widget.php:645 widgets/ectbe-widget.php:655
+msgid "View Demo"
+msgstr ""
+
+#: widgets/ectbe-widget.php:223
+msgid "Wednesday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:205
+msgid "Week"
+msgstr ""
+
+#: widgets/ectbe-widget.php:325 widgets/ectbe-widget.php:342
+#: widgets/ectbe-widget.php:360
+msgid "Yes"
+msgstr ""
