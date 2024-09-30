@@ -361,6 +361,7 @@ if (!class_exists('cool_plugins_events_addons')) {
                 'events-search-addon-for-the-events-calendar' => 'events-search-icon.svg',
                 'events-widgets-pro'=>'events-widgets-icon.svg',
                 'event-single-page-builder-pro' => 'event-single-page-icon.svg',
+                'events-calendar-modules-for-divi'=> 'events-calendar-modules-for-divi.svg',
             ];
             if (isset($logos_arr[$slug])) {
                 return $logo_url = plugin_dir_url(__FILE__) . 'assets/images/' . $logos_arr[$slug];

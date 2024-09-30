@@ -168,14 +168,9 @@ if (!class_exists('ectbe_admin_notices')):
             });
             </script>';
             $nonce = wp_create_nonce( $id . '_notice_nonce' );
-            $img_path= ( isset( $message['logo'] ) && !empty($message['logo'] ) ) ? esc_url($message['logo']) : null;
-            if( $img_path != null ){
-                $image_html ='<div class="logo_container"><a href="'.esc_url($url).'"><img src="'.esc_url($img_path).'" style="max-width:70px;"></a></div>';
-            }
-            else{
-                $image_html ='';
-            }
-            echo "<div class='".$id."_admin_notice $classes ectbe-simple-notice' data-ajax-url='".admin_url('admin-ajax.php')."' data-wp-nonce='". $nonce . "' data-plugin-slug='$id'>$image_html<div class='message_container'><p>" . $message['message'] . "</p></div></div>" . $script;
+            $img_path = ( isset( $message['logo'] ) && !empty($message['logo'] ) ) ? esc_url($message['logo']) : null;
+            $image_html = $img_path ? '<div class="logo_container"><a href="'.esc_url($message['review_url']).'"><img src="'.esc_url($img_path).'" style="max-width:70px;"></a></div>' : '';
+            echo "<div class='".esc_attr($id)."_admin_notice $classes ectbe-simple-notice' data-ajax-url='".esc_url(admin_url('admin-ajax.php'))."' data-wp-nonce='". esc_attr($nonce) . "' data-plugin-slug='".esc_attr($id)."'>$image_html<div class='message_container'><p>" . wp_kses_post($message['message']) . "</p></div></div>" . $script;
         }
 
         /**
@@ -281,20 +276,20 @@ if (!class_exists('ectbe_admin_notices')):
       
 
         return sprintf($html,
-                $wrap_cls,
-                $img_path,
-                $plugin_name,
-                $message,
-                $plugin_link,
-                $like_it_text,
-                $already_rated_text,
-                $ajax_url,// 8
-                $ajax_callback,//9
-                $not_like_it_text,//10
-                $slug, //11
-                $review_nonce, //12
-                $id, //13
-                $pro_url
+                esc_attr($wrap_cls),
+                esc_url($img_path),
+                esc_html($plugin_name),
+                wp_kses_post($message),
+                esc_url($plugin_link),
+                esc_html($like_it_text),
+                esc_html($already_rated_text),
+                esc_url($ajax_url),// 8
+                esc_attr($ajax_callback),//9
+                esc_html($not_like_it_text),//10
+                esc_attr($slug), //11
+                esc_attr($review_nonce), //12
+                esc_attr($id), //13
+                esc_url($pro_url)
         );
         
        }
@@ -304,18 +299,22 @@ if (!class_exists('ectbe_admin_notices')):
         * This is called by a wordpress ajax hook
         */
         public function ectbe_admin_review_notice_dismiss(){
-            $id = isset($_REQUEST['id'])?sanitize_text_field($_REQUEST['id']):'';
-            $nonce_key = $id . '_review_nonce' ;
+            $id = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : '';
+            $nonce_key = $id . '_review_nonce';
 
-            if ( ! check_ajax_referer($nonce_key,'_nonce', false ) ) {
-                echo wp_json_encode( array("error"=>"nonce verification failed!"));
-                die();
-               
-            }else{
-                update_option( 'ectbe-ratingDiv','yes' );
-                echo wp_json_encode( array("success"=>"true"));
+            if ( ! check_ajax_referer($nonce_key, '_nonce', false ) ) {
+                echo wp_json_encode( array("error" => "nonce verification failed!") );
                 die();
             }
+
+            if ( ! current_user_can('manage_options') ) {
+                echo wp_json_encode( array("error" => "insufficient permissions!") );
+                die();
+            }
+
+            update_option( 'ectbe-ratingDiv', 'yes' );
+            echo wp_json_encode( array("success" => "true") );
+            die();
         }
 
         /************************************************************
@@ -324,16 +323,19 @@ if (!class_exists('ectbe_admin_notices')):
          ************************************************************/
         public function ectbe_admin_notice_dismiss()
         {
-           
-            $id = isset($_REQUEST['id'])?sanitize_text_field($_REQUEST['id']):'';
+            $id = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : '';
             $wp_nonce = $id . '_notice_nonce';
-            if ( ! check_ajax_referer($wp_nonce,'_nonce', false ) ) {
+
+            if ( ! check_ajax_referer($wp_nonce, '_nonce', false ) ) {
                 die( 'nonce verification failed!' );
-            }else{
-                $us=update_option( $id . '_remove_notice','yes' );
-                die( 'Admin message removed!' );
             }
 
+            if ( ! current_user_can('manage_options') ) {
+                die( 'insufficient permissions!' );
+            }
+
+            update_option( $id . '_remove_notice', 'yes' );
+            die( 'Admin message removed!' );
         }
 
         /**************************************************************

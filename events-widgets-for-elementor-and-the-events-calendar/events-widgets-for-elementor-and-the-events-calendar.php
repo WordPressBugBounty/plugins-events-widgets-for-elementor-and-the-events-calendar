@@ -3,12 +3,12 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.6.9
+ * Version:     1.6.10
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=readme&utm_campaign=coolplugins&utm_content=author_uri
  * Text Domain: ectbe
- * Elementor tested up to: 3.24.0
- * Elementor Pro tested up to: 3.24.0
+ * Elementor tested up to: 3.24.4
+ * Elementor Pro tested up to: 3.24.2
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( defined( 'ECTBE_VERSION' ) ) {
 	return;
 }
-define( 'ECTBE_VERSION', '1.6.9' );
+define( 'ECTBE_VERSION', '1.6.10' );
 define( 'ECTBE_FILE', __FILE__ );
 define( 'ECTBE_PATH', plugin_dir_path( ECTBE_FILE ) );
 define( 'ECTBE_URL', plugin_dir_url( ECTBE_FILE ) );
@@ -73,7 +73,7 @@ final class Events_Calendar_Addon {
 	public function ectbe_addMeta_Links( $links, $file ) {
 		if ( strpos( $file, basename( __FILE__ ) ) ) {
 			$ectanchor   = esc_html__( 'Video Tutorials', 'ectbe' );
-			$ectvideourl = 'https://eventscalendaraddons.com/go/ectbe-video-tutorial/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=video_tutorial&utm_content=plugins_list';
+			$ectvideourl = 'https://youtube.com/playlist?list=PLAs6S1hKb-gNX_A-ZpsD-tO9aQdMmwrU5&si=m9mE0xDu8Ei0x41u';
 			$links[]     = '<a href="' . esc_url( $ectvideourl ) . '" target="_blank">' . $ectanchor . '</a>';
 		}
 
@@ -81,10 +81,9 @@ final class Events_Calendar_Addon {
 	}
 	// custom links for add widgets in all plugins section
 	public function ectbe_add_action_links( $links ) {
-		 $plugin_visit_website = 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list';
-		   $links[]            = '<a  style="font-weight:bold" href="' . esc_url( $plugin_visit_website ) . '" target="_blank">' . __( 'Get Pro', 'ectbe' ) . '</a>';
-		   return $links;
-
+		$plugin_visit_website = 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list';
+		$links[]              = '<a  style="font-weight:bold" href="' . esc_url( $plugin_visit_website ) . '" target="_blank">' . esc_html__( 'Get Pro', 'ectbe' ) . '</a>';
+		return $links;
 	}
 	/**
 	 * Code you want to run when all other plugins loaded.
@@ -116,32 +115,32 @@ final class Events_Calendar_Addon {
 			ectbe_create_admin_notice(
 				array(
 					'id'              => 'ectbe-major-update-notice',
-					'message'         => '<strong>Major Update Notice!</strong> Please update your events widget settings if you face any style issue after an update of <strong> Events Widgets For Elementor And The Events Calendar</strong>.',
+					'message'         => '<strong>' . esc_html__( 'Major Update Notice!', 'ectbe' ) . '</strong> ' . esc_html__( 'Please update your events widget settings if you face any style issue after an update of', 'ectbe' ) . ' <strong>' . esc_html__( 'Events Widgets For Elementor And The Events Calendar', 'ectbe' ) . '</strong>.',
 					'review_interval' => 0,
 				)
 			);
 		}
 
-			/*** Plugin review notice file */
-			ectbe_create_admin_notice(
-				array(
-					'id'              => 'ectbe-review-box',  // required and must be unique
-					'slug'            => 'ectbe',      // required in case of review box
-					'review'          => true,     // required and set to be true for review box
-					'review_url'      => esc_url( 'https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/?filter=5#new-post' ), // required
-					'plugin_name'     => 'Events Widgets For Elementor And The Events Calendar',    // required
-					'logo'            => ECTBE_URL . 'assets/images/icon-events-widgets.svg',    // optional: it will display logo
-					'review_interval' => 3,                    // optional: this will display review notice
+		/*** Plugin review notice file */
+		ectbe_create_admin_notice(
+			array(
+				'id'              => 'ectbe-review-box',  // required and must be unique
+				'slug'            => 'ectbe',      // required in case of review box
+				'review'          => true,     // required and set to be true for review box
+				'review_url'      => esc_url( 'https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/?filter=5#new-post' ), // required
+				'plugin_name'     => esc_html__( 'Events Widgets For Elementor And The Events Calendar', 'ectbe' ),    // required
+				'logo'            => esc_url( ECTBE_URL . 'assets/images/icon-events-widgets.svg' ),    // optional: it will display logo
+				'review_interval' => 3,                    // optional: this will display review notice
 															// after 5 days from the installation_time
 															// default is 3
-				)
-			);
+			)
+		);
 	}
 	// notice for installation TEC parent plugin installation
 	public function ectbe_Install_ECT_Notice() {
 		if ( current_user_can( 'activate_plugins' ) ) {
 			$url   = 'plugin-install.php?tab=plugin-information&plugin=the-events-calendar&TB_iframe=true';
-			$title = __( 'The Events Calendar', 'tribe-events-ical-importer' );
+			$title = esc_html__( 'The Events Calendar', 'tribe-events-ical-importer' );
 			printf(
 				'<div class="error CTEC_Msz"><p>' .
 				esc_html( __( '%1$s %2$s', 'ectbe' ) ),

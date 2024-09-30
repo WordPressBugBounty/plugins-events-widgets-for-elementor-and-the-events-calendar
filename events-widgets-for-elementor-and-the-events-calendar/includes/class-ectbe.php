@@ -49,10 +49,20 @@ class ECTBE_WidgetClass {
 		add_action( 'elementor/widgets/register', array($this, 'ectbe_on_widgets_registered' ));		
 		add_action( 'elementor/editor/after_enqueue_styles', [ $this, 'ectbe_editor_styles' ] );
 	}
+	
+	/**
+	 * Enqueue Editor Styles
+	 *
+	 * @since 1.0.0
+	 *
+	 * @access public
+	 */
 	public function ectbe_editor_styles() {
+		// Sanitize URL
+		$style_url = esc_url( ECTBE_URL . 'assets/css/ectbe-editor.min.css' );
 		wp_enqueue_style(
 			'ectbe_editor_styles',
-			ECTBE_URL . 'assets/css/ectbe-editor.min.css',
+			$style_url,
 			array()
 		);
 	}

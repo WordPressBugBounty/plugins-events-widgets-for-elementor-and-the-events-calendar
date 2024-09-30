@@ -12,9 +12,9 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			add_action( 'elementor/editor/after_save', array( $this, 'ectbe_update_migration_status' ), 10, 2 );
 			wp_register_style( 'ectbe-calendar-main-css', ECTBE_URL . 'assets/lib/css/calendar-main.min.css', null, null, 'all' );
 			wp_register_style( 'ectbe-custom-css', ECTBE_URL . 'assets/css/custom-styles.min.css', null, null, 'all' );
+			wp_register_script( 'ectbe-calendar-main', ECTBE_URL . 'assets/lib/js/calendar-main.min.js', array( 'elementor-frontend' ), null, true );
 			wp_register_script( 'ectbe-calendar-locales', ECTBE_URL . 'assets/lib/js/calendar-locales-all.min.js', array( 'elementor-frontend' ), null, true );
 			wp_register_script( 'ectbe-calendar-js', ECTBE_URL . 'assets/js/calendar.js', array( 'elementor-frontend', 'wp-api-request' ), null, true );
-			wp_register_script( 'ectbe-calendar-main', ECTBE_URL . 'assets/lib/js/calendar-main.min.js', array( 'elementor-frontend' ), null, true );
 			wp_register_script( 'ectbe-moment-js', ECTBE_URL . 'assets/lib/js/moment.min.js', array( 'elementor-frontend' ), null, true );
 			wp_localize_script( 'ectbe-calendar-js', 'ectbe_callback_ajax', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 			wp_register_style( 'ectbe-list-css', ECTBE_URL . 'assets/css/ectbe-list.min.css', null, null, 'all' );

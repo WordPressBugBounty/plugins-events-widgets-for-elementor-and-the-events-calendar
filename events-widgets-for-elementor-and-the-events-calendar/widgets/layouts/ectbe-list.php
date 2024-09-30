@@ -15,26 +15,26 @@ if ( $layout == 'minimal-list' ) {
 	$events_html .= $ev_time;
 }
 if ( $style == 'style-1' || $style == 'style-2' ) {
-	$events_html .= $ectbe_cate;
+	$events_html .= wp_kses_post( $ectbe_cate );
 }
-		$events_html .= $evt_title;
+	$events_html .= wp_kses_post( $evt_title );
 if ( $layout != 'minimal-list' && $style != 'style-2' ) {
 	$events_html .= $ev_time;
 }
 if ( $layout != 'minimal-list' ) {
-	$events_html .= $venue_details_html;
-	$events_html .= $evt_desc;
+	$events_html .= wp_kses_post( $venue_details_html );
+	$events_html .= wp_kses_post( $evt_desc );
 	$events_html .= $ectbe_cost;
 }
 if ( $style == 'style-2' || $layout == 'minimal-list' ) {
-	$events_html .= $ectbe_read_more;
+	$events_html .= wp_kses_post( $ectbe_read_more );
 }
 	$events_html .= '</div>';
 if ( $layout != 'minimal-list' ) {
 	if ( $style == 'style-2' ) {
-		$events_html .= $ev_post_img;
+		$events_html .= wp_kses_post( $ev_post_img );
 	} elseif ( $style == 'style-1' ) {
-		$events_html .= $ectbe_read_more;
+		$events_html .= wp_kses_post( $ectbe_read_more );
 	}
 }
 
