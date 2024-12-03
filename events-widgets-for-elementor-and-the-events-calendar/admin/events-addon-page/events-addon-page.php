@@ -258,7 +258,6 @@ if (!class_exists('cool_plugins_events_addons')) {
             }
             $url = $this->plugin_api . 'pro/' . $this->plugin_tag;
 
-
             $pro_api = esc_url($url);
             $response = wp_remote_get($pro_api, array('timeout' => 300));
 
@@ -312,7 +311,6 @@ if (!class_exists('cool_plugins_events_addons')) {
 
             $url = $this->plugin_api . 'free/' . $this->plugin_tag;
 
-
             $response = wp_remote_get($url, array('timeout' => 300));
 
             if (is_wp_error($response)) {
@@ -355,13 +353,15 @@ if (!class_exists('cool_plugins_events_addons')) {
                 'events-block-for-the-events-calendar' => 'events-block-icon.svg',
                 'events-widgets-for-elementor-and-the-events-calendar' => 'events-widgets-icon.svg',
                 'the-events-calendar-templates-and-shortcode' => 'events-shortcodes-icon.svg',
-                'template-events-calendar'=>'events-shortcodes-icon.svg',
+                'template-events-calendar' => 'events-shortcodes-icon.svg',
                 'countdown-for-the-events-calendar' => 'event-countdown-icon.svg',
                 'event-page-templates-addon-for-the-events-calendar' => 'event-single-page-icon.svg',
                 'events-search-addon-for-the-events-calendar' => 'events-search-icon.svg',
-                'events-widgets-pro'=>'events-widgets-icon.svg',
+                'events-widgets-pro' => 'events-widgets-icon.svg',
                 'event-single-page-builder-pro' => 'event-single-page-icon.svg',
-                'events-calendar-modules-for-divi'=> 'events-calendar-modules-for-divi.svg',
+                'events-calendar-modules-for-divi' => 'events-calendar-modules-for-divi.svg',
+                'events-calendar-modules-for-divi-pro' => 'events-calendar-modules-for-divi.svg',
+                'events-speakers-and-sponsors' => 'events-speakers-sponsors-icon.png',
             ];
             if (isset($logos_arr[$slug])) {
                 return $logo_url = plugin_dir_url(__FILE__) . 'assets/images/' . $logos_arr[$slug];
