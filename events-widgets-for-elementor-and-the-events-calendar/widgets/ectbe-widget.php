@@ -133,7 +133,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					'all'        => __( 'All Events', 'ectbe' ),
 					'date_range' => __( 'Events in between Date Range', 'ectbe' ),
 				),
-				'render_type' => 'none',
+				// 'render_type' => 'none',
 			)
 		);
 		$this->add_control(
@@ -323,7 +323,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					'MD'        => __( 'Md (Jan 01)', 'ectbe' ),
 					'MD,YT'     => __( 'Md,YT (Jan 01, 2019 8:00am-5:00pm)', 'ectbe' ),
 					'full'      => __( 'Full (01 January 2019 8:00am-5:00pm)', 'ectbe' ),
-					'jMl'       => __( 'jMl', 'ectbe' ),
+					'jMl'       => __( 'jMl (01 Jan Monday)', 'ectbe' ),
 					'd.FY'      => __( 'd.FY (01. January 2019)', 'ectbe' ),
 					'd.F'       => __( 'd.F (01. January)', 'ectbe' ),
 					'ldF'       => __( 'ldF (Monday 01 January)', 'ectbe' ),
