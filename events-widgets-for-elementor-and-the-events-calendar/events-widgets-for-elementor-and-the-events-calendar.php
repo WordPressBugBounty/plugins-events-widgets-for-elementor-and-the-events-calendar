@@ -3,12 +3,12 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.6.13
+ * Version:     1.6.14
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=readme&utm_campaign=coolplugins&utm_content=author_uri
  * Text Domain: ectbe
- * Elementor tested up to: 3.26.2
- * Elementor Pro tested up to: 3.26.0
+ * Elementor tested up to: 3.27.2
+ * Elementor Pro tested up to: 3.27.1
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.6.13');
+define('ECTBE_VERSION', '1.6.14');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
