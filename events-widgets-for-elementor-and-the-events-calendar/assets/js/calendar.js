@@ -72,6 +72,7 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
 
         events: function (fetchInfo, successCallback, failureCallback) {
           var startdate = moment(fetchInfo.start).format("YYYY-MM-DD"),
+            enddate =  moment(fetchInfo.end).format("YYYY-MM-DD"),
             monthagodate = moment(startdate).subtract(30, 'days').format("YYYY-MM-DD"),
             apiurl,
             categoryarray = '';
@@ -81,7 +82,7 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
           if (daterange == 'yes') {
             apiurl = wpApiSettings.root + 'tribe/events/v1/events?start_date=' + encodeURIComponent(rangeStart) + '&end_date=' + encodeURIComponent(rangeEnd) + '&per_page=' + encodeURIComponent(max_events) + '&status=publish' + categoryarray;
           } else {
-            apiurl = wpApiSettings.root + 'tribe/events/v1/events?start_date=' + encodeURIComponent(monthagodate) + '&per_page=100&status=publish' + categoryarray;
+            apiurl = wpApiSettings.root + 'tribe/events/v1/events?start_date='+startdate+'&end_date='+enddate + '&per_page=100&status=publish' + categoryarray;
           }
 
           jQuery.ajax({

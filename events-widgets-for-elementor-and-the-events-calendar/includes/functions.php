@@ -179,7 +179,7 @@ function ectbe_event_schedule( $event_id, $date_format, $template ) {
                                 <span class="ectbe-ev-mo">' . tribe_get_start_date( $event_id, false, 'M' ) . '</span>
                                 <span class="ectbe-ev-day">' . tribe_get_start_date( $event_id, false, 'd' ) . ', </span>
                                 <span class="ectbe-ev-yr">' . tribe_get_start_date( $event_id, false, 'Y' ) . '</span>
-                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span> ' . $ev_time . '</span>
+                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span>' . $ev_time . '</span>
                                 </div>';
 
 	} elseif ( $date_format == 'jMl' ) {
@@ -194,7 +194,7 @@ function ectbe_event_schedule( $event_id, $date_format, $template ) {
                                 <span class="ectbe-ev-day">' . esc_html( tribe_get_start_date( $event_id, false, 'd' ) ) . '</span>
                                 <span class="ectbe-ev-mo">' . esc_html( tribe_get_start_date( $event_id, false, 'F' ) ) . '</span>
                                 <span class="ectbe-ev-yr">' . esc_html( tribe_get_start_date( $event_id, false, 'Y' ) ) . '</span>
-                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span> ' . esc_html( $ev_time ) . '</span>
+                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span>' . esc_html( $ev_time ) . '</span>
                                 </div>';
 
 	} elseif ( $date_format == 'd.FY' ) {
@@ -235,7 +235,7 @@ function ectbe_event_schedule( $event_id, $date_format, $template ) {
 		$event_schedule = '<div class="ectbe-date-area">
                                 <span class="ectbe-ev-day">' . esc_html( tribe_get_start_date( $event_id, false, 'd' ) ) . '</span>
                                 <span class="ectbe-ev-mo">' . esc_html( tribe_get_start_date( $event_id, false, 'F' ) ) . '</span>
-                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span> ' . esc_html( $ev_time ) . '</span>
+                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span>' . esc_html( $ev_time ) . '</span>
                                 </div>';
 
 	} elseif ( $date_format == 'custom' ) {

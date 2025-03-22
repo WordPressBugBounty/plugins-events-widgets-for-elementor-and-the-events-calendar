@@ -57,18 +57,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		return $scripts;
 	}
 	public function get_style_depends() {
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
-			return array( 'ectbe-calendar-main-css', 'ectbe-custom-css', 'ectbe-list-css', 'ectbe-minimal-list', 'ectbe-common-styles' );
-		}
-		$settings = $this->get_settings_for_display();
-		$layout   = $settings['ectbe_layout'];
-		$styles   = array();
-		if ( $layout == 'calendar' ) {
-			array_push( $styles, 'ectbe-calendar-main-css', 'ectbe-custom-css' );
-		} else {
-			array_push( $styles, 'ectbe-list-css', 'ectbe-common-styles' );
-		}
-		return $styles;
+		return array( 'ectbe-calendar-main-css', 'ectbe-custom-css', 'ectbe-list-css', 'ectbe-minimal-list', 'ectbe-common-styles' );
 	}
 	public function get_name() {
 		return 'the-events-calendar-addon';
@@ -317,7 +306,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					'start_end' => __( '01 January 2019 - 03 January 2019', 'ectbe' ),
 					'MD,Y'      => __( 'Md,Y (Jan 01, 2019)', 'ectbe' ),
 					'FD,Y'      => __( 'Fd,Y (January 01, 2019)', 'ectbe' ),
-					'DM'        => __( 'dM (01 Jan))', 'ectbe' ),
+					'DM'        => __( 'dM (01 Jan)', 'ectbe' ),
 					'DML'       => __( 'dMl (01 Jan Monday)', 'ectbe' ),
 					'DF'        => __( 'dF (01 January)', 'ectbe' ),
 					'MD'        => __( 'Md (Jan 01)', 'ectbe' ),
@@ -629,7 +618,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_read_more_section',
 			array(
-				'label'     => __( 'Read More', 'plugin-name' ),
+				'label'     => __( 'Find Out More', 'plugin-name' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			)

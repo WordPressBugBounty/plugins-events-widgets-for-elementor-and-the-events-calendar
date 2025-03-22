@@ -845,6 +845,9 @@ A HORIZONTAL event
 }
 .fc .fc-more-popover {
     z-index: 8;
+    max-height: 90%;
+    overflow-y: auto;
+
   }
 .fc .fc-more-popover .fc-popover-body {
     min-width: 220px;

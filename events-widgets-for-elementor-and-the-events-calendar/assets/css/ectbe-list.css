@@ -36,6 +36,10 @@
   font-size: var(--e-ectbe-evt-time-size);
   margin-bottom: 10px;
 }
+
+.ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area .ectbe-evt-time{
+  text-align: center;
+}
 .ectbe-list-wrapper.style-1 .ectbe-ev-day,.ectbe-week-day {
   padding: var(--e-ectbe-ev-day-padding);
   font-size: var(--e-ectbe-date-area-text-size);

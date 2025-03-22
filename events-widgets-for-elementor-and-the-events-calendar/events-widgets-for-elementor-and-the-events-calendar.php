@@ -3,7 +3,7 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.6.14
+ * Version:     1.6.15
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=readme&utm_campaign=coolplugins&utm_content=author_uri
  * Text Domain: ectbe
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.6.14');
+define('ECTBE_VERSION', '1.6.15');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -61,6 +61,15 @@ final class Events_Calendar_Addon
         add_action('plugins_loaded', array($this, 'ectbe_plugins_loaded'));
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'ectbe_add_action_links'));
         add_action('plugin_row_meta', array($this, 'ectbe_addMeta_Links'), 10, 2);
+        add_filter('tribe_rest_event_max_per_page', function($max) {
+            return 999;
+        });
+        add_filter('rest_tribe_events_collection_params', function($params) {
+            if (isset($params['per_page'])) {
+                $params['per_page']['maximum'] = 999;
+            }
+            return $params;
+        });
     }
     public function include_files()
     {
@@ -85,6 +94,7 @@ final class Events_Calendar_Addon
 
         return $links;
     }
+
     // custom links for add widgets in all plugins section
     public function ectbe_add_action_links($links)
     {
