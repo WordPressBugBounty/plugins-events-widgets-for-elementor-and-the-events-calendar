@@ -3,9 +3,9 @@ Contributors: narinder-singh, satindersingh, coolplugins
 Donate link: https://paypal.me/CoolPlugins/50USD/
 Tags: elementor, events, the events calendar, event calendar, coolplugins
 Requires at least:5.0
-Tested up to: 6.7.2
+Tested up to: 6.8.1
 Requires PHP: 7.2
-Stable tag: 1.6.15
+Stable tag: 1.6.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,6 +150,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 4. Events Calendar Layout For Elementor
 
 == Changelog ==
+
+= Version 1.6.16 | 02/05/2025
+- Added: Disable Schema markup setting.
+- Tested upto: WordPress version 6.8.1
+- Tested upto: Elementor version 3.28.4
+- Tested upto: The Events Calendar version 6.11.2.1
+
 = Version 1.6.15 | 22/03/2025
 - Fixed: Issue with event loading on the calendar widget.
 - Tested upto: WordPress version 6.7.2

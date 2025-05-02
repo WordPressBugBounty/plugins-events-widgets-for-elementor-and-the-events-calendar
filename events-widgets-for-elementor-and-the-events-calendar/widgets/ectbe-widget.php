@@ -397,6 +397,19 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 				),
 			)
 		);
+
+		$this->add_control(
+			'ectbe_disable_schema',
+			array(
+				'label'     => __( 'Disable Schema Markup', 'ectbe' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_block'  => false,
+				'return_value' => 'yes',
+				'condition!'    => array(
+					'ectbe_layout' => 'calendar',
+				),
+			)
+		);
 		$this->end_controls_section();
 		// style section started
 		$this->start_controls_section(
@@ -759,15 +772,17 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 				$all_events = ectbe_get_the_events_calendar_events( $settings );
 				global $post;
 				$event_output .= '<!=========Events ' . $layout . ' Template ' . ECTBE_VERSION . '=========>';
-			if ( $all_events && class_exists( 'Tribe__Events__JSON_LD__Event' ) ) {
-				$args    = array(
-					'post_type'      => 'tribe_events',
-					'posts_per_page' => -1,
-					'order'          => 'ASC',
-				);
-				$events = new WP_Query($args);
-				$event_output .= Tribe__Events__JSON_LD__Event::instance()->get_markup( $events->posts);
-			}
+				if(isset($settings['ectbe_disable_schema']) && $settings['ectbe_disable_schema'] !== 'yes'){
+					if ( $all_events && class_exists( 'Tribe__Events__JSON_LD__Event' ) ) {
+						$args    = array(
+							'post_type'      => 'tribe_events',	
+							'posts_per_page' => -1,
+							'order'          => 'ASC',
+						);
+						$events = new WP_Query($args);
+						$event_output .= Tribe__Events__JSON_LD__Event::instance()->get_markup( $events->posts);
+					}
+				}
 				$event_output .= '<div ' . $this->get_render_attribute_string( 'ectbe-wrapper' ) . '>';
 			if ( ! empty( $all_events ) ) {
 				foreach ( $all_events as $event ) {
