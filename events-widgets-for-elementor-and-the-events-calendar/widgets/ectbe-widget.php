@@ -410,6 +410,32 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 				),
 			)
 		);
+		$this->add_control(
+			'ectbe_pro_features_1',
+			array(
+				'label'           => __( '', 'plugin-name' ),
+
+				'type'            => \Elementor\Controls_Manager::RAW_HTML,
+				'raw'             => '<button class="ectbe-pro-features-view-demo">
+							<a href="' . esc_url( 'https://eventscalendaraddons.com/demos/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=demo&utm_content=view_demo' ) . '" target="_blank">' . esc_html__( 'View Demo', 'ectbe' ) . '</a>
+							</button> <button class="ectbe-pro-features-get-pro">
+							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=buy_pro' ) . '" target="_blank">' . esc_html__( 'Get Pro ⇗', 'ectbe' ) . '</a> 
+							</button>',
+				'content_classes' => 'ectbe-pro-features-list',
+			)
+		);
+		$this->add_control(
+			'ectbe_pro_features_2',
+			array(
+				'label'           => __( '', 'plugin-name' ),
+				'type'            => \Elementor\Controls_Manager::RAW_HTML,
+				'raw'             => '<div class="ectbe-review-list" style=" line-height: 1.5em; background: #FFD5E6; color: #151213; padding: 15px; ">
+				Thanks for using <strong>The Events Calendar Widget for Elementor</strong>! If you have a moment, could you kindly leave us a review? We\'d greatly appreciate it and it helps us improve our product. <br><br>Thanks in advance! <br><br>
+							<strong><a href="https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/#new-post" target="_blank" style=" border: 2px solid; padding: 6px; ">Share Review ⭐⭐⭐⭐⭐</a></strong><br/>
+							</div>',
+				'content_classes' => 'ectbe-review-list',
+			)
+		);
 		$this->end_controls_section();
 		// style section started
 		$this->start_controls_section(
@@ -659,66 +685,11 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			array(
 				'label'           => __( '', 'plugin-name' ),
 				'type'            => \Elementor\Controls_Manager::RAW_HTML,
-				'raw'             => '<div class="ectbe-pro-features">
+				'raw'             => '<button class="ectbe-pro-features">
 							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=style_settings' ) . '" target="_blank">' . esc_html__( 'For Advanced Styles - Get Pro ⇗', 'ectbe' ) . '</a> 
-							</div>',
+							</button>',
 				'content_classes' => 'ectbe-pro-features-list',
 				'separator'       => 'before',
-			)
-		);
-		$this->end_controls_section();
-		$this->start_controls_section(
-			'ectbe_advanced_section',
-			array(
-				'label' => __( 'Share Your Feedback', 'ectbe' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
-			)
-		);
-
-		$this->add_control(
-			'ectbe_pro_features_2',
-			array(
-				'label'           => __( '', 'plugin-name' ),
-				'type'            => \Elementor\Controls_Manager::RAW_HTML,
-				'raw'             => '<div class="ectbe-review-list" style=" line-height: 1.5em; background: #FFD5E6; color: #151213; padding: 15px; ">
-				Thanks for using <strong>The Events Calendar Widget for Elementor</strong>! If you have a moment, could you kindly leave us a review? We\'d greatly appreciate it and it helps us improve our product. <br><br>Thanks in advance! <br><br>
-							<strong><a href="https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/#new-post" target="_blank" style=" border: 2px solid; padding: 6px; ">Share Review ⭐⭐⭐⭐⭐</a></strong><br/>
-							</div>',
-				'content_classes' => 'ectbe-review-list',
-			)
-		);
-		$this->end_controls_section();
-		$this->start_controls_section(
-			'ectbe_demo_section',
-			array(
-				'label' => __( 'View Demo / Get Pro ⇗', 'ectbe' ),
-				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
-			)
-		);
-
-		$this->add_control(
-			'ectbe_pro_features_1',
-			array(
-				'label'           => __( '', 'plugin-name' ),
-
-				'type'            => \Elementor\Controls_Manager::RAW_HTML,
-				'raw'             => '<div class="ectbe-pro-features">
-							<a href="' . esc_url( 'https://eventscalendaraddons.com/demos/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=demo&utm_content=view_demo' ) . '" target="_blank">' . esc_html__( 'View Demo', 'ectbe' ) . '</a>
-							</div>',
-				'content_classes' => 'ectbe-pro-features-list',
-				'separator'       => 'after',
-			)
-		);
-
-		$this->add_control(
-			'ectbe_pro_features_3',
-			array(
-				'label'           => __( '', 'plugin-name' ),
-				'type'            => \Elementor\Controls_Manager::RAW_HTML,
-				'raw'             => '<div class="ectbe-pro-features">
-							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=buy_pro' ) . '" target="_blank">' . esc_html__( 'Get Pro ⇗', 'ectbe' ) . '</a> 
-							</div>',
-				'content_classes' => 'ectbe-pro-features-list',
 			)
 		);
 		$this->end_controls_section();

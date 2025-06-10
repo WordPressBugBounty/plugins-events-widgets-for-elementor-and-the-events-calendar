@@ -17,3 +17,20 @@ i.ectbe-eicons-logo{
     width: 16px;
     height: 16px;
 }
+.ectbe-pro-features-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 2px;
+  }
+  .ectbe-pro-features-list button {
+    padding: 7px 13px;
+    border: none;
+    background: #ffd5e6;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  .ectbe-pro-features-list button a{
+    font-weight: 500;
+    color: black;
+  }
