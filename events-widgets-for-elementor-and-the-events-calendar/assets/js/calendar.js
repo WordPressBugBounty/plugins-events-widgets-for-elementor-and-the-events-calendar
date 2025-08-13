@@ -124,16 +124,23 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
           }
           popupmodal.css("display", "block");
           popupmodal.addClass("ectbe-ec-popup-ready").removeClass("ectbe-ec-modal-removing");
-          jQuery('h2.ectbe-ec-modal-title').text(info.event.title);
+          jQuery('h2.ectbe-ec-modal-title').html(info.event.title);
           jQuery('.ectbe-event-date-start').text(moment(info.event.start).format('LLL'));
           jQuery('.ectbe-event-date-end').text(enddate);
 
           var feature_image = info.event.extendedProps.imgurl;
-          jQuery('.ectbe-featured-img').html('<img src="' + encodeURI(feature_image) + '"/>');
-          if (feature_image != '') {
-            jQuery('.ectbe-featured-img img').addClass('ectbe-img');
+          if (feature_image && feature_image.trim() !== '') {
+            if (jQuery('.ectbe-featured-img').length === 0) {
+                jQuery('.ectbe-modal-content').prepend('<div class="ectbe-featured-img"></div>');
+            }
+        
+            jQuery('.ectbe-featured-img')
+                .empty()
+                .append(jQuery('<img>', { src: encodeURI(feature_image) }))
+                .find('img').addClass('ectbe-img');
+        
           } else {
-            jQuery('.ectbe-featured-img img').removeClass('ectbe-img');
+              jQuery('.ectbe-featured-img').remove();
           }
 
           let cost = info.event.extendedProps.eventcost;

@@ -67,7 +67,9 @@ if (!class_exists('ECTBE_cronjob')) {
             
             if (is_wp_error($response)) {
 
-                error_log('ECTBE Feedback Send Failed: ' . $response->get_error_message());
+                if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                    error_log( 'ECTBE Feedback Send Failed: ' . $response->get_error_message() );
+                }
                 return;
             }
             

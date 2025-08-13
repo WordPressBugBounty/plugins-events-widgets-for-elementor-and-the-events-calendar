@@ -9020,11 +9020,16 @@ var FullCalendar = (function (exports) {
         return StandardEvent;
     }(BaseComponent));
     function renderInnerContent(innerProps) {
-        return (createElement("div", { className: 'fc-event-main-frame' },
+        return createElement("div", { className: 'fc-event-main-frame' },
             innerProps.timeText &&
                 createElement("div", { className: 'fc-event-time' }, innerProps.timeText),
             createElement("div", { className: 'fc-event-title-container' },
-                createElement("div", { className: 'fc-event-title fc-sticky' }, innerProps.event.title || createElement(Fragment, null, "\u00A0")))));
+                createElement("div", {
+                    className: 'fc-event-title fc-sticky',
+                    dangerouslySetInnerHTML: { __html: innerProps.event.title || "&nbsp;" }
+                })
+            )
+        );
     }
     function getSegAnchorAttrs(seg) {
         var url = seg.eventRange.def.url;
@@ -11589,7 +11594,7 @@ var FullCalendar = (function (exports) {
         hour: 'numeric',
         minute: '2-digit',
         omitZeroMinute: true,
-        meridiem: 'narrow'
+        meridiem: 'short'
     });
     function hasListItemDisplay(seg) {
         var display = seg.eventRange.ui.display;

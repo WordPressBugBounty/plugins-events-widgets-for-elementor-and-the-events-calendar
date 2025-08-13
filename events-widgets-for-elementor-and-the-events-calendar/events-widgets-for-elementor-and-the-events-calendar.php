@@ -3,12 +3,13 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.6.18
+ * Version:     1.6.19
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=dashboard
  * Text Domain: ectbe
- * Elementor tested up to: 3.30.0
- * Elementor Pro tested up to: 3.30.0
+ * Elementor tested up to: 3.31.2
+ * Elementor Pro tested up to: 3.31.2
+ * Requires Plugins: elementor, the-events-calendar
 
  */
 if (!defined('ABSPATH')) {
@@ -17,7 +18,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.6.18');
+define('ECTBE_VERSION', '1.6.19');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -141,11 +142,6 @@ final class Events_Calendar_Addon
      */
     public function ectbe_plugins_loaded()
     {
-        // Notice if the Elementor is not active
-        if (!did_action('elementor/loaded')) {
-            add_action('admin_notices', array($this, 'ectbe_fail_to_load'));
-            return;
-        }
         if (!class_exists('Tribe__Events__Main') || !defined('Tribe__Events__Main::VERSION')) {
             add_action('admin_notices', array($this, 'ectbe_Install_ECT_Notice'));
         }
@@ -240,15 +236,6 @@ final class Events_Calendar_Addon
                 ) . '</p></div>'
             );
         }
-    }
-    public function ectbe_fail_to_load()
-    {
-        if (!is_plugin_active('elementor/elementor.php')): ?>
-			<div class="notice notice-warning is-dismissible">
-			<p><?php echo '<a href="https://wordpress.org/plugins/elementor/"  target="_blank" >' . esc_html__('Elementor Page Builder', 'ccew') . '</a>' . wp_kses_post(__(' must be installed and activated for using "<strong>Events Widgets For Elementor And The Events Calendar</strong>" ', 'ectbe')); ?></p>
-			</div>
-			<?php
-endif;
     }
     /**
      * Run when activate plugin.

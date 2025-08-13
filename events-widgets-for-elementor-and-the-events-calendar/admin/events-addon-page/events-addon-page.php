@@ -63,34 +63,33 @@ if (!class_exists('cool_plugins_events_addons')) {
         /**
          * handle ajax request for activating plugin from dashboard
          */
-        public function cool_plugins_activate()
-        {
-            if (current_user_can('upload_plugins')) {
-
-                $plugin_slug = isset($_POST["ect_activate_slug"]) ? sanitize_text_field($_POST["ect_activate_slug"]) : '';
-
-                $wp_nonce = 'ect-plugins-activate-' . $plugin_slug;
-                if (!empty($plugin_slug)) {
-                    if (!check_ajax_referer($wp_nonce, 'wp_nonce', false)) {
-                        wp_send_json_error('Invalid security token sent.');
-                        wp_die();
-                    }
-                    $pluginBase = (isset($_POST['ect_activate_pluginbase']) && !empty($_POST['ect_activate_pluginbase'])) ? sanitize_text_field($_POST['ect_activate_pluginbase']) : null;
-
-                    $plugin_base_arr = explode("/", $pluginBase);
-                    if (isset($plugin_base_arr[0]) && $plugin_base_arr[0] == $plugin_slug) {
-                        activate_plugin($pluginBase);
-
-                    } else {
-                        wp_send_json_error('Something wrong with plugin path.');
-                        wp_die();
-                    }
-                } else {
-                    wp_send_json_error('Plugin slug is missing.');
-                    wp_die();
-                }
+        public function cool_plugins_activate() {
+            if ( ! current_user_can( 'activate_plugins' ) ) {
+                wp_send_json_error( 'You have no permission to do this action.' );
+                wp_die();
+            }
+        
+            $plugin_slug = isset( $_POST["ect_activate_slug"] ) ? sanitize_text_field( $_POST["ect_activate_slug"] ) : '';
+        
+            if ( empty( $plugin_slug ) ) {
+                wp_send_json_error( 'Plugin slug is missing.' );
+                wp_die();
+            }
+        
+            $wp_nonce = 'ect-plugins-activate-' . $plugin_slug;
+        
+            if ( ! check_ajax_referer( $wp_nonce, 'wp_nonce', true ) ) {
+                wp_send_json_error( 'Invalid security token sent.' );
+                wp_die();
+            }
+        
+            $plugin_base = isset( $_POST['ect_activate_pluginbase'] ) ? sanitize_text_field( $_POST['ect_activate_pluginbase'] ) : '';
+        
+            $plugin_base_arr = explode( "/", $plugin_base );
+            if ( isset( $plugin_base_arr[0] ) && $plugin_base_arr[0] === $plugin_slug ) {
+                activate_plugin( $plugin_base );
             } else {
-                wp_send_json_error('You have no permission to do this action.');
+                wp_send_json_error( 'Something wrong with plugin path.' );
                 wp_die();
             }
         }
@@ -259,7 +258,10 @@ if (!class_exists('cool_plugins_events_addons')) {
             $url = $this->plugin_api . 'pro/' . $this->plugin_tag;
 
             $pro_api = esc_url($url);
-            $response = wp_remote_get($pro_api, array('timeout' => 300));
+            $response = wp_remote_get( $pro_api, array(
+                'timeout'   => 300,
+                'sslverify' => true,
+            ) );
 
             if (is_wp_error($response)) {
                 return;

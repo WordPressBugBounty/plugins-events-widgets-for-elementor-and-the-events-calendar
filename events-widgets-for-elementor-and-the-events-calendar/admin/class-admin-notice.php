@@ -170,7 +170,7 @@ if (!class_exists('ectbe_admin_notices')):
             $nonce = wp_create_nonce( $id . '_notice_nonce' );
             $img_path = ( isset( $message['logo'] ) && !empty($message['logo'] ) ) ? esc_url($message['logo']) : null;
             $image_html = $img_path ? '<div class="logo_container"><a href="'.esc_url($message['review_url']).'"><img src="'.esc_url($img_path).'" style="max-width:70px;"></a></div>' : '';
-            echo "<div class='".esc_attr($id)."_admin_notice $classes ectbe-simple-notice' data-ajax-url='".esc_url(admin_url('admin-ajax.php'))."' data-wp-nonce='". esc_attr($nonce) . "' data-plugin-slug='".esc_attr($id)."'>$image_html<div class='message_container'><p>" . wp_kses_post($message['message']) . "</p></div></div>" . $script;
+            echo "<div class='".esc_attr($id)."_admin_notice" . esc_attr( $classes ) . " ectbe-simple-notice' data-ajax-url='".esc_url(admin_url('admin-ajax.php'))."' data-wp-nonce='". esc_attr($nonce) . "' data-plugin-slug='".esc_attr($id)."'>$image_html<div class='message_container'><p>" . wp_kses_post($message['message']) . "</p></div></div>" . $script;
         }
 
         /**
@@ -210,8 +210,9 @@ if (!class_exists('ectbe_admin_notices')):
                 $diff_days= $difference->days;
               
                 // check if installation days is greator then week
-              if (isset($diff_days) && $diff_days>= $days ) {
-                    echo $this->ectbe_create_notice_content( $id, $messageObj );
+              if (isset($diff_days) && $diff_days<= $days ) {
+                $content = $this->ectbe_create_notice_content( $id, $messageObj );
+                printf( '%s', $content );
                 }
         }
 
@@ -220,79 +221,85 @@ if (!class_exists('ectbe_admin_notices')):
          *
          * @param array $messageObj array of a message object 
          **/ 
-       function ectbe_create_notice_content( $id, $messageObj ){
-
-        $ajax_url=admin_url( 'admin-ajax.php' );
-        $ajax_callback = 'ectbe_admin_review_notice_dismiss';
-        $wrap_cls="notice notice-info is-dismissible";
-        $img_path= ( isset( $messageObj['logo'] ) && !empty($messageObj['logo'] ) ) ? esc_url($messageObj['logo']) : null;
-        $slug = $messageObj['slug'];
-        $plugin_name= $messageObj['plugin_name'];
-        $like_it_text='Rate Now! ★★★★★';
-        $already_rated_text=esc_html__( 'I already rated it', 'atlt2' );
-        $not_like_it_text=esc_html__( 'Not Interested', 'atlt2' );
-        $plugin_link=  $messageObj['review_url'] ;
-        $pro_url=esc_url('https://1.envato.market/calendar');
-        $review_nonce = wp_create_nonce( $id . '_review_nonce' ); 
-        $message="Thanks for using <b>$plugin_name</b> - WordPress plugin.
-        We hope you liked it ! <br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href='https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=review_notice' target='_blank'><strong>Cool Plugins</strong></a>!<br/>";
-      
-        $html='<div data-ajax-url="%8$s" data-plugin-slug="%11$s" data-wp-nonce="%12$s" id="%13$s" data-ajax-callback="%9$s" class="%11$s-feedback-notice-wrapper %1$s">';
-        
-        if( $img_path != null ){
-            $html .='<div class="logo_container"><a href="%5$s"><img src="%2$s" alt="%3$s" style="max-width:80px;"></a></div>';
-        }
-
-        $html .='<div class="message_container">%4$s
-        <div class="callto_action">
-        <ul>
-            <li class="love_it"><a href="%5$s" class="like_it_btn button button-primary" target="_new" title="%6$s">%6$s</a></li>
-            <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button %11$s_dismiss_notice" title="%7$s">%7$s</a></li>  
-            <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button %11$s_dismiss_notice" title="%10$s">%10$s</a></li>    
+        function ectbe_create_notice_content( $id, $messageObj ) {
+            $img_path       = ! empty( $messageObj['logo'] ) ? esc_url( $messageObj['logo'] ) : '';
+            $slug           = isset( $messageObj['slug'] ) ? sanitize_key( $messageObj['slug'] ) : '';
+            $plugin_name    = isset( $messageObj['plugin_name'] ) ? sanitize_text_field( $messageObj['plugin_name'] ) : '';
+            $plugin_link    = isset( $messageObj['review_url'] ) ? esc_url( $messageObj['review_url'] ) : '';
             
-        </ul>
-        <div class="clrfix"></div>
-        </div>
-        </div>
-        </div>';
-        $script = '<script>
-        jQuery(document).ready(function ($) {
-            $(document).on("click", "#'.$id.' .'.$slug.'_dismiss_notice", function (event) {
-                var $this = $(this);
-                var wrapper=$this.parents(".'.$slug.'-feedback-notice-wrapper");
-                var ajaxURL=wrapper.data("ajax-url");
-                var ajaxCallback=wrapper.data("ajax-callback");
-                var slug = wrapper.data("plugin-slug");
-                var id = wrapper.attr("id");
-                var wp_nonce = wrapper.data("wp-nonce");
-                $.post(ajaxURL, { "action":ajaxCallback,"slug":slug,"id":id,"_nonce":wp_nonce }, function( data ) {
-                    wrapper.slideUp("fast");
-                  })
-            });
-        });
-        </script>';
-
-        $html .= $script;
-      
-
-        return sprintf($html,
-                esc_attr($wrap_cls),
-                esc_url($img_path),
-                esc_html($plugin_name),
-                wp_kses_post($message),
-                esc_url($plugin_link),
-                esc_html($like_it_text),
-                esc_html($already_rated_text),
-                esc_url($ajax_url),// 8
-                esc_attr($ajax_callback),//9
-                esc_html($not_like_it_text),//10
-                esc_attr($slug), //11
-                esc_attr($review_nonce), //12
-                esc_attr($id), //13
-                esc_url($pro_url)
-        );
+            $ajax_url       = esc_url( admin_url( 'admin-ajax.php' ) );
+            $ajax_callback  = 'ectbe_admin_review_notice_dismiss';
+            $wrap_cls       = 'notice notice-info is-dismissible';
+            $like_it_text   = esc_html__( 'Rate Now! ★★★★★', 'atlt2' );
+            $already_rated_text = esc_html__( 'I already rated it', 'atlt2' );
+            $not_like_it_text   = esc_html__( 'Not Interested', 'atlt2' );
+            $pro_url        = esc_url( 'https://1.envato.market/calendar' );
+            $review_nonce   = esc_attr( wp_create_nonce( $id . '_review_nonce' ) );
+            $id_attr        = esc_attr( $id );
         
-       }
+            $message = sprintf(
+                __( 'Thanks for using <b>%s</b> - WordPress plugin.<br/>We hope you liked it!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=review_notice" target="_blank"><strong>Cool Plugins</strong></a>!<br/>', 'atlt2' ),
+                esc_html( $plugin_name )
+            );
+            $message_safe = wp_kses_post( $message );
+        
+            // HTML markup
+            $html  = '<div data-ajax-url="%8$s" data-plugin-slug="%11$s" data-wp-nonce="%12$s" id="%13$s" data-ajax-callback="%9$s" class="%11$s-feedback-notice-wrapper %1$s">';
+            
+            if ( $img_path ) {
+                $html .= '<div class="logo_container"><a href="%5$s"><img src="%2$s" alt="%3$s" style="max-width:80px;"></a></div>';
+            }
+        
+            $html .= '<div class="message_container">%4$s
+                <div class="callto_action">
+                <ul>
+                    <li class="love_it"><a href="%5$s" class="like_it_btn button button-primary" target="_new" title="%6$s">%6$s</a></li>
+                    <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button %11$s_dismiss_notice" title="%7$s">%7$s</a></li>  
+                    <li class="already_rated"><a href="javascript:void(0);" class="already_rated_btn button %11$s_dismiss_notice" title="%10$s">%10$s</a></li>    
+                </ul>
+                <div class="clrfix"></div>
+                </div>
+                </div>
+                </div>';
+        
+            $script = '<script>
+            jQuery(document).ready(function ($) {
+                $(document).on("click", "#' . $id_attr . ' .' . esc_js( $slug ) . '_dismiss_notice", function () {
+                    var $this = $(this);
+                    var wrapper = $this.parents(".' . esc_js( $slug ) . '-feedback-notice-wrapper");
+                    var ajaxURL = wrapper.data("ajax-url");
+                    var ajaxCallback = wrapper.data("ajax-callback");
+                    var slug = wrapper.data("plugin-slug");
+                    var id = wrapper.attr("id");
+                    var wp_nonce = wrapper.data("wp-nonce");
+                    $.post(ajaxURL, { "action": ajaxCallback, "slug": slug, "id": id, "_nonce": wp_nonce }, function() {
+                        wrapper.slideUp("fast");
+                    });
+                });
+            });
+            </script>';
+        
+            $html .= $script;
+        
+            return sprintf(
+                $html,
+                esc_attr( $wrap_cls ),        // %1$s
+                $img_path,                    // %2$s
+                esc_attr( $plugin_name ),      // %3$s
+                $message_safe,                 // %4$s
+                $plugin_link,                  // %5$s
+                $like_it_text,                  // %6$s
+                $already_rated_text,            // %7$s
+                $ajax_url,                      // %8$s
+                esc_attr( $ajax_callback ),     // %9$s
+                $not_like_it_text,              // %10$s
+                esc_attr( $slug ),               // %11$s
+                $review_nonce,                  // %12$s
+                $id_attr,                       // %13$s
+                $pro_url                        // %14$s
+            );
+        }
+        
 
        /**
         * This function will dismiss the review notice.
@@ -326,9 +333,7 @@ if (!class_exists('ectbe_admin_notices')):
             $id = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : '';
             $wp_nonce = $id . '_notice_nonce';
 
-            if ( ! check_ajax_referer($wp_nonce, '_nonce', false ) ) {
-                die( 'nonce verification failed!' );
-            }
+            check_ajax_referer( $wp_nonce, '_nonce' );
 
             if ( ! current_user_can('manage_options') ) {
                 die( 'insufficient permissions!' );

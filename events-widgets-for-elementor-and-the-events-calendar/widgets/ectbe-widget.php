@@ -25,8 +25,10 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 	 */
 	function ectbe_update_migration_status( $post_id, $editor_data ) {
 		if ( get_post_meta( $post_id, 'ectbe_exists', true ) ) {
-			update_post_meta( $post_id, 'ectbe_style_migration', 'done' );
-			update_option( 'ectbe-migration-status', 'done' );
+			if ( current_user_can( 'edit_post', $post_id ) ) {
+				update_post_meta( $post_id, 'ectbe_style_migration', 'done' );
+				update_option( 'ectbe-migration-status', 'done' );
+			}
 			return;
 		}
 	}
@@ -738,7 +740,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			)
 		);
 		if ( $layout == 'calendar' ) {
-			require ECTBE_PATH . 'widgets/layouts/ectbe-' . $layout . '.php';
+			require ECTBE_PATH . 'widgets/layouts/ectbe-calendar.php';
 		} else {
 				$all_events = ectbe_get_the_events_calendar_events( $settings );
 				global $post;
@@ -777,7 +779,18 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					$event_type         = tribe( 'tec.featured_events' )->is_featured( $event_id ) ? 'ectbe-featured-event' : 'ectbe-simple-event';
 					$ev_post_img        = ectbe_get_event_image( $event_id, $size = 'large' );
 					if ( ! empty( $ev_post_img ) ) {
-						$ev_post_img = '<div class="ectbe-evt-img"><img src= "' . esc_url( $ev_post_img ) . '"/></div>';
+						$ev_post_img_url = esc_url( $ev_post_img );
+						$ev_post_img_html = '<div class="ectbe-evt-img"><img src="' . $ev_post_img_url . '" alt="" /></div>';
+						$ev_post_img = wp_kses( $ev_post_img_html, [
+							'div' => [ 'class' => [] ],
+							'img' => [
+								'src' => [],
+								'alt' => [],
+								'width' => [],
+								'height' => [],
+								'class' => [],
+							],
+						] );
 					}
 					$evt_title = '<div class="ectbe-evt-title"><a class="ectbe-evt-url" href="' . esc_url( $url ) . '">' . wp_kses_post( $event_title ) . '</a></div>';
 					if ( ! empty( $cate && $display_cate == 'yes' ) ) {
@@ -822,7 +835,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			$event_output .= '</div>';
 			echo $event_output;
 			if ( $compatibility_styles != '' ) {
-				echo '<style type="text/css">' . $compatibility_styles . '</style>';
+				echo '<style type="text/css">' . wp_strip_all_tags( $compatibility_styles ) . '</style>';
 			}
 		}
 	}
