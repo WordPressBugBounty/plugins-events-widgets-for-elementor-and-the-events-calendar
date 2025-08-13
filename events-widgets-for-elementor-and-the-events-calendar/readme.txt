@@ -5,7 +5,7 @@ Tags: elementor, events, the events calendar, event calendar, coolplugins
 Requires at least:5.0 
 Tested up to: 6.8.2
 Requires PHP: 7.2 
-Stable tag: 1.6.19
+Stable tag: 1.6.20
 License: GPLv2 or later 
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,184 +136,188 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 1.6.19 | 13/08/2025
+= Version 1.6.20 | 13/08/2025 =
 
-* Fixed: Security issues.
-* Improved: Minor code improvements.
-* Tested upto: WordPress version 6.8.2
-* Tested upto: Elementor version 3.31.2 & Elementor Pro version 3.31.2
-* Tested upto: The Events Calendar version 6.14.2
+* **Improved:** Textual changes in readme.txt.
 
-= Version 1.6.18 | 02/07/2025
+= Version 1.6.19 | 13/08/2025 = 
 
-* Tested upto: Elementor version 3.30.0
+* **Fixed:** Security issues.
+* **Improved:** Minor code improvements.
+* **Tested upto:** WordPress version 6.8.2
+* **Tested upto:** Elementor version 3.31.2 & Elementor Pro version 3.31.2
+* **Tested upto:** The Events Calendar version 6.14.2
 
-= Version 1.6.17 | 10/06/2025
+= Version 1.6.18 | 02/07/2025 =
 
-* Added: User opt-in option in plugin.
-* Improved: Minor code improvements.
-* Tested upto: WordPress version 6.8.1
-* Tested upto: Elementor version 3.29.2
-* Tested upto: The Events Calendar version 6.13.2.1
+* **Tested upto:** Elementor version 3.30.0
 
-= Version 1.6.16 | 02/05/2025
+= Version 1.6.17 | 10/06/2025 =
 
-* Added: Disable Schema markup setting.
-* Tested upto: WordPress version 6.8.1
-* Tested upto: Elementor version 3.28.4
-* Tested upto: The Events Calendar version 6.11.2.1
+* **Added:** User opt-in option in plugin.
+* **Improved:** Minor code improvements.
+* **Tested upto:** WordPress version 6.8.1
+* **Tested upto:** Elementor version 3.29.2
+* **Tested upto:** The Events Calendar version 6.13.2.1
 
-= Version 1.6.15 | 22/03/2025
+= Version 1.6.16 | 02/05/2025 =
 
-* Fixed: Issue with event loading on the calendar widget.
-* Tested upto: WordPress version 6.7.2
-* Tested upto: Elementor version 3.28.0 & Elementor Pro version 3.28.0
-* Tested upto: The Events Calendar version 6.10.2
+* **Added:** Disable Schema markup setting.
+* **Tested upto:** WordPress version 6.8.1
+* **Tested upto:** Elementor version 3.28.4
+* **Tested upto:** The Events Calendar version 6.11.2.1
 
-= Version 1.6.14 | 28/01/2025
+= Version 1.6.15 | 22/03/2025 =
 
-* Tested upto: WordPress version 6.7.1
-* Tested upto: Elementor version 3.27.2 & Elementor Pro version 3.27.1
-* Tested upto: The Events Calendar version 6.9.1
+* **Fixed:**Issue with event loading on the calendar widget.
+* **Tested upto:** WordPress version 6.7.2
+* **Tested upto:** Elementor version 3.28.0 & Elementor Pro version 3.28.0
+* **Tested upto:** The Events Calendar version 6.10.2
 
-= Version 1.6.13 | 20/12/2024
+= Version 1.6.14 | 28/01/2025 =
 
-* Fixed: All Event setting rendering issue.
-* Tested upto: WordPress version 6.7.1
-* Tested upto: Elementor version 3.26.2 & Elementor Pro version 3.26.0
-* Tested upto: The Events Calendar version 6.9.0
+* **Tested upto:** WordPress version 6.7.1
+* **Tested upto:** Elementor version 3.27.2 & Elementor Pro version 3.27.1
+* **Tested upto:** The Events Calendar version 6.9.1
 
-= Version 1.6.12 | 03/12/2024
+= Version 1.6.13 | 20/12/2024 =
 
-* Fixed: Load textdomain issue.
-* Tested upto: WordPress version 6.7.1
-* Tested upto: Elementor version 3.25.10 & Elementor Pro version 3.24.4
-* Tested upto: The Events Calendar version 6.8.2.1
+* **Fixed:** All Event setting rendering issue.
+* **Tested upto:** WordPress version 6.7.1
+* **Tested upto:** Elementor version 3.26.2 & Elementor Pro version 3.26.0
+* **Tested upto:** The Events Calendar version 6.9.0
 
-= Version 1.6.11 | 17/10/2024
+= Version 1.6.12 | 03/12/2024 =
 
-* Fixed: Handler undefined issue with Elementor Pro.
-* Tested upto: WordPress version 6.6.2
-* Tested upto: Elementor version 3.24.7 & Elementor Pro version 3.24.4
-* Tested upto: The Events Calendar version 6.7.0
+* **Fixed:** Load textdomain issue.
+* **Tested upto:** WordPress version 6.7.1
+* **Tested upto:** Elementor version 3.25.10 & Elementor Pro version 3.24.4
+* **Tested upto:** The Events Calendar version 6.8.2.1
 
-= Version 1.6.10 | 24/09/2024
+= Version 1.6.11 | 17/10/2024 =
 
-* Fixed: Fix security issues.
-* Tested upto: WordPress version 6.6.2
-* Tested upto: Elementor version 3.24.4
-* Tested upto: The Events Calendar version 6.6.4.2
+* **Fixed:** Handler undefined issue with Elementor Pro.
+* **Tested upto:** WordPress version 6.6.2
+* **Tested upto:** Elementor version 3.24.7 & Elementor Pro version 3.24.4
+* **Tested upto:** The Events Calendar version 6.7.0
 
-= Version 1.6.9 | 23/07/2024
+= Version 1.6.10 | 24/09/2024 =
 
-* Tested upto: WordPress version 6.6
-* Tested upto: Elementor version 3.24.0
+* **Fixed:**Fix security issues.
+* **Tested upto:** WordPress version 6.6.2
+* **Tested upto:** Elementor version 3.24.4
+* **Tested upto:** The Events Calendar version 6.6.4.2
 
-= Version 1.6.8 | 03/05/2024
+= Version 1.6.9 | 23/07/2024 =
 
-* Fixed: Structure data error saying location missing when tested with Rich Result test.
-* Tested upto: WordPress version 6.5.2
-* Tested upto: Elementor version 3.21.4
-* Tested upto: The Events Calendar version 6.4.0
+* **Tested upto:** WordPress version 6.6
+* **Tested upto:** Elementor version 3.24.0
 
-= Version 1.6.7 | 06/04/2024
+= Version 1.6.8 | 03/05/2024 =
 
-* Tested upto: WordPress version 6.5
-* Tested upto: Elementor version 3.20.3
-* Tested upto: The Events Calendar version 6.3.5
+* **Fixed:** Structure data error saying location missing when tested with Rich Result test.
+* **Tested upto:** WordPress version 6.5.2
+* **Tested upto:** Elementor version 3.21.4
+* **Tested upto:** The Events Calendar version 6.4.0
+
+= Version 1.6.7 | 06/04/2024 =
+
+* **Tested upto:** WordPress version 6.5
+* **Tested upto:** Elementor version 3.20.3
+* **Tested upto:** The Events Calendar version 6.3.5
 
 = Version 1.6.6 | 30/01/2024 =
 
-* Fixed: Issue with TRIBE EXTENSION LINK EVENTS TO WEBSITE URLS.
-* Tested upto: WordPress version 6.4.2
-* Tested upto: Elementor version 3.19.0
-* Tested upto: The Events Calendar version 6.3.1
+* **Fixed:** Issue with TRIBE EXTENSION LINK EVENTS TO WEBSITE URLS.
+* **Tested upto:** WordPress version 6.4.2
+* **Tested upto:** Elementor version 3.19.0
+* **Tested upto:** The Events Calendar version 6.3.1
 
 = Version 1.6.5 | 21/11/2023 =
 
-* Tested upto: WordPress version 6.4
-* Tested upto: Elementor v3.17.3
-* Tested upto: The Events Calendar 6.2.8.1 (free) & 6.2.8 (Pro).
+* **Tested upto:** WordPress version 6.4
+* **Tested upto:** Elementor v3.17.3
+* **Tested upto:** The Events Calendar 6.2.8.1 (free) & 6.2.8 (Pro).
 
 = Version 1.6.4 | 21/08/2023 =
 
-* Tested upto: WordPress version 6.3
-* Tested upto: Elementor v3.15.2
-* Tested upto: The Events Calendar 6.2.0.1 (free) & 6.2.0 (Pro).
+* **Tested upto:** WordPress version 6.3
+* **Tested upto:** Elementor v3.15.2
+* **Tested upto:** The Events Calendar 6.2.0.1 (free) & 6.2.0 (Pro).
 
 = Version 1.6.3 | 31/03/2023 =
 
-* Improved: Made minor textual changes.
-* Improved: Updated links.
-* Improved: Dashboard code.
-* Improved: Feedback form.
+* **Improved:** Made minor textual changes.
+* **Improved:** Updated links.
+* **Improved:** Dashboard code.
+* **Improved:** Feedback form.
 
 = Version 1.6.2 | 18/12/2022 =
 
-* Fixed: Bug that prevented disabling the review notice.
-* Improved: Other notices.
+* **Fixed:** Bug that prevented disabling the review notice.
+* **Improved:** Other notices.
 
 = Version 1.6.1 | 11/11/2022 =
 
-* Fixed: Calendar layout title issue.
-* Improved: Made minor textual changes.
-* Tested up to: Elementor v3.8 (free) & v3.8 (Pro).
-* Tested up to: WordPress 6.1.
+* **Fixed:** Calendar layout title issue.
+* **Improved:** Made minor textual changes.
+* **Tested up to:** Elementor v3.8 (free) & v3.8 (Pro).
+* **Tested up to:** WordPress 6.1.
 
 = Version 1.6 | 15/08/2022 =
 
-* Major Update: Overall code and style improvements.
-* Improved: Review notice code.
-* Tested up to: Elementor v3.7.5 (free) & v3.7.3 (Pro).
-* Tested up to: The Events Calendar 6.0.0.1 (free) & 6.0.0 (Pro).
+* **Major Update:** Overall code and style improvements.
+* **Improved:** Review notice code.
+* **Tested up to:** Elementor v3.7.5 (free) & v3.7.3 (Pro).
+* **Tested up to:** The Events Calendar 6.0.0.1 (free) & 6.0.0 (Pro).
 
 = Version 1.5.2 | 25/06/2022 =
 
-* Fixed: Translation issue.
-* Improvements: Tested with Elementor 3.7.2.
+* **Fixed:** Translation issue.
+* **Improvements:** Tested with Elementor 3.7.2.
 
 = Version 1.5.1 | 04/05/2022 =
 
-* Updated: Dashboard code.
-* Fixed: Fatal error.
+* **Updated:** Dashboard code.
+* **Fixed:** Fatal error.
 
 = Version 1.5 | 08/04/2022 =
 
-* Fixed: Major security bugs.
-* Improvements: Escaped all attributes and HTML output.
-* Tweak: Tested with Elementor's latest version 3.6.2.
+* **Fixed:** Major security bugs.
+* **Improvements:** Escaped all attributes and HTML output.
+* **Tweak:** Tested with Elementor's latest version 3.6.2.
 
 = Version 1.4.2 | 20/10/2021 =
 
-* Tweak: Tested up to Elementor 3.4.6.
+* **Tweak:** Tested up to Elementor 3.4.6.
 
 = Version 1.4.1 | 25/08/2021 =
 
-* Fixed: Links not working bug.
-* Improvements: Improved code and settings panel.
+* **Fixed:** Links not working bug.
+* **Improvements:** Improved code and settings panel.
 
 = Version 1.4 | 09/02/2021 =
 
-* New: Integrated Minimal List Style 2.
-* Improvements: Improved settings panel. After updating the plugin, please update widget settings.
-* Improvements: Improved overall code.
+* **New:** Integrated Minimal List Style 2.
+* **Improvements:** Improved settings panel. After updating the plugin, please update widget settings.
+* **Improvements:** Improved overall code.
 
 = Version 1.3 | 13/01/2021 =
 
-* New: Integrated Minimal List layout.
-* Fixed: Minor bugs.
-* Improvements: Improved overall code.
+* **New:** Integrated Minimal List layout.
+* **Fixed:** Minor bugs.
+* **Improvements:** Improved overall code.
 
 = Version 1.2 | 23/10/2020 =
 
-* New: Integrated All Events addon page.
+* **New:** Integrated All Events addon page.
 
 = Version 1.1 | 20/10/2020 =
 
-* New: Integrated feedback form.
+* **New:** Integrated feedback form.
 
 = Version 1.0 | 08/10/2020 =
 
-* New: Initial plugin release.
+* **New:** Initial plugin release.
 
 == Upgrade Notice ==
