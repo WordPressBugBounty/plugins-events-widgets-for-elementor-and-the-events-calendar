@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
         return;
     endif;
 
-    $cool_plugins_docs = "https://eventscalendaraddons.com/docs/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dasboard";
+    $cool_plugins_docs = "https://eventscalendaraddons.com/docs/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=docs&utm_content=dashboard";
     $cool_plugins_visit_website = "https://eventscalendaraddons.com/demos/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=demo&utm_content=dashboard";
 ?>
 

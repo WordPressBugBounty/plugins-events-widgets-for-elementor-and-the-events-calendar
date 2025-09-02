@@ -419,9 +419,9 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 
 				'type'            => \Elementor\Controls_Manager::RAW_HTML,
 				'raw'             => '<button class="ectbe-pro-features-view-demo">
-							<a href="' . esc_url( 'https://eventscalendaraddons.com/demos/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=demo&utm_content=view_demo' ) . '" target="_blank">' . esc_html__( 'View Demo', 'ectbe' ) . '</a>
+							<a href="' . esc_url( 'https://eventscalendaraddons.com/demos/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=demo&utm_content=editor_panel' ) . '" target="_blank">' . esc_html__( 'View Demo', 'ectbe' ) . '</a>
 							</button> <button class="ectbe-pro-features-get-pro">
-							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=buy_pro' ) . '" target="_blank">' . esc_html__( 'Get Pro ⇗', 'ectbe' ) . '</a> 
+							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=editor_panel' ) . '" target="_blank">' . esc_html__( 'Get Pro ⇗', 'ectbe' ) . '</a> 
 							</button>',
 				'content_classes' => 'ectbe-pro-features-list',
 			)
