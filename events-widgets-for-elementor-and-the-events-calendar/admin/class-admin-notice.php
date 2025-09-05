@@ -210,7 +210,7 @@ if (!class_exists('ectbe_admin_notices')):
                 $diff_days= $difference->days;
               
                 // check if installation days is greator then week
-              if (isset($diff_days) && $diff_days<= $days ) {
+              if (isset($diff_days) && $diff_days>= $days ) {
                 $content = $this->ectbe_create_notice_content( $id, $messageObj );
                 printf( '%s', $content );
                 }
