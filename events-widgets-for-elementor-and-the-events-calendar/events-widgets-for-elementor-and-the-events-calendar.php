@@ -3,7 +3,7 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.6.23
+ * Version:     1.6.24
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: ectbe
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.6.23');
+define('ECTBE_VERSION', '1.6.24');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -211,7 +211,7 @@ final class Events_Calendar_Addon
                 'review' => true, // required and set to be true for review box
                 'review_url' => esc_url('https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/?filter=5#new-post'), // required
                 'plugin_name' => esc_html__('Events Widgets For Elementor And The Events Calendar', 'ectbe'), // required
-                'logo' => esc_url(ECTBE_URL . 'assets/images/icon-events-widgets.svg'), // optional: it will display logo
+                'logo' => esc_url(ECTBE_URL . 'assets/images/icon-review-notice.svg'), // optional: it will display logo
                 'review_interval' => 3, // optional: this will display review notice
                 // after 5 days from the installation_time
                 // default is 3
