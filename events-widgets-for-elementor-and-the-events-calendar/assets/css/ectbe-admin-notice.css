@@ -16,7 +16,7 @@
     width: 80px;
     display: table-cell;
     padding: 0 10px 0 0;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .ectbe-feedback-notice-wrapper .logo_container a,

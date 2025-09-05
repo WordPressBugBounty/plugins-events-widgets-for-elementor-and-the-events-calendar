@@ -238,7 +238,7 @@ if (!class_exists('ectbe_admin_notices')):
             $id_attr        = esc_attr( $id );
         
             $message = sprintf(
-                __( 'Thanks for using <b>%s</b> - WordPress plugin.<br/>We hope you liked it!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=review_notice" target="_blank"><strong>Cool Plugins</strong></a>!<br/>', 'atlt2' ),
+                __( 'Thanks for using <b>%s</b> - WordPress plugin.<br/>We hope you liked it!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=review_notice" target="_blank"><strong>Cool Plugins</strong></a>!<br/>', 'atlt2' ),
                 esc_html( $plugin_name )
             );
             $message_safe = wp_kses_post( $message );
