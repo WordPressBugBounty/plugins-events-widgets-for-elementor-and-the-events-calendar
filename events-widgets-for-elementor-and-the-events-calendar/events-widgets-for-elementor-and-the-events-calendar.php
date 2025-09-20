@@ -3,12 +3,12 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.6.24
+ * Version:     1.6.25
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: ectbe
- * Elementor tested up to: 3.31.3
- * Elementor Pro tested up to: 3.31.2
+ * Elementor tested up to: 3.32.2
+ * Elementor Pro tested up to: 3.32.1
  * Requires Plugins: elementor, the-events-calendar
 
  */
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.6.24');
+define('ECTBE_VERSION', '1.6.25');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -142,16 +142,12 @@ final class Events_Calendar_Addon
      */
     public function ectbe_plugins_loaded()
     {
-        if (!class_exists('Tribe__Events__Main') || !defined('Tribe__Events__Main::VERSION')) {
-            add_action('admin_notices', array($this, 'ectbe_Install_ECT_Notice'));
-        }
-
         // Require the main plugin file
         require __DIR__ . '/includes/functions.php';
         require __DIR__ . '/includes/class-ectbe.php';
         if (is_admin()) {
             add_action('admin_init', array($this, 'ectbe_show_upgrade_notice'));
-            require __DIR__ . '/admin/class-admin-notice.php';
+            require __DIR__ . '/admin/feedback-notice/class-admin-notice.php';
             require_once __DIR__ . '/admin/feedback/admin-feedback-form.php';
         }
 
@@ -211,31 +207,11 @@ final class Events_Calendar_Addon
                 'review' => true, // required and set to be true for review box
                 'review_url' => esc_url('https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/?filter=5#new-post'), // required
                 'plugin_name' => esc_html__('Events Widgets For Elementor And The Events Calendar', 'ectbe'), // required
-                'logo' => esc_url(ECTBE_URL . 'assets/images/icon-review-notice.svg'), // optional: it will display logo
                 'review_interval' => 3, // optional: this will display review notice
                 // after 5 days from the installation_time
                 // default is 3
             )
         );
-    }
-    // notice for installation TEC parent plugin installation
-    public function ectbe_Install_ECT_Notice()
-    {
-        if (current_user_can('activate_plugins')) {
-            $url = 'plugin-install.php?tab=plugin-information&plugin=the-events-calendar&TB_iframe=true';
-            $title = esc_html__('The Events Calendar', 'tribe-events-ical-importer');
-            printf(
-                '<div class="error CTEC_Msz"><p>' .
-                esc_html(__('%1$s %2$s', 'ectbe')),
-                esc_html(__('In order to use Events Widgets For Elementor And The Events Calendar plugin, Please first install the latest version of', 'ectbe')),
-                sprintf(
-                    '<a href="%s" class="thickbox" title="%s">%s</a>',
-                    esc_url($url),
-                    esc_html($title),
-                    esc_html($title)
-                ) . '</p></div>'
-            );
-        }
     }
     /**
      * Run when activate plugin.
