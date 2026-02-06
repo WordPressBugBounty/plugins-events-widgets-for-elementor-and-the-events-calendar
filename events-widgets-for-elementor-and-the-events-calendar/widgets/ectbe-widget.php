@@ -806,7 +806,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					$venue_details = tribe_get_venue_details( $event_id );
 					if ( tribe_has_venue( $event_id ) && isset( $venue_details['linked_name'] ) && $ectbe_venue != 'yes' ) {
 						$venue_details_html = '<div class="ectbe-evt-venue"><span class="ectbe-icon"><i class="ectbe-icon-location" aria-hidden="true"></i></span>
-						<span class="ectbe-venue-details ectbe-address">' . implode( ',', $venue_details ) . '</span></div>';
+						<span class="ectbe-venue-details ectbe-address">' . implode( ',<br>', preg_replace( '#<a.*?>([^>]*)</a>#i', '$1', $venue_details ) ) . '</span></div>';
 					}
 					if ( $display_desc == 'yes' ) {
 						$evt_desc = '<div class="ectbe-evt-description">' . tribe_events_get_the_excerpt( $event_id, wp_kses_allowed_html( 'post' ) ) . '</div>';

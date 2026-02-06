@@ -3,9 +3,9 @@ Contributors: narinder-singh, satindersingh, coolplugins
 Donate link: https://paypal.me/CoolPlugins/50USD/ 
 Tags: elementor, events, the events calendar, event calendar, coolplugins 
 Requires at least:5.0 
-Tested up to: 6.8.2
+Tested up to: 6.9
 Requires PHP: 7.2 
-Stable tag: 1.6.25
+Stable tag: 1.6.28
 License: GPLv2 or later 
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -135,6 +135,24 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 4. Events Calendar Layout For Elementor
 
 == Changelog ==
+
+= Version 1.6.28 | 09/12/2025 =
+
+* **Fixed:** Venue issue.
+* **Tested upto:** WordPress version 6.9
+* **Tested upto:** Elementor version 3.33.4 & Elementor Pro version 3.33.2
+* **Tested upto:** The Events Calendar version 6.15.12.2
+
+= Version 1.6.27 | 18/11/2025 =
+
+* **Tested upto:** Elementor version 3.33.1 & Elementor Pro version 3.33.1
+* **Tested upto:** The Events Calendar version 6.15.11
+
+= Version 1.6.26 | 17/10/2025 =
+
+* **Updated:** Update moment.min.js file with latest version (2.30.1).
+* **Tested upto:** Elementor version 3.32.4 & Elementor Pro version 3.32.1
+* **Tested upto:** The Events Calendar version 6.15.8
 
 = Version 1.6.25 | 20/09/2025 =
 

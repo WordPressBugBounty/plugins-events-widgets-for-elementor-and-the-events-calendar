@@ -102,7 +102,6 @@ if (!class_exists('ectbe_admin_notices')):
                                         );
 
             add_action('admin_notices', array($this, 'ectbe_show_notice'));
-            add_action('wp_ajax_ectbe_admin_notice', array($this, 'ectbe_admin_notice_dismiss'));
             add_action('wp_ajax_ectbe_admin_review_notice_dismiss', array($this, 'ectbe_admin_review_notice_dismiss'));
         }
 
@@ -269,25 +268,6 @@ if (!class_exists('ectbe_admin_notices')):
             update_option( 'ectbe-ratingDiv', 'yes' );
             echo wp_json_encode( array("success" => "true") );
             die();
-        }
-
-        /************************************************************
-         * This function will dismiss the text/html admin notice    *
-         * This is called by a wordpress ajax hook                  *
-         ************************************************************/
-        public function ectbe_admin_notice_dismiss()
-        {
-            $id = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : '';
-            $wp_nonce = $id . '_notice_nonce';
-
-            check_ajax_referer( $wp_nonce, '_nonce' );
-
-            if ( ! current_user_can('manage_options') ) {
-                die( 'insufficient permissions!' );
-            }
-
-            update_option( $id . '_remove_notice', 'yes' );
-            die( 'Admin message removed!' );
         }
 
         /**************************************************************
