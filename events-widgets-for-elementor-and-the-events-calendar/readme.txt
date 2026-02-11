@@ -224,7 +224,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = Version 1.6.13 | 20/12/2024 =
 
-* **Fixed:** All Event setting rendering issue.
+* **Fixed:** All Event setting rendering issues.
 * **Tested upto:** WordPress version 6.7.1
 * **Tested upto:** Elementor version 3.26.2 & Elementor Pro version 3.26.0
 * **Tested upto:** The Events Calendar version 6.9.0
