@@ -116,20 +116,20 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
           });
         },
         eventClick: function (info) {
-          info.jsEvent.preventDefault();
+          info.jsEvent.preventDefault();  
           var popupmodal = jQuery("#ectbe-popup-wraper");
           var enddate = '';
           if (info.event.allDay == false && info.event.end != null) {
-            enddate = '- ' + moment(info.event.end).format('LLL');
+            enddate = '- ' + moment(info.event.end).format('MMMM D, YYYY h:mm A');
           }
           popupmodal.css("display", "block");
           popupmodal.addClass("ectbe-ec-popup-ready").removeClass("ectbe-ec-modal-removing");
           jQuery('h2.ectbe-ec-modal-title').html(info.event.title);
-          jQuery('.ectbe-event-date-start').text(moment(info.event.start).format('LLL'));
+          jQuery('.ectbe-event-date-start').text(moment(info.event.start).format('MMMM D, YYYY h:mm A'));
           jQuery('.ectbe-event-date-end').text(enddate);
 
           var feature_image = info.event.extendedProps.imgurl;
-          if (feature_image && feature_image.trim() !== '') {
+          if (feature_image && feature_image.trim() !== '') { 
             if (jQuery('.ectbe-featured-img').length === 0) {
                 jQuery('.ectbe-modal-content').prepend('<div class="ectbe-featured-img"></div>');
             }

@@ -50,6 +50,7 @@ class CPFM_Feedback_Notice {
          *     'pages' => ['dashboard', 'cpfm_'],
          * ]);
          */
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
         do_action('cpfm_register_notice');
     }
 
@@ -60,8 +61,8 @@ class CPFM_Feedback_Notice {
             return;
 
         }
-       
 
+       // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading page for display context only.
        $current_page   = isset($_GET['page'])? sanitize_key($_GET['page']):'';
 
         
@@ -139,6 +140,7 @@ class CPFM_Feedback_Notice {
 
                     if($plugin_name){
 
+                        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
                         do_action('cpfm_after_opt_in_' . $plugin_name, $category);
                     }
               
@@ -157,6 +159,7 @@ class CPFM_Feedback_Notice {
         }
 
         $screen         = get_current_screen();
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading page for display context only.
         $current_page   = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
 
        
@@ -172,8 +175,8 @@ class CPFM_Feedback_Notice {
         }
     
         $output = '';
-        $output .= '<div id="cpfNoticePanel" class="notice-panel"' . ($auto_show ? ' data-auto-show="true"' : '') . '>';
-        $output .= '<div class="notice-panel-header">' . esc_html__('Help Improve Plugins', 'ectbe') . ' <span class="dashicons dashicons-no" id="cpfm_remove_notice"></span></div>';
+        $output .= '<div id="cpfNoticePanel" class="notice-panel ect-required-plugin-notice"' . ($auto_show ? ' data-auto-show="true"' : '') . '>';
+        $output .= '<div class="notice-panel-header">' . esc_html__('Help Improve Plugins', 'events-widgets-for-elementor-and-the-events-calendar') . ' <span class="dashicons dashicons-no" id="cpfm_remove_notice"></span></div>';
         $output .= '<div class="notice-panel-content">';
     
         foreach (self::$registered_notices as $key => $notice) {
@@ -199,21 +202,22 @@ class CPFM_Feedback_Notice {
             $output .= '<strong>' . esc_html($notice['title']) . '</strong>';
             
             $output .= '<div class="notice-message-with-toggle">';
-            $output .= '<p>' . esc_html($notice['message']) . '<a href="#" class="cpf-toggle-extra">' . esc_html__(' More info', 'ectbe') . '</a></p>';
+            $output .= '<p>' . esc_html($notice['message']) . '<a href="#" class="cpf-toggle-extra">' . esc_html__(' More info', 'events-widgets-for-elementor-and-the-events-calendar') . '</a></p>';
             $output .= '</div>';
             
             $output .= '<div class="cpf-extra-info">';
-            $output .= '<p>' . esc_html__('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'ectbe') . '</p>';
+            $output .= '<p>' . esc_html__('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'events-widgets-for-elementor-and-the-events-calendar') . '</p>';
             $output .= '<ul>';
-            $output .= '<li>' . esc_html__('Your website home URL and WordPress admin email.', 'ectbe') . '</li>';
-            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'ectbe') . '</li>';
+            $output .= '<li>' . esc_html__('Your website home URL and WordPress admin email.', 'events-widgets-for-elementor-and-the-events-calendar') . '</li>';
+            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix. ', 'events-widgets-for-elementor-and-the-events-calendar');
+            $output .= '<a href="https://my.coolplugins.net/terms/usage-tracking/" target="_blank">' . esc_html__('Click here', 'events-widgets-for-elementor-and-the-events-calendar') . '</a></li>';
             $output .= '</ul>';
             
             $output .= '</div>';
             
             $output .= '<div class="notice-actions">';
-            $output .= '<button class="button button-primary opt-in-yes" data-category="' . esc_attr($key) . '" id="yes-share-data" value="yes">' . esc_html__("Yes, I Agree", 'ectbe') . '</button>';
-            $output .= '<button class="button opt-in-no" data-category="' . esc_attr($key) . '" id="no-share-data" value="no">' . esc_html__('No, Thanks', 'ectbe') . '</button>';
+            $output .= '<button class="button button-primary opt-in-yes" data-category="' . esc_attr($key) . '" id="yes-share-data" value="yes">' . esc_html__("Yes, I Agree", 'events-widgets-for-elementor-and-the-events-calendar') . '</button>';
+            $output .= '<button class="button opt-in-no" data-category="' . esc_attr($key) . '" id="no-share-data" value="no">' . esc_html__('No, Thanks', 'events-widgets-for-elementor-and-the-events-calendar') . '</button>';
             $output .= '</div>';
             
             $output .= '</div>';

@@ -19,7 +19,9 @@ jQuery(document).ready(function ($) {
           id: id,
           _nonce: wp_nonce
       }, function () {
-          wrapper.slideUp("fast");
+        wrapper.slideUp('fast', function () {
+            $(this).remove(); // completely remove from DOM
+        });
       });
   });
 });

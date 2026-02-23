@@ -1,4 +1,9 @@
 <?php
+
+if( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 function ectbe_get_tags( $args = array() ) {
 		$options        = array();
 		$tags           = get_tags( $args );
@@ -41,9 +46,11 @@ function ectbe_get_the_events_calendar_events( $settings ) {
 		array(
 			'post_status'    => 'publish',
 			'posts_per_page' => $settings['ectbe_max_events'],
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 			'meta_key'       => $attribute['key'],
 			'orderby'        => 'event_date',
 			'order'          => $settings['ectbe_order'],
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'meta_query'     => $attribute['meta_date'],
 		),
 		$attribute,
@@ -52,6 +59,7 @@ function ectbe_get_the_events_calendar_events( $settings ) {
 	);
 	if ( ! empty( $settings['ectbe_ev_category'] ) ) {
 		if ( ! in_array( 'all', $settings['ectbe_ev_category'] ) ) {
+			   // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 			   $ect_args['tax_query'] = array(
 				   array(
 					   'taxonomy' => 'tribe_events_cat',
@@ -91,7 +99,7 @@ function ectbe_get_the_events_calendar_events( $settings ) {
 			'id'             => $event->ID,
 			'title'          => ! empty( $event->post_title ) ? $event->post_title : __(
 				'No Title',
-				'ectbe'
+				'events-widgets-for-elementor-and-the-events-calendar'
 			),
 			'start'          => tribe_get_start_date( $event->ID, true, $date_format ),
 			'end'            => tribe_get_end_date( $event->ID, true, $date_format ),
@@ -271,9 +279,9 @@ function ectbe_tribe_event_time( $post_id, $display = true ) {
 	 $event = $post_id;
 	if ( tribe_event_is_all_day( $event ) ) { // all day event
 		if ( $display ) {
-			esc_html_e( 'All day', 'ectbe' );
+			esc_html_e( 'All day', 'events-widgets-for-elementor-and-the-events-calendar' );
 		} else {
-			return esc_html__( 'All day', 'ectbe' );
+			return esc_html__( 'All day', 'events-widgets-for-elementor-and-the-events-calendar' );
 		}
 	} elseif ( tribe_event_is_multiday( $event ) ) { // multi-date event
 		   $start_date = tribe_get_start_date( $event, false, false );
@@ -338,20 +346,20 @@ function ectbe_older_v_compatibility( $post_id, $settings, $layout, $widget_id )
 	$title_key = 'ectbe_title_typography';
 	if ( isset( $settings[ $title_key . $typo_index ] ) &&
 		  $settings[ $title_key . $typo_index ] == 'custom' ) {
-		$title_styles   = get_typography_settings( $title_key, $settings );
+		$title_styles   = ectbe_get_typography_settings( $title_key, $settings );
 		$custom_styles .= $widgetID . ' .ectbe-evt-title .ectbe-evt-url{' . $title_styles . '}';
 
 	}
 	 $desc_key = 'ectbe_desc_typography';
 	if ( isset( $settings[ $desc_key . $typo_index ] ) &&
 		 $settings[ $desc_key . $typo_index ] == 'custom' ) {
-		$desc_styles    = get_typography_settings( $desc_key, $settings );
+		$desc_styles    = ectbe_get_typography_settings( $desc_key, $settings );
 		$custom_styles .= $widgetID . ' .ectbe-evt-description{' . $desc_styles . '}';
 	}
 	$date_key = 'ectbe_date_typography';
 	if ( isset( $settings[ $date_key . $typo_index ] ) &&
 		 $settings[ $date_key . $typo_index ] == 'custom' ) {
-		$date_styles    = get_typography_settings( $date_key, $settings );
+		$date_styles    = ectbe_get_typography_settings( $date_key, $settings );
 		$custom_styles .= $widgetID . ' .ectbe-list-wrapper.style-1 .ectbe-date-area{' . $date_styles . '}';
 		$custom_styles .= $widgetID . ' .ectbe-content-box .ectbe-date-area span{' . $date_styles . '}';
 		$custom_styles .= $widgetID . ' .ectbe-minimal-list-wrapper .ectbe-evt-time {' . $date_styles . '}';
@@ -359,13 +367,13 @@ function ectbe_older_v_compatibility( $post_id, $settings, $layout, $widget_id )
 	$veune_key = 'ectbe_venue_typography';
 	if ( isset( $settings[ $veune_key . $typo_index ] ) &&
 		 $settings[ $veune_key . $typo_index ] == 'custom' ) {
-		$venue_styles   = get_typography_settings( $veune_key, $settings );
+		$venue_styles   = ectbe_get_typography_settings( $veune_key, $settings );
 		$custom_styles .= $widgetID . ' .ectbe-evt-venue span{' . $venue_styles . '}';
 	}
 	$raed_more_key = 'ectbe_read_more_typography';
 	if ( isset( $settings[ $raed_more_key . $typo_index ] ) &&
 		 $settings[ $raed_more_key . $typo_index ] == 'custom' ) {
-		$read_more_style = get_typography_settings( $raed_more_key, $settings );
+		$read_more_style = ectbe_get_typography_settings( $raed_more_key, $settings );
 		$custom_styles  .= $widgetID . ' .ectbe-evt-read-more{' . $read_more_style . '}';
 	}
 	if ( ! empty( $custom_styles ) ) {
@@ -376,7 +384,7 @@ function ectbe_older_v_compatibility( $post_id, $settings, $layout, $widget_id )
 	}
 }
 // get an older version style settings
-function get_typography_settings( $key, $all_settings ) {
+function ectbe_get_typography_settings( $key, $all_settings ) {
 	$fields    = array(
 		'font_family',
 		'font_size',

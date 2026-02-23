@@ -3,12 +3,14 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.6.28
+ * Version:     1.7.0
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
- * Text Domain: ectbe
- * Elementor tested up to: 3.33.4
- * Elementor Pro tested up to: 3.33.2
+ * Text Domain: events-widgets-for-elementor-and-the-events-calendar
+ * License:     GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Elementor tested up to: 3.35.5
+ * Elementor Pro tested up to: 3.35.1
  * Requires Plugins: elementor, the-events-calendar
 
  */
@@ -18,7 +20,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.6.28');
+define('ECTBE_VERSION', '1.7.0');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -29,6 +31,7 @@ register_deactivation_hook(ECTBE_FILE, array('Events_Calendar_Addon', 'ectbe_dea
 /**
  * Class Events_Calendar_Addon
  */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 final class Events_Calendar_Addon
 {
     /**
@@ -73,6 +76,7 @@ final class Events_Calendar_Addon
             }
             return $params;
         });
+        add_action('admin_enqueue_scripts', array($this, 'ectbe_enqueue_scripts'));
     }
 
     /**
@@ -108,7 +112,7 @@ final class Events_Calendar_Addon
     public function ectbe_addMeta_Links($links, $file)
     {
         if (strpos($file, basename(__FILE__))) {
-            $ectanchor = esc_html__('Video Tutorials', 'ectbe');
+            $ectanchor = esc_html__('Video Tutorials', 'events-widgets-for-elementor-and-the-events-calendar');
             $ectvideourl = 'https://youtube.com/playlist?list=PLAs6S1hKb-gNX_A-ZpsD-tO9aQdMmwrU5&si=m9mE0xDu8Ei0x41u';
             $links[] = '<a href="' . esc_url($ectvideourl) . '" target="_blank">' . $ectanchor . '</a>';
         }
@@ -120,14 +124,12 @@ final class Events_Calendar_Addon
     public function ectbe_add_action_links($links)
     {
         $plugin_visit_website = 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list';
-        $links[] = '<a  style="font-weight:bold" href="' . esc_url($plugin_visit_website) . '" target="_blank">' . esc_html__('Get Pro', 'ectbe') . '</a>';
+        $links[] = '<a  style="font-weight:bold" href="' . esc_url($plugin_visit_website) . '" target="_blank">' . esc_html__('Get Pro', 'events-widgets-for-elementor-and-the-events-calendar') . '</a>';
         return $links;
     }
 
     public function ectbe_add_text_domain()
     {
-        load_plugin_textdomain('ectbe', false, basename(dirname(__FILE__)) . '/languages/');
-
         if (!get_option( 'ectbe_initial_save_version' ) ) {
             add_option( 'ectbe_initial_save_version', ECTBE_VERSION );
         }
@@ -137,6 +139,88 @@ final class Events_Calendar_Addon
         }
     }
 
+    public static function ectbe_display_header() {
+        // Required plugins list (path + minimum version)
+        $required_plugins = [
+            'countdown-for-the-events-calendar/countdown-for-events-calendar.php' => '1.4.16',
+		    'cp-events-calendar-modules-for-divi-pro/cp-events-calendar-modules-for-divi-pro.php' => '2.0.2',
+			'event-page-templates-addon-for-the-events-calendar/the-events-calendar-event-details-page-templates.php' => '1.7.15',
+			'events-block-for-the-events-calendar/events-block-for-the-event-calender.php' => '1.3.12',
+			'event-single-page-builder-pro/event-single-page-builder-pro.php' => '2.0.1',
+			'events-search-addon-for-the-events-calendar/events-calendar-search-addon.php' => '1.2.18',
+			'events-speakers-and-sponsors/events-speakers-and-sponsors.php' => '1.1.1',
+			'events-widgets-for-elementor-and-the-events-calendar/events-widgets-for-elementor-and-the-events-calendar.php' => '1.6.28',
+			'events-widgets-pro/events-widgets-pro.php' => '3.0.1',
+			'template-events-calendar/events-calendar-templates.php' => '2.5.4',
+			'the-events-calendar-templates-and-shortcode/the-events-calendar-templates-and-shortcode.php' => '4.0.1',
+        ];
+
+        $show_header = true;
+
+        // Loop through all plugins
+        foreach ($required_plugins as $plugin_path => $min_version) {
+
+            // Plugin active hai?
+            if (is_plugin_active($plugin_path)) {
+
+                // Plugin data get karo
+                $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $plugin_path);
+                $current_version = $plugin_data['Version'];
+
+                // Version check
+                if (version_compare($current_version, $min_version, '<=')) {
+                    $show_header = false;
+                    break;
+                }
+            }
+        }
+        return $show_header;
+    }
+    public function ectbe_enqueue_scripts()
+    {
+       $screen = get_current_screen();
+        $screen_id = $screen ? $screen->id : '';
+        $parent_file = ['events-addons_page_tribe-events-shortcode-template-settings',
+                    'events-addons_page_tribe_events-events-template-settings',
+                    'toplevel_page_cool-plugins-events-addon',
+                    'events-addons_page_cool-events-registration',
+                    'events-addons_page_countdown_for_the_events_calendar',
+                    'edit-epta',
+                    'edit-esas_speaker',
+                    'edit-esas_sponsor',
+                    'events-addons_page_esas-speaker-sponsor-settings',
+                    'edit-ewpe'];
+        if (self::ectbe_display_header() && in_array($screen_id, $parent_file)){
+            // Common admin notice filter script (runs only on our target pages)
+            wp_enqueue_script(
+                'ectbe-admin-notice-filter',
+                ECTBE_URL . 'assets/js/ectbe-admin-notice-filter.js',
+                array( 'jquery' ),
+                ECTBE_VERSION,
+                true
+            );
+
+            wp_localize_script(
+                'ectbe-admin-notice-filter',
+                'ectbe_notice_filter',
+                array(
+                    'nonce'             => wp_create_nonce( 'ectbe_notice_filter' ),
+                    'allowedBodyClasses' => array(
+                        'events-addons_page_tribe-events-shortcode-template-settings',
+                        'events-addons_page_tribe_events-events-template-settings',
+                        'toplevel_page_cool-plugins-events-addon',
+                        'events-addons_page_cool-events-registration',
+                        'events-addons_page_countdown_for_the_events_calendar',
+                        'post-type-epta',
+                        'post-type-esas_speaker',
+                        'post-type-esas_sponsor',
+                        'events-addons_page_esas-speaker-sponsor-settings',
+                        'post-type-ewpe',
+                    ),
+                )
+            );
+        }
+    }
     /**
      * Code you want to run when all other plugins loaded.
      */
@@ -161,8 +245,8 @@ final class Events_Calendar_Addon
                 return;
             }
             $notice = [
-                'title' => __('Events Addons By Cool Plugins', 'ectbe'),
-                'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'ectbe'),
+                'title' => __('Events Addons By Cool Plugins', 'events-widgets-for-elementor-and-the-events-calendar'),
+                'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'events-widgets-for-elementor-and-the-events-calendar'),
                 'pages' => ['cool-plugins-events-addon'],
                 'always_show_on' => ['cool-plugins-events-addon'], // This enables auto-show
                 'plugin_name'=>'ectbe',
@@ -172,9 +256,11 @@ final class Events_Calendar_Addon
             \CPFM_Feedback_Notice::cpfm_register_notice('cool_events', $notice);
 
                 if (!isset($GLOBALS['cool_plugins_feedback'])) {
+                    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
                     $GLOBALS['cool_plugins_feedback'] = [];
                 }
             
+                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
                 $GLOBALS['cool_plugins_feedback']['cool_events'][] = $notice;
        
         });
@@ -193,7 +279,7 @@ final class Events_Calendar_Addon
             ectbe_create_admin_notice(
                 array(
                     'id' => 'ectbe-major-update-notice',
-                    'message' => '<strong>' . esc_html__('Major Update Notice!', 'ectbe') . '</strong> ' . esc_html__('Please update your events widget settings if you face any style issue after an update of', 'ectbe') . ' <strong>' . esc_html__('Events Widgets For Elementor And The Events Calendar', 'ectbe') . '</strong>.',
+                    'message' => '<strong>' . esc_html__('Major Update Notice!', 'events-widgets-for-elementor-and-the-events-calendar') . '</strong> ' . esc_html__('Please update your events widget settings if you face any style issue after an update of', 'events-widgets-for-elementor-and-the-events-calendar') . ' <strong>' . esc_html__('Events Widgets For Elementor And The Events Calendar', 'events-widgets-for-elementor-and-the-events-calendar') . '</strong>.',
                     'review_interval' => 0,
                 )
             );
@@ -205,8 +291,8 @@ final class Events_Calendar_Addon
                 'id' => 'ectbe-review-box', // required and must be unique
                 'slug' => 'ectbe', // required in case of review box
                 'review' => true, // required and set to be true for review box
-                'review_url' => esc_url('https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/?filter=5#new-post'), // required
-                'plugin_name' => esc_html__('Events Widgets For Elementor And The Events Calendar', 'ectbe'), // required
+                'review_url' => esc_url('https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews'), // required
+                'plugin_name' => esc_html__('Events Widgets For Elementor And The Events Calendar', 'events-widgets-for-elementor-and-the-events-calendar'), // required
                 'review_interval' => 3, // optional: this will display review notice
                 // after 5 days from the installation_time
                 // default is 3
@@ -242,6 +328,7 @@ final class Events_Calendar_Addon
         }
     }
 }
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function Events_Calendar_Addon()
 {
     return Events_Calendar_Addon::get_instance();

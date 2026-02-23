@@ -1,0 +1,732 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Events Widgets For Elementor And The Events Calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-21 04:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.1; wp-6.9.1; php-8.1.29\n"
+"X-Domain: events-widgets-for-elementor-and-the-events-calendar"
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:205
+msgid " More info"
+msgstr ""
+
+#. %d: number of active addons
+#: admin/events-addon-page/includes/dashboard-page.php:45
+msgid "%d Active Addon"
+msgid_plural "%d Active Addons"
+msgstr[0] ""
+msgstr[1] ""
+
+#: widgets/ectbe-widget.php:310
+msgid "01 January 2019 - 03 January 2019"
+msgstr ""
+
+#: widgets/ectbe-widget.php:168
+msgid ""
+"<a class=\"like_it_btn button button-primary\" target=\"_blank\"\n"
+"\t\t\t\thref=\"https://eventscalendaraddons.com/plugin/events-widgets-pro/?"
+"utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=layout_settings\""
+">\n"
+"\t\t\t\tGet Pro ⇗</a> for more advance layouts "
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"<a href=\"http://wordpress.org/plugins/the-events-calendar/\">📅 The Events "
+"Calendar Addon</a> - Events Widget to show The Events Calendar plugin events "
+"list easily inside Elementor page builder pages."
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:696
+msgid "Activate Now"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:747
+msgid "Activated"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:673
+msgid "Active"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:38
+msgid "Aim to resolve issues in 24 hrs."
+msgstr ""
+
+#: widgets/ectbe-widget.php:95
+msgid "All (Upcoming + Past)"
+msgstr ""
+
+#: includes/functions.php:282 includes/functions.php:284
+msgid "All day"
+msgstr ""
+
+#: widgets/ectbe-widget.php:126
+msgid "All Events"
+msgstr ""
+
+#: admin/feedback-notice/class-admin-notice.php:187
+msgid "Already Reviewed"
+msgstr ""
+
+#: widgets/ectbe-widget.php:342
+msgid "ASC"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-page.php:77
+msgid "Available Addons"
+msgstr ""
+
+#: widgets/ectbe-widget.php:282
+msgid "Background Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:285
+msgid "Background Color of Multidays Event"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:707
+msgid "Buy Pro"
+msgstr ""
+
+#: widgets/ectbe-widget.php:166
+msgid "Calendar"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-header.php:55
+msgid "Check Docs"
+msgstr ""
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:213
+msgid "Click here"
+msgstr ""
+
+#: widgets/ectbe-widget.php:468 widgets/ectbe-widget.php:521
+#: widgets/ectbe-widget.php:543 widgets/ectbe-widget.php:573
+#: widgets/ectbe-widget.php:603 widgets/ectbe-widget.php:639
+#: widgets/ectbe-widget.php:672
+msgid "Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:448
+msgid "Color & Typography Settings"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:41
+msgid "Contact Support"
+msgstr ""
+
+#. Author of the plugin
+msgid "Cool Plugins"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-page.php:43
+msgid "Currently Activated Addons"
+msgstr ""
+
+#: widgets/ectbe-widget.php:321
+msgid "d.F (01. January)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:320
+msgid "d.FY (01. January 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:324
+msgid "d.Ml (01. Jan Monday)"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:261
+#: admin/events-addon-page/events-addon-page.php:262
+msgid "Dashboard"
+msgstr ""
+
+#: widgets/ectbe-widget.php:305
+msgid "Date Format"
+msgstr ""
+
+#: widgets/ectbe-widget.php:236
+msgid "Day"
+msgstr ""
+
+#: widgets/ectbe-widget.php:309
+msgid "Default (01 January 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:232
+msgid "Default View"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:578
+msgid "Demo"
+msgstr ""
+
+#: widgets/ectbe-widget.php:343
+msgid "DESC"
+msgstr ""
+
+#: widgets/ectbe-widget.php:315
+msgid "dF (01 January)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:325
+msgid "dFT (01 January 8:00am-5:00pm)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:408
+msgid "Disable Schema Markup"
+msgstr ""
+
+#: widgets/ectbe-widget.php:389
+msgid "Display Categoery"
+msgstr ""
+
+#: widgets/ectbe-widget.php:371
+msgid "Display Description"
+msgstr ""
+
+#: widgets/ectbe-widget.php:313
+msgid "dM (01 Jan)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:314
+msgid "dMl (01 Jan Monday)"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:582
+msgid "Docs"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:580
+msgid "Documentation"
+msgstr ""
+
+#: widgets/ectbe-widget.php:147
+msgid "End Date"
+msgstr ""
+
+#: widgets/ectbe-widget.php:153
+msgid "End Date of Date Range"
+msgstr ""
+
+#: widgets/ectbe-widget.php:509
+msgid "Event Background "
+msgstr ""
+
+#: widgets/ectbe-widget.php:105
+msgid "Event Category"
+msgstr ""
+
+#: widgets/ectbe-widget.php:535
+msgid "Event Date"
+msgstr ""
+
+#: widgets/ectbe-widget.php:592
+msgid "Event Description"
+msgstr ""
+
+#: widgets/ectbe-widget.php:565
+msgid "Event Title "
+msgstr ""
+
+#: widgets/ectbe-widget.php:628
+msgid "Event Venue"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:251
+#: admin/events-addon-page/events-addon-page.php:252
+msgid "Events Addons"
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:247
+msgid "Events Addons By Cool Plugins"
+msgstr ""
+
+#: includes/class-ectbe.php:13
+msgid "Events Calendar Addon For Elementor"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-header.php:48
+msgid "Events Calendar Addons"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:66
+msgid "EVENTS CALENDAR PRO"
+msgstr ""
+
+#: widgets/ectbe-widget.php:127
+msgid "Events in between Date Range"
+msgstr ""
+
+#: widgets/ectbe-widget.php:338
+msgid "Events Order"
+msgstr ""
+
+#: widgets/ectbe-widget.php:121
+msgid "Events Time"
+msgstr ""
+
+#: widgets/ectbe-widget.php:70
+msgid "Events Widgets"
+msgstr ""
+
+#. Name of the plugin
+#: events-widgets-for-elementor-and-the-events-calendar.php:281
+#: events-widgets-for-elementor-and-the-events-calendar.php:294
+msgid "Events Widgets For Elementor And The Events Calendar"
+msgstr ""
+
+#: widgets/ectbe-widget.php:82
+msgid "Events Widgets Settings"
+msgstr ""
+
+#: widgets/ectbe-widget.php:312
+msgid "Fd,Y (January 01, 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:481
+msgid "Featured Event"
+msgstr ""
+
+#: widgets/ectbe-widget.php:664
+msgid "Find Out More"
+msgstr ""
+
+#: widgets/ectbe-widget.php:816
+msgid "Find out more"
+msgstr ""
+
+#: widgets/ectbe-widget.php:249
+msgid "First Day of Week"
+msgstr ""
+
+#: widgets/ectbe-widget.php:499
+msgid "Font Color"
+msgstr ""
+
+#: widgets/ectbe-widget.php:693
+msgid "For Advanced Styles - Get Pro ⇗"
+msgstr ""
+
+#: widgets/ectbe-widget.php:257
+msgid "Friday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:318
+msgid "Full (01 January 2019 8:00am-5:00pm)"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:70
+msgid "Get Events Calendar Pro"
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:126
+msgid "Get Pro"
+msgstr ""
+
+#: widgets/ectbe-widget.php:426
+msgid "Get Pro ⇗"
+msgstr ""
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:179
+msgid "Help Improve Plugins"
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:248
+msgid ""
+"Help us make this plugin more compatible with your site by sharing non-"
+"sensitive site data."
+msgstr ""
+
+#: widgets/ectbe-widget.php:269
+msgid "Hide Read More Link"
+msgstr ""
+
+#: widgets/ectbe-widget.php:273
+msgid "Hide Read More link in event popup"
+msgstr ""
+
+#: widgets/ectbe-widget.php:353
+msgid "Hide Venue"
+msgstr ""
+
+#. Author URI of the plugin
+msgid ""
+"https://coolplugins.net/?"
+"utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list"
+msgstr ""
+
+#. URI of the plugin
+msgid ""
+"https://eventscalendaraddons.com/plugin/events-widgets-pro/?"
+"utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:108
+msgid ""
+"I agree to share anonymous usage data and basic site details (such as server,"
+" PHP, and WordPress versions) to support Events Widgets For Elementor And "
+"The Events Calendar improvement efforts. Additionally, I allow Cool Plugins "
+"to store all information provided through this form and to respond to my "
+"inquiry."
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:199
+msgid "I found a better plugin"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:55
+msgid "I found a better plugin."
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:87
+msgid ""
+"If you have a moment, please share the reason for deactivating this plugin."
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:696
+msgid "Install Now"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:63
+#: admin/feedback/admin-feedback-form.php:207
+msgid "It's a temporary deactivation."
+msgstr ""
+
+#: widgets/ectbe-widget.php:319
+msgid "jMl (01 Jan Monday)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:159
+msgid "Layout"
+msgstr ""
+
+#: widgets/ectbe-widget.php:322
+msgid "ldF (Monday 01 January)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:164 widgets/ectbe-widget.php:238
+msgid "List"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:49
+msgid "LOVING OUR PLUGINS?"
+msgstr ""
+
+#: widgets/ectbe-widget.php:458
+msgid "Main Skin"
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:281
+msgid "Major Update Notice!"
+msgstr ""
+
+#: widgets/ectbe-widget.php:201
+msgid "Maximum number of events to display"
+msgstr ""
+
+#: widgets/ectbe-widget.php:316
+msgid "Md (Jan 01)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:311
+msgid "Md,Y (Jan 01, 2019)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:317
+msgid "Md,YT (Jan 01, 2019 8:00am-5:00pm)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:323
+msgid "Mdl (Jan 01 Monday)"
+msgstr ""
+
+#: widgets/ectbe-widget.php:165
+msgid "Minimal List"
+msgstr ""
+
+#: widgets/ectbe-widget.php:253
+msgid "Monday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:235
+msgid "Month"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:37
+msgid "Mon–Fri, 9:30 AM–6:30 PM IST."
+msgstr ""
+
+#: widgets/ectbe-widget.php:357 widgets/ectbe-widget.php:376
+#: widgets/ectbe-widget.php:394
+msgid "NO"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:73
+msgid "No plugin specified."
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:476
+msgid "No plugins data available at the moment."
+msgstr ""
+
+#: includes/functions.php:100
+msgid "No Title"
+msgstr ""
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:220
+msgid "No, Thanks"
+msgstr ""
+
+#: admin/feedback-notice/class-admin-notice.php:188
+msgid "Not Interested"
+msgstr ""
+
+#: widgets/ectbe-widget.php:197
+msgid "Number of Events"
+msgstr ""
+
+#: admin/cpfm-feedback/cron/class-cron.php:91
+msgid "Once every 30 days"
+msgstr ""
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:209
+msgid ""
+"Opt in to receive email updates about security improvements, new features, "
+"helpful tutorials, and occasional special offers. We'll collect:"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:211
+msgid "Other"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:67
+msgid "Other reason."
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:68
+msgid ""
+"Our addons works perfectly with both The Events Calendar free and official "
+"pro version."
+msgstr ""
+
+#: widgets/ectbe-widget.php:94
+msgid "Past Events"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:124
+msgid "Permission denied"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:68
+#: admin/feedback/admin-feedback-form.php:212
+msgid "Please share the reason."
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:56
+#: admin/feedback/admin-feedback-form.php:200
+msgid "Please share which plugin."
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:281
+msgid ""
+"Please update your events widget settings if you face any style issue after "
+"an update of"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:138
+msgid "Plugin activated successfully"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-page.php:61
+msgid "Premium Addons"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:33
+msgid "PREMIUM SUPPORT"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:36
+msgid "Priority fast support."
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:657
+msgid "Pro"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:78
+msgid "Quick Feedback"
+msgstr ""
+
+#: admin/feedback-notice/class-admin-notice.php:186
+msgid "Rate Now! ★★★★★"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:57
+msgid "Rate us on WP.org"
+msgstr ""
+
+#: widgets/layouts/ectbe-calendar.php:41
+msgid "Read More"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-sidebar.php:55
+msgid "Review us on WP.org and share your feedback with the community."
+msgstr ""
+
+#: widgets/ectbe-widget.php:258
+msgid "Saturday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:179
+msgid "Select Style"
+msgstr ""
+
+#: widgets/ectbe-widget.php:489
+msgid "Skin Color"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:65
+msgid "Sorry, you are not allowed to install plugins on this site."
+msgstr ""
+
+#: widgets/ectbe-widget.php:135
+msgid "Start Date"
+msgstr ""
+
+#: widgets/ectbe-widget.php:141
+msgid "Start date of date range"
+msgstr ""
+
+#: widgets/ectbe-widget.php:182
+msgid "Style 1"
+msgstr ""
+
+#: widgets/ectbe-widget.php:183
+msgid "Style 2"
+msgstr ""
+
+#: widgets/ectbe-widget.php:252
+msgid "Sunday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:294
+msgid "Text Color"
+msgstr ""
+
+#. 1. Plugin name.
+#: admin/feedback-notice/class-admin-notice.php:195
+#, php-format
+msgid ""
+"Thanks for using <b>%s</b> - WordPress plugin. We hope you liked it!<br/>"
+"Please give us a quick rating, it works as a boost for us to keep working on "
+"more <a href=\"https://coolplugins.net/?"
+"utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=review_notice\""
+" target=\"_blank\"><strong>Cool Plugins</strong></a>!<br/>"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:195
+msgid "The plugin didn't work as expected"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:51
+msgid "The plugin didn't work as expected."
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:203
+msgid "The plugin is not working"
+msgstr ""
+
+#: admin/feedback/admin-feedback-form.php:59
+msgid "The plugin is not working."
+msgstr ""
+
+#: widgets/ectbe-widget.php:834
+msgid "There is no Event"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:99
+msgid "This plugin cannot be installed from here."
+msgstr ""
+
+#: widgets/ectbe-widget.php:256
+msgid "Thursday"
+msgstr ""
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:212
+msgid ""
+"To check plugin compatibility, we will collect the following: list of active "
+"plugins and themes, server type, MySQL version, WordPress version, memory "
+"limit, site language and database prefix. "
+msgstr ""
+
+#: widgets/ectbe-widget.php:254
+msgid "Tuesday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:89
+msgid "Type of Events"
+msgstr ""
+
+#: widgets/ectbe-widget.php:554 widgets/ectbe-widget.php:584
+#: widgets/ectbe-widget.php:617 widgets/ectbe-widget.php:653
+#: widgets/ectbe-widget.php:683
+msgid "Typography"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:212
+msgid "Unable to connect to the filesystem. Please confirm your credentials."
+msgstr ""
+
+#: widgets/ectbe-widget.php:93
+msgid "Upcoming Events"
+msgstr ""
+
+#: admin/events-addon-page/events-addon-page.php:652
+#: admin/events-addon-page/events-addon-page.php:653
+msgid "Update available"
+msgstr ""
+
+#: events-widgets-for-elementor-and-the-events-calendar.php:114
+msgid "Video Tutorials"
+msgstr ""
+
+#: widgets/ectbe-widget.php:424
+#: admin/events-addon-page/events-addon-page.php:576
+msgid "View Demo"
+msgstr ""
+
+#: admin/events-addon-page/includes/dashboard-header.php:52
+msgid "View Demos"
+msgstr ""
+
+#: widgets/ectbe-widget.php:255
+msgid "Wednesday"
+msgstr ""
+
+#: widgets/ectbe-widget.php:237
+msgid "Week"
+msgstr ""
+
+#: widgets/ectbe-widget.php:358 widgets/ectbe-widget.php:375
+#: widgets/ectbe-widget.php:393
+msgid "Yes"
+msgstr ""
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:219
+msgid "Yes, I Agree"
+msgstr ""
+
+#: admin/cpfm-feedback/cpfm-feedback-notice.php:211
+msgid "Your website home URL and WordPress admin email."
+msgstr ""

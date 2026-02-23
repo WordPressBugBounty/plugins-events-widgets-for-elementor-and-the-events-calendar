@@ -88,7 +88,7 @@ if (!class_exists('ECTBE_cronjob')) {
 
                 $schedules['every_30_days'] = array(
                     'interval' => 30 * 24 * 60 * 60, // 2,592,000 seconds
-                    'display'  => __('Once every 30 days'),
+                    'display'  => __('Once every 30 days', 'events-widgets-for-elementor-and-the-events-calendar'),
                 );
             }
 
@@ -97,5 +97,5 @@ if (!class_exists('ECTBE_cronjob')) {
 
     }
 
-    $cron_init = new ECTBE_cronjob();
+    $ectbe_cron_init = new ECTBE_cronjob();
 }

@@ -2,7 +2,7 @@
 .ectbe-elementor-addon-notice_admin_notice {
     padding: 5px;
     display: table;
-    width: calc(100% - 10px);
+    /* width: calc(100% - 10px); */
     max-width: 870px;
     clear: both;
     border-radius: 5px;

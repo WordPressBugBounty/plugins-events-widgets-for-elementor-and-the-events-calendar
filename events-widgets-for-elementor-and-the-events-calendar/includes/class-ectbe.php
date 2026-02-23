@@ -10,7 +10,7 @@ add_action(
 		\Elementor\Plugin::$instance->elements_manager->add_category(
 			'ectbe',                 // the name of the category
 			array(
-				'title' => esc_html__( 'Events Calendar Addon For Elementor', 'ectbe' ),
+				'title' => esc_html__( 'Events Calendar Addon For Elementor', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'icon'  => 'fa fa-header', // default icon
 			),
 			1 // position
@@ -63,7 +63,8 @@ class ECTBE_WidgetClass {
 		wp_enqueue_style(
 			'ectbe_editor_styles',
 			$style_url,
-			array()
+			array(),
+			ECTBE_VERSION
 		);
 	}
 

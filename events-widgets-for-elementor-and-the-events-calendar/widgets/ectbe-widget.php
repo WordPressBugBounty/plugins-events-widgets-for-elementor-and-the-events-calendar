@@ -1,4 +1,7 @@
 <?php
+if( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 use Elementor\Widget_Base;
 use Elementor\Utils;
 use Elementor\Repeater;
@@ -10,10 +13,10 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 	public function __construct( $data = array(), $args = null ) {
 		parent::__construct( $data, $args );
 			add_action( 'elementor/editor/after_save', array( $this, 'ectbe_update_migration_status' ), 10, 2 );
-			wp_register_style( 'ectbe-calendar-main-css', ECTBE_URL . 'assets/lib/css/calendar-main.min.css', null, null, 'all' );
-			wp_register_style( 'ectbe-custom-css', ECTBE_URL . 'assets/css/custom-styles.min.css', null, null, 'all' );
-			wp_register_style( 'ectbe-list-css', ECTBE_URL . 'assets/css/ectbe-list.min.css', null, null, 'all' );
-			wp_register_style( 'ectbe-common-styles', ECTBE_URL . 'assets/css/ectbe-common-styles.min.css', null, null, 'all' );
+			wp_register_style( 'ectbe-calendar-main-css', ECTBE_URL . 'assets/lib/css/calendar-main.min.css', null, ECTBE_VERSION, 'all' );
+			wp_register_style( 'ectbe-custom-css', ECTBE_URL . 'assets/css/custom-styles.min.css', null, ECTBE_VERSION, 'all' );
+			wp_register_style( 'ectbe-list-css', ECTBE_URL . 'assets/css/ectbe-list.min.css', null, ECTBE_VERSION, 'all' );
+			wp_register_style( 'ectbe-common-styles', ECTBE_URL . 'assets/css/ectbe-common-styles.min.css', null, ECTBE_VERSION, 'all' );
 			add_action( 'elementor/frontend/after_enqueue_scripts', array( $this, 'ectbe_enqueue_all_calendar_scripts' ) );
 	}
 	/**
@@ -39,22 +42,21 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 	 * @since 1.0.0
 	 */
 	public function ectbe_enqueue_all_calendar_scripts(){
-		wp_register_script( 'ectbe-calendar-main', ECTBE_URL . 'assets/lib/js/calendar-main.min.js', array( 'elementor-frontend' ), null, true );
-		wp_register_script( 'ectbe-calendar-locales', ECTBE_URL . 'assets/lib/js/calendar-locales-all.min.js', array( 'elementor-frontend' ), null, true );
-		wp_register_script( 'ectbe-moment-js', ECTBE_URL . 'assets/lib/js/moment.min.js', array( 'elementor-frontend' ), null, true );
-		wp_register_script( 'ectbe-calendar-js', ECTBE_URL . 'assets/js/calendar.js', array( 'elementor-frontend', 'wp-api-request' ), null, true );
+		wp_register_script( 'ectbe-calendar-main', ECTBE_URL . 'assets/lib/js/calendar-main.min.js', array( 'elementor-frontend' ), ECTBE_VERSION, true );
+		wp_register_script( 'ectbe-calendar-locales', ECTBE_URL . 'assets/lib/js/calendar-locales-all.min.js', array( 'elementor-frontend' ), ECTBE_VERSION, true );
+		wp_register_script( 'ectbe-calendar-js', ECTBE_URL . 'assets/js/calendar.js', array( 'elementor-frontend', 'wp-api-request', 'moment' ), ECTBE_VERSION, true );
 		wp_localize_script( 'ectbe-calendar-js', 'ectbe_callback_ajax', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
 	public function get_script_depends() {
 		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() || \Elementor\Plugin::$instance->preview->is_preview_mode() ) {
-			return array( 'ectbe-calendar-main', 'ectbe-calendar-locales', 'ectbe-moment-js', 'ectbe-calendar-js' );
+			return array( 'ectbe-calendar-main', 'ectbe-calendar-locales', 'ectbe-calendar-js' );
 		}
 		$settings = $this->get_settings_for_display();
 		$layout   = $settings['ectbe_layout'];
 		$scripts  = array();
 		if ( $layout == 'calendar' ) {
-			array_push( $scripts, 'ectbe-calendar-main', 'ectbe-calendar-locales', 'ectbe-moment-js', 'ectbe-calendar-js' );
+			array_push( $scripts, 'ectbe-calendar-main', 'ectbe-calendar-locales', 'ectbe-calendar-js' );
 		}
 		return $scripts;
 	}
@@ -65,7 +67,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		return 'the-events-calendar-addon';
 	}
 	public function get_title() {
-		return __( 'Events Widgets', 'ectbe' );
+		return __( 'Events Widgets', 'events-widgets-for-elementor-and-the-events-calendar' );
 	}
 	public function get_icon() {
 		return 'ectbe-eicons-logo';
@@ -77,20 +79,20 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'ectbe_the_events_calendar_addon',
 			array(
-				'label' => __( 'Events Widgets Settings', 'ectbe' ),
+				'label' => __( 'Events Widgets Settings', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'tab'   => Controls_Manager::TAB_CONTENT,
 			)
 		);
 		$this->add_control(
 			'ectbe_type',
 			array(
-				'label'     => __( 'Type of Events', 'ectbe' ),
+				'label'     => __( 'Type of Events', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'future',
 				'options'   => array(
-					'future' => __( 'Upcoming Events', 'ectbe' ),
-					'past'   => __( 'Past Events', 'ectbe' ),
-					'all'    => __( 'All (Upcoming + Past)', 'ectbe' ),
+					'future' => __( 'Upcoming Events', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'past'   => __( 'Past Events', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'all'    => __( 'All (Upcoming + Past)', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'condition' => array(
 					'ectbe_layout!' => 'calendar',
@@ -100,7 +102,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_ev_category',
 			array(
-				'label'       => __( 'Event Category', 'ectbe' ),
+				'label'       => __( 'Event Category', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'        => Controls_Manager::SELECT2,
 				'multiple'    => true,
 				'label_block' => true,
@@ -116,13 +118,13 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_event_source',
 			array(
-				'label'       => __( 'Events Time', 'ectbe' ),
+				'label'       => __( 'Events Time', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'        => Controls_Manager::SELECT,
 				'label_block' => true,
 				'default'     => 'all',
 				'options'     => array(
-					'all'        => __( 'All Events', 'ectbe' ),
-					'date_range' => __( 'Events in between Date Range', 'ectbe' ),
+					'all'        => __( 'All Events', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'date_range' => __( 'Events in between Date Range', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				// 'render_type' => 'none',
 			)
@@ -130,55 +132,55 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_date_range_start',
 			array(
-				'label'       => __( 'Start Date', 'ectbe' ),
+				'label'       => __( 'Start Date', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'        => Controls_Manager::DATE_TIME,
 				'default'     => gmdate( 'Y-m-d H:i', current_time( 'timestamp', 0 ) ),
 				'condition'   => array(
 					'ectbe_event_source' => 'date_range',
 				),
-				'description' => __( 'Start date of date range', 'ectbe' ),
+				'description' => __( 'Start date of date range', 'events-widgets-for-elementor-and-the-events-calendar' ),
 			)
 		);
 		$this->add_control(
 			'ectbe_date_range_end',
 			array(
-				'label'       => __( 'End Date', 'ectbe' ),
+				'label'       => __( 'End Date', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'        => Controls_Manager::DATE_TIME,
 				'default'     => gmdate( 'Y-m-d H:i', strtotime( '+6 months', current_time( 'timestamp', 0 ) ) ),
 				'condition'   => array(
 					'ectbe_event_source' => 'date_range',
 				),
-				'description' => __( 'End Date of Date Range', 'ectbe' ),
+				'description' => __( 'End Date of Date Range', 'events-widgets-for-elementor-and-the-events-calendar' ),
 			)
 		);
 		$this->add_control(
 			'ectbe_layout',
 			array(
-				'label'       => __( 'Layout', 'ectbe' ),
+				'label'       => __( 'Layout', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'        => Controls_Manager::SELECT,
 				'label_block' => true,
 				'default'     => 'list',
 				'options'     => array(
-					'list'         => __( 'List', 'ectbe' ),
-					'minimal-list' => __( 'Minimal List', 'ectbe' ),
-					'calendar'     => __( 'Calendar', 'ectbe' ),
+					'list'         => __( 'List', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'minimal-list' => __( 'Minimal List', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'calendar'     => __( 'Calendar', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'description' => __(
 					'<a class="like_it_btn button button-primary" target="_blank"
 				href="https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=layout_settings">
 				Get Pro ⇗</a> for more advance layouts ',
-					'ectbe'
+					'events-widgets-for-elementor-and-the-events-calendar'
 				),
 			)
 		);
 		$this->add_control(
 			'ectbe_styles',
 			array(
-				'label'     => __( 'Select Style', 'ectbe' ),
+				'label'     => __( 'Select Style', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => array(
-					'style-1' => __( 'Style 1', 'ectbe' ),
-					'style-2' => __( 'Style 2', 'ectbe' ),
+					'style-1' => __( 'Style 1', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'style-2' => __( 'Style 2', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'default'   => 'style-1',
 				'condition' => array(
@@ -192,11 +194,11 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_max_events',
 			array(
-				'label'       => __( 'Number of Events', 'ectbe' ),
+				'label'       => __( 'Number of Events', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'        => Controls_Manager::NUMBER,
 				'min'         => 1,
 				'default'     => 25,
-				'description' => __( 'Maximum number of events to display', 'ectbe' ),
+				'description' => __( 'Maximum number of events to display', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'conditions'  => array(
 					'relation' => 'or',
 					'terms'    => array(
@@ -227,13 +229,13 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_calendar_default_view',
 			array(
-				'label'     => __( 'Default View', 'ectbe' ),
+				'label'     => __( 'Default View', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => array(
-					'dayGridMonth' => __( 'Month', 'ectbe' ),
-					'timeGridDay'  => __( 'Day', 'ectbe' ),
-					'timeGridWeek' => __( 'Week', 'ectbe' ),
-					'listMonth'    => __( 'List', 'ectbe' ),
+					'dayGridMonth' => __( 'Month', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'timeGridDay'  => __( 'Day', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'timeGridWeek' => __( 'Week', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'listMonth'    => __( 'List', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'default'   => 'dayGridMonth',
 				'condition' => array(
@@ -244,16 +246,16 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_calendar_first_day',
 			array(
-				'label'     => __( 'First Day of Week', 'ectbe' ),
+				'label'     => __( 'First Day of Week', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'options'   => array(
-					'0' => __( 'Sunday', 'ectbe' ),
-					'1' => __( 'Monday', 'ectbe' ),
-					'2' => __( 'Tuesday', 'ectbe' ),
-					'3' => __( 'Wednesday', 'ectbe' ),
-					'4' => __( 'Thursday', 'ectbe' ),
-					'5' => __( 'Friday', 'ectbe' ),
-					'6' => __( 'Saturday', 'ectbe' ),
+					'0' => __( 'Sunday', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'1' => __( 'Monday', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'2' => __( 'Tuesday', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'3' => __( 'Wednesday', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'4' => __( 'Thursday', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'5' => __( 'Friday', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'6' => __( 'Saturday', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'default'   => '0',
 				'condition' => array(
@@ -264,11 +266,11 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_hide_read_more_link',
 			array(
-				'label'        => __( 'Hide Read More Link', 'ectbe' ),
+				'label'        => __( 'Hide Read More Link', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'         => Controls_Manager::SWITCHER,
 				'label_block'  => false,
 				'return_value' => 'yes',
-				'description'  => __( 'Hide Read More link in event popup', 'ectbe' ),
+				'description'  => __( 'Hide Read More link in event popup', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'condition'    => array(
 					'ectbe_layout' => 'calendar',
 				),
@@ -277,10 +279,10 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_calendar_bg_color',
 			array(
-				'label'       => __( 'Background Color', 'ectbe' ),
+				'label'       => __( 'Background Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'        => Controls_Manager::COLOR,
 				'default'     => '#5725ff',
-				'description' => __( 'Background Color of Multidays Event', 'ectbe' ),
+				'description' => __( 'Background Color of Multidays Event', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'condition'   => array(
 					'ectbe_layout' => 'calendar',
 				),
@@ -289,7 +291,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_calendar_text_color',
 			array(
-				'label'     => __( 'Text Color', 'ectbe' ),
+				'label'     => __( 'Text Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'default'   => '#ffffff',
 				'condition' => array(
@@ -300,27 +302,27 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_date_formats',
 			array(
-				'label'     => __( 'Date Format', 'ectbe' ),
+				'label'     => __( 'Date Format', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'default',
 				'options'   => array(
-					'default'   => __( 'Default (01 January 2019)', 'ectbe' ),
-					'start_end' => __( '01 January 2019 - 03 January 2019', 'ectbe' ),
-					'MD,Y'      => __( 'Md,Y (Jan 01, 2019)', 'ectbe' ),
-					'FD,Y'      => __( 'Fd,Y (January 01, 2019)', 'ectbe' ),
-					'DM'        => __( 'dM (01 Jan)', 'ectbe' ),
-					'DML'       => __( 'dMl (01 Jan Monday)', 'ectbe' ),
-					'DF'        => __( 'dF (01 January)', 'ectbe' ),
-					'MD'        => __( 'Md (Jan 01)', 'ectbe' ),
-					'MD,YT'     => __( 'Md,YT (Jan 01, 2019 8:00am-5:00pm)', 'ectbe' ),
-					'full'      => __( 'Full (01 January 2019 8:00am-5:00pm)', 'ectbe' ),
-					'jMl'       => __( 'jMl (01 Jan Monday)', 'ectbe' ),
-					'd.FY'      => __( 'd.FY (01. January 2019)', 'ectbe' ),
-					'd.F'       => __( 'd.F (01. January)', 'ectbe' ),
-					'ldF'       => __( 'ldF (Monday 01 January)', 'ectbe' ),
-					'Mdl'       => __( 'Mdl (Jan 01 Monday)', 'ectbe' ),
-					'd.Ml'      => __( 'd.Ml (01. Jan Monday)', 'ectbe' ),
-					'dFT'       => __( 'dFT (01 January 8:00am-5:00pm)', 'ectbe' ),
+					'default'   => __( 'Default (01 January 2019)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'start_end' => __( '01 January 2019 - 03 January 2019', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'MD,Y'      => __( 'Md,Y (Jan 01, 2019)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'FD,Y'      => __( 'Fd,Y (January 01, 2019)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'DM'        => __( 'dM (01 Jan)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'DML'       => __( 'dMl (01 Jan Monday)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'DF'        => __( 'dF (01 January)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'MD'        => __( 'Md (Jan 01)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'MD,YT'     => __( 'Md,YT (Jan 01, 2019 8:00am-5:00pm)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'full'      => __( 'Full (01 January 2019 8:00am-5:00pm)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'jMl'       => __( 'jMl (01 Jan Monday)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'd.FY'      => __( 'd.FY (01. January 2019)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'd.F'       => __( 'd.F (01. January)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'ldF'       => __( 'ldF (Monday 01 January)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'Mdl'       => __( 'Mdl (Jan 01 Monday)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'd.Ml'      => __( 'd.Ml (01. Jan Monday)', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'dFT'       => __( 'dFT (01 January 8:00am-5:00pm)', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'condition' => array(
 					'ectbe_layout!' => array(
@@ -333,12 +335,12 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_order',
 			array(
-				'label'     => __( 'Events Order', 'ectbe' ),
+				'label'     => __( 'Events Order', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'ASC',
 				'options'   => array(
-					'ASC'  => __( 'ASC', 'ectbe' ),
-					'DESC' => __( 'DESC', 'ectbe' ),
+					'ASC'  => __( 'ASC', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'DESC' => __( 'DESC', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'condition' => array(
 					'ectbe_layout!' => 'calendar',
@@ -348,12 +350,12 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_venue',
 			array(
-				'label'     => __( 'Hide Venue', 'ectbe' ),
+				'label'     => __( 'Hide Venue', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'no',
 				'options'   => array(
-					'no'  => __( 'NO', 'ectbe' ),
-					'yes' => __( 'Yes', 'ectbe' ),
+					'no'  => __( 'NO', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'yes' => __( 'Yes', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'condition' => array(
 					'ectbe_layout!' => array(
@@ -366,12 +368,12 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_display_desc',
 			array(
-				'label'     => __( 'Display Description', 'ectbe' ),
+				'label'     => __( 'Display Description', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'yes',
 				'options'   => array(
-					'yes' => __( 'Yes', 'ectbe' ),
-					'no'  => __( 'NO', 'ectbe' ),
+					'yes' => __( 'Yes', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'no'  => __( 'NO', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'condition' => array(
 					'ectbe_layout!' => array(
@@ -384,12 +386,12 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_display_cate',
 			array(
-				'label'     => __( 'Display Categoery', 'ectbe' ),
+				'label'     => __( 'Display Categoery', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::SELECT,
 				'default'   => 'yes',
 				'options'   => array(
-					'yes' => __( 'Yes', 'ectbe' ),
-					'no'  => __( 'NO', 'ectbe' ),
+					'yes' => __( 'Yes', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'no'  => __( 'NO', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				),
 				'condition' => array(
 					'ectbe_layout!' => array(
@@ -403,7 +405,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_disable_schema',
 			array(
-				'label'     => __( 'Disable Schema Markup', 'ectbe' ),
+				'label'     => __( 'Disable Schema Markup', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'         => Controls_Manager::SWITCHER,
 				'label_block'  => false,
 				'return_value' => 'yes',
@@ -415,13 +417,13 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_pro_features_1',
 			array(
-				'label'           => __( '', 'plugin-name' ),
+				'label'           => '',
 
 				'type'            => \Elementor\Controls_Manager::RAW_HTML,
 				'raw'             => '<button class="ectbe-pro-features-view-demo">
-							<a href="' . esc_url( 'https://eventscalendaraddons.com/demos/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=demo&utm_content=editor_panel' ) . '" target="_blank">' . esc_html__( 'View Demo', 'ectbe' ) . '</a>
+							<a href="' . esc_url( 'https://eventscalendaraddons.com/demos/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=demo&utm_content=editor_panel' ) . '" target="_blank">' . esc_html__( 'View Demo', 'events-widgets-for-elementor-and-the-events-calendar' ) . '</a>
 							</button> <button class="ectbe-pro-features-get-pro">
-							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=editor_panel' ) . '" target="_blank">' . esc_html__( 'Get Pro ⇗', 'ectbe' ) . '</a> 
+							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=editor_panel' ) . '" target="_blank">' . esc_html__( 'Get Pro ⇗', 'events-widgets-for-elementor-and-the-events-calendar' ) . '</a> 
 							</button>',
 				'content_classes' => 'ectbe-pro-features-list',
 			)
@@ -429,7 +431,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_pro_features_2',
 			array(
-				'label'           => __( '', 'plugin-name' ),
+				'label'           => '',
 				'type'            => \Elementor\Controls_Manager::RAW_HTML,
 				'raw'             => '<div class="ectbe-review-list" style=" line-height: 1.5em; background: #FFD5E6; color: #151213; padding: 15px; ">
 				Thanks for using <strong>The Events Calendar Widget for Elementor</strong>! If you have a moment, could you kindly leave us a review? We\'d greatly appreciate it and it helps us improve our product. <br><br>Thanks in advance! <br><br>
@@ -443,7 +445,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'ectbe_style_section',
 			array(
-				'label'     => __( 'Color & Typography Settings', 'ectbe' ),
+				'label'     => __( 'Color & Typography Settings', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 				'condition' => array(
 					'ectbe_layout!' => 'calendar',
@@ -453,7 +455,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_main_skin_section',
 			array(
-				'label'     => __( 'Main Skin', 'plugin-name' ),
+				'label'     => __( 'Main Skin', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'condition' => array(
 					'ectbe_layout!' => 'minimal-list',
@@ -463,7 +465,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_main_skin_color',
 			array(
-				'label'     => __( 'Color', 'ectbe' ),
+				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => array(
 					'ectbe_layout!' => 'minimal-list',
@@ -476,7 +478,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_featured_skin_section',
 			array(
-				'label'     => __( 'Featured Event', 'plugin-name' ),
+				'label'     => __( 'Featured Event', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			)
@@ -484,7 +486,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_featured_skin_color',
 			array(
-				'label'     => __( 'Skin Color', 'ectbe' ),
+				'label'     => __( 'Skin Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .ectbe-wrapper' => '--ectbe-featd-evt-bg-color: {{VALUE}}',
@@ -494,7 +496,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_featured_font_color',
 			array(
-				'label'     => __( 'Font Color', 'ectbe' ),
+				'label'     => __( 'Font Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .ectbe-wrapper' => '--ectbe-featd-evt-color: {{VALUE}}',
@@ -504,7 +506,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_bg_color_section',
 			array(
-				'label'     => __( 'Event Background ', 'plugin-name' ),
+				'label'     => __( 'Event Background ', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => array(
@@ -516,7 +518,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_event_bgcolor',
 			array(
-				'label'     => __( 'Color', 'ectbe' ),
+				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => array(
 					'ectbe_layout!' => 'minimal-list',
@@ -530,7 +532,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_date_section',
 			array(
-				'label'     => __( 'Event Date', 'plugin-name' ),
+				'label'     => __( 'Event Date', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			)
@@ -538,7 +540,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_date_color',
 			array(
-				'label'     => __( 'Color', 'ectbe' ),
+				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .ectbe-wrapper' => '--e-ectbe-date-area-color: {{VALUE}}',
@@ -549,7 +551,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'ectbe_date_typography',
-				'label'    => __( 'Typography', 'ectbe' ),
+				'label'    => __( 'Typography', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'selector' =>
 					'{{WRAPPER}} .ectbe-list-wrapper.style-1 .ectbe-date-area,
 					{{WRAPPER}} .ectbe-content-box .ectbe-date-area span,
@@ -560,7 +562,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_title_section',
 			array(
-				'label'     => __( 'Event Title ', 'plugin-name' ),
+				'label'     => __( 'Event Title ', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			)
@@ -568,7 +570,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_title_color',
 			array(
-				'label'     => __( 'Color', 'ectbe' ),
+				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .ectbe-wrapper' => '--e-ectbe-evt-title-color: {{VALUE}}',
@@ -579,7 +581,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			array(
 				'name'               => 'ectbe_title_typography',
-				'label'              => __( 'Typography', 'ectbe' ),
+				'label'              => __( 'Typography', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'selector'           => '{{WRAPPER}} .ectbe-evt-title .ectbe-evt-url',
 				'frontend_available' => true,
 			)
@@ -587,7 +589,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_desc_section',
 			array(
-				'label'     => __( 'Event Description', 'plugin-name' ),
+				'label'     => __( 'Event Description', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => array(
@@ -598,7 +600,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_desc_color',
 			array(
-				'label'     => __( 'Color', 'ectbe' ),
+				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => array(
 					'ectbe_layout!' => 'minimal-list',
@@ -612,7 +614,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			array(
 				'name'      => 'ectbe_desc_typography',
-				'label'     => __( 'Typography', 'ectbe' ),
+				'label'     => __( 'Typography', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'condition' => array(
 					'ectbe_layout!' => 'minimal-list',
 				),
@@ -623,7 +625,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_venue_section',
 			array(
-				'label'     => __( 'Event Venue', 'plugin-name' ),
+				'label'     => __( 'Event Venue', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 				'condition' => array(
@@ -634,7 +636,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_venue_color',
 			array(
-				'label'     => __( 'Color', 'ectbe' ),
+				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'condition' => array(
 					'ectbe_layout!' => 'minimal-list',
@@ -648,7 +650,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			array(
 				'name'      => 'ectbe_venue_typography',
-				'label'     => __( 'Typography', 'ectbe' ),
+				'label'     => __( 'Typography', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'condition' => array(
 					'ectbe_layout!' => 'minimal-list',
 				),
@@ -659,7 +661,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_read_more_section',
 			array(
-				'label'     => __( 'Find Out More', 'plugin-name' ),
+				'label'     => __( 'Find Out More', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			)
@@ -667,7 +669,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_read_more_color',
 			array(
-				'label'     => __( 'Color', 'ectbe' ),
+				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
 				'selectors' => array(
 					'{{WRAPPER}} .ectbe-wrapper' => '--e-ectbe-evt-read-more-color: {{VALUE}}',
@@ -678,17 +680,17 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			Group_Control_Typography::get_type(),
 			array(
 				'name'     => 'ectbe_read_more_typography',
-				'label'    => __( 'Typography', 'ectbe' ),
+				'label'    => __( 'Typography', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'selector' => '{{WRAPPER}} .ectbe-evt-read-more',
 			)
 		);
 		$this->add_control(
 			'ectbe_get_pro_styles',
 			array(
-				'label'           => __( '', 'plugin-name' ),
+				'label'           => '',
 				'type'            => \Elementor\Controls_Manager::RAW_HTML,
 				'raw'             => '<button class="ectbe-pro-features">
-							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=style_settings' ) . '" target="_blank">' . esc_html__( 'For Advanced Styles - Get Pro ⇗', 'ectbe' ) . '</a> 
+							<a href="' . esc_url( 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=style_settings' ) . '" target="_blank">' . esc_html__( 'For Advanced Styles - Get Pro ⇗', 'events-widgets-for-elementor-and-the-events-calendar' ) . '</a> 
 							</button>',
 				'content_classes' => 'ectbe-pro-features-list',
 				'separator'       => 'before',
@@ -724,7 +726,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		if ( $fetchevnts == 'date_range' ) {
 			$daterange = 'yes';
 		}
-		$events_html  = '';
+		$ectbe_events_html  = '';
 		$event_output = '';
 		$ectbe_cost   = '';
 		$evt_desc     = '';
@@ -811,7 +813,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					if ( $display_desc == 'yes' ) {
 						$evt_desc = '<div class="ectbe-evt-description">' . tribe_events_get_the_excerpt( $event_id, wp_kses_allowed_html( 'post' ) ) . '</div>';
 					}
-					$ectbe_read_more = '<div class="ectbe-evt-more-box"><a class="ectbe-evt-read-more" href="' . esc_url( $url ) . '">' . esc_html__( 'Find out more', 'ectbe' ) . '</a></div>';
+					$ectbe_read_more = '<div class="ectbe-evt-more-box"><a class="ectbe-evt-read-more" href="' . esc_url( $url ) . '">' . esc_html__( 'Find out more', 'events-widgets-for-elementor-and-the-events-calendar' ) . '</a></div>';
 					$ev_time         = '<div class="ectbe-evt-time"><i class="ectbe-icon-clock"></i>' . esc_html( $ev_time ) . '</div>';
 					$ev_day          = tribe_get_start_date( $event_id, false, 'd' );
 					$ev_month        = tribe_get_start_date( $event_id, false, 'M' );
@@ -821,21 +823,22 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					$ev_endyear      = tribe_get_end_date( $event_id, false, 'Y' );
 					if ( ( $layout == 'list' && $style == 'style-2' ) && $event_year != $display_year ) {
 						$display_year = $event_year;
-						$events_html .= '<div class="ectbe-month-header ' . esc_attr( $event_type ) . '">' . esc_attr( $display_year ) . '</div>';
+						$ectbe_events_html .= '<div class="ectbe-month-header ' . esc_attr( $event_type ) . '">' . esc_attr( $display_year ) . '</div>';
 					}
-					$events_html .= '<div id="event-' . esc_attr( $event_id ) . '" class="ectbe-inner-wrapper ' . esc_attr( $event_type ) . '">';
+					$ectbe_events_html .= '<div id="event-' . esc_attr( $event_id ) . '" class="ectbe-inner-wrapper ' . esc_attr( $event_type ) . '">';
 
 					require ECTBE_PATH . 'widgets/layouts/ectbe-list.php';
-					$events_html .= '</div>';
+					$ectbe_events_html .= '</div>';
 				}
 			} else {
-				$event_output .= '<h3>' . esc_html__( 'There is no Event', 'ectbe' ) . '</h3>';
+				$event_output .= '<h3>' . esc_html__( 'There is no Event', 'events-widgets-for-elementor-and-the-events-calendar' ) . '</h3>';
 			}
-			$event_output .= $events_html;
+			$event_output .= $ectbe_events_html;
 			$event_output .= '</div>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $event_output;
 			if ( $compatibility_styles != '' ) {
-				echo '<style type="text/css">' . wp_strip_all_tags( $compatibility_styles ) . '</style>';
+				echo '<style type="text/css">' . esc_attr( wp_strip_all_tags( $compatibility_styles ) ) . '</style>';
 			}
 		}
 	}

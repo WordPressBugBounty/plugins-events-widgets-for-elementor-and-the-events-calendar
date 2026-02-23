@@ -59,7 +59,10 @@ if (!class_exists('ectbe_admin_notices')):
             if (!empty(self::$instance)) {
                 return self::$instance;
             }
-            return self::$instance = new self;
+            $instance = new self;
+            // Hook into admin_enqueue_scripts for notice positioning with priority 20 to run after other styles
+            add_action('admin_enqueue_scripts', array($instance, 'add_notice_positioning_inline'), 20);
+            return self::$instance = $instance;
         }
 
         /**
@@ -133,15 +136,13 @@ if (!class_exists('ectbe_admin_notices')):
             }
             $days = $messageObj['review_interval'];
                        
-            if(get_option( 'ectbe-installDate' )){
-                // get installation dates and rated settings
-                $installation_date =date( 'Y-m-d h:i:s', strtotime(get_option( 'ectbe-installDate' )) );
-            }else{
-                $this->ectbe_show_error('Review notice can not be integrated. ectbe-installDate option is not set for the plugin');
-                return;
-            }
-                       
-               
+                if(get_option( 'ectbe-installDate' )){
+                    // get installation dates and rated settings
+                    $installation_date =gmdate( 'Y-m-d h:i:s', strtotime(get_option( 'ectbe-installDate' )) );
+                }else{
+                    $this->ectbe_show_error('Review notice can not be integrated. ectbe-installDate option is not set for the plugin');
+                    return;
+                }
                 $alreadyRated =get_option( 'ectbe-ratingDiv' )!=false?get_option( 'ectbe-ratingDiv'):"no";
 
                 // check user already rated 
@@ -150,7 +151,7 @@ if (!class_exists('ectbe_admin_notices')):
                 }
                 
                 // grab plugin installation date and compare it with current date
-                $display_date = date( 'Y-m-d h:i:s' );
+                $display_date = gmdate( 'Y-m-d h:i:s' );
                 $install_date= new DateTime( $installation_date );
                 $current_date = new DateTime( $display_date );
                 $difference = $install_date->diff($current_date);
@@ -158,9 +159,10 @@ if (!class_exists('ectbe_admin_notices')):
               
                 // check if installation days is greator then week
               if (isset($diff_days) && $diff_days>= $days ) {
-                wp_enqueue_style( 'ectbe-review-css', ECTBE_URL . 'admin/feedback-notice/css/ectbe-admin-notice.css', null, null, 'all' );
+                wp_enqueue_style( 'ectbe-review-css', ECTBE_URL . 'admin/feedback-notice/css/ectbe-admin-notice.css', null, ECTBE_VERSION, 'all' );
 			    wp_enqueue_script( 'ectbe-review-js', ECTBE_URL . 'admin/feedback-notice/js/ectbe-admin-notice.js', array( 'jquery' ), ECTBE_VERSION, true );
                 $content = $this->ectbe_create_notice_content( $id, $messageObj );
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 printf( '%s', $content );
                 }
         }
@@ -180,16 +182,17 @@ if (!class_exists('ectbe_admin_notices')):
             $plugin_link      = ! empty( $messageObj['review_url'] ) ? esc_url( $messageObj['review_url'] ) : '#';
             $ajax_url         = esc_url( admin_url( 'admin-ajax.php' ) );
             $ajax_callback    = 'ectbe_admin_review_notice_dismiss';
-            $wrap_cls         = 'notice notice-info is-dismissible';
-            $like_it_text     = esc_html__( 'Rate Now! ★★★★★', 'atlt2' );
-            $already_rated    = esc_html__( 'Already Reviewed', 'atlt2' );
-            $not_interested   = esc_html__( 'Not Interested', 'atlt2' );
+            $wrap_cls         = 'notice notice-info is-dismissible ect-required-plugin-notice';
+            $like_it_text     = esc_html__( 'Rate Now! ★★★★★', 'events-widgets-for-elementor-and-the-events-calendar' );
+            $already_rated    = esc_html__( 'Already Reviewed', 'events-widgets-for-elementor-and-the-events-calendar' );
+            $not_interested   = esc_html__( 'Not Interested', 'events-widgets-for-elementor-and-the-events-calendar' );
             $review_nonce     = wp_create_nonce( $id . '_review_nonce' );
             $id_attr          = esc_attr( $id );
         
             // Safe message
             $message = sprintf(
-                __( 'Thanks for using <b>%s</b> - WordPress plugin. We hope you liked it!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=review_notice" target="_blank"><strong>Cool Plugins</strong></a>!<br/>', 'atlt2' ),
+                // translators: 1. Plugin name.
+                __( 'Thanks for using <b>%s</b> - WordPress plugin. We hope you liked it!<br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href="https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=review_notice" target="_blank"><strong>Cool Plugins</strong></a>!<br/>', 'events-widgets-for-elementor-and-the-events-calendar' ),
                 esc_html( $plugin_name )
             );
         
@@ -252,7 +255,7 @@ if (!class_exists('ectbe_admin_notices')):
         * This is called by a wordpress ajax hook
         */
         public function ectbe_admin_review_notice_dismiss(){
-            $id = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : '';
+            $id = isset($_REQUEST['id']) ? sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) : '';
             $nonce_key = $id . '_review_nonce';
 
             if ( ! check_ajax_referer($nonce_key, '_nonce', false ) ) {
@@ -279,6 +282,149 @@ if (!class_exists('ectbe_admin_notices')):
             $er .= "Error: ".$error_text;
             $er .= "</div>";
             echo wp_kses_post($er);
+        }
+
+        /**
+         * Check if we're on the plugin admin pages
+         *
+         * @since 1.0.0
+         *
+         * @return bool
+         */
+        private function is_ect_plugin_page() {
+            $screen = get_current_screen();
+            if ( empty( $screen ) ) {
+                return false;
+            }
+            
+            // Check if we're on plugin pages that use the header
+            $plugin_pages = array(
+                'toplevel_page_cool-plugins-events-addon',
+                'events-addons_page_tribe-events-shortcode-template-settings',
+                'events-addons_page_cool-events-registration',
+            );
+            
+            return in_array( $screen->id, $plugin_pages, true );
+        }
+
+        /**
+         * Add inline CSS and JavaScript for notice positioning on plugin pages
+         *
+         * @since 1.0.0
+         *
+         * @return void
+         */
+        public function add_notice_positioning_inline() {
+            if ( ! $this->is_ect_plugin_page() ) {
+                return;
+            }
+
+            // Ensure jQuery is enqueued
+            wp_enqueue_script( 'jquery' );
+
+            // Add inline CSS
+            $css = "
+			/* Notice positioning for plugin pages */
+			body.toplevel_page_cool-plugins-events-addon .notice,
+			body.toplevel_page_cool-plugins-events-addon .error,
+			body.toplevel_page_cool-plugins-events-addon .updated,
+			body.toplevel_page_cool-plugins-events-addon .notice-error,
+			body.toplevel_page_cool-plugins-events-addon .notice-warning,
+			body.toplevel_page_cool-plugins-events-addon .notice-info,
+			body.toplevel_page_cool-plugins-events-addon .notice-success,
+			body.events-addons_page_tribe-events-shortcode-template-settings .notice,
+			body.events-addons_page_tribe-events-shortcode-template-settings .error,
+			body.events-addons_page_tribe-events-shortcode-template-settings .updated,
+			body.events-addons_page_tribe-events-shortcode-template-settings .notice-error,
+			body.events-addons_page_tribe-events-shortcode-template-settings .notice-warning,
+			body.events-addons_page_tribe-events-shortcode-template-settings .notice-info,
+			body.events-addons_page_tribe-events-shortcode-template-settings .notice-success,
+			body.events-addons_page_cool-events-registration .notice,
+			body.events-addons_page_cool-events-registration .error,
+			body.events-addons_page_cool-events-registration .updated,
+			body.events-addons_page_cool-events-registration .notice-error,
+			body.events-addons_page_cool-events-registration .notice-warning,
+			body.events-addons_page_cool-events-registration .notice-info,
+			body.events-addons_page_cool-events-registration .notice-success {
+				display: none !important;
+				margin-left: 2rem;
+			}
+
+			/* Keep inline notices inside license box visible (do NOT move them) */
+			body.toplevel_page_cool-plugins-events-addon [class*=\"license-box\"] .notice,
+			body.toplevel_page_cool-plugins-events-addon [class*=\"license-box\"] .error,
+			body.toplevel_page_cool-plugins-events-addon [class*=\"license-box\"] .updated,
+			body.toplevel_page_cool-plugins-events-addon [class*=\"license-box\"] .notice-error,
+			body.toplevel_page_cool-plugins-events-addon [class*=\"license-box\"] .notice-warning,
+			body.toplevel_page_cool-plugins-events-addon [class*=\"license-box\"] .notice-info,
+			body.toplevel_page_cool-plugins-events-addon [class*=\"license-box\"] .notice-success,
+			body.events-addons_page_tribe-events-shortcode-template-settings [class*=\"license-box\"] .notice,
+			body.events-addons_page_tribe-events-shortcode-template-settings [class*=\"license-box\"] .error,
+			body.events-addons_page_tribe-events-shortcode-template-settings [class*=\"license-box\"] .updated,
+			body.events-addons_page_tribe-events-shortcode-template-settings [class*=\"license-box\"] .notice-error,
+			body.events-addons_page_tribe-events-shortcode-template-settings [class*=\"license-box\"] .notice-warning,
+			body.events-addons_page_tribe-events-shortcode-template-settings [class*=\"license-box\"] .notice-info,
+			body.events-addons_page_tribe-events-shortcode-template-settings [class*=\"license-box\"] .notice-success,
+			body.events-addons_page_cool-events-registration [class*=\"license-box\"] .notice,
+			body.events-addons_page_cool-events-registration [class*=\"license-box\"] .error,
+			body.events-addons_page_cool-events-registration [class*=\"license-box\"] .updated,
+			body.events-addons_page_cool-events-registration [class*=\"license-box\"] .notice-error,
+			body.events-addons_page_cool-events-registration [class*=\"license-box\"] .notice-warning,
+			body.events-addons_page_cool-events-registration [class*=\"license-box\"] .notice-info,
+			body.events-addons_page_cool-events-registration [class*=\"license-box\"] .notice-success {
+				display: block !important;
+				margin-left: 0;
+				margin-right: 0;
+				width: auto;
+			}
+
+			/* Show notices after they are moved */
+			body.toplevel_page_cool-plugins-events-addon .ect-moved-notice,
+			body.events-addons_page_tribe-events-shortcode-template-settings .ect-moved-notice,
+			body.events-addons_page_cool-events-registration .ect-moved-notice {
+				display: block !important;
+				margin-left: 2rem;
+				margin-right: 2rem;
+				width: auto;
+			}
+			";
+            
+            // Register and enqueue a style handle for notice positioning if not already done
+            if ( ! wp_style_is( 'ect-notice-positioning', 'registered' ) ) {
+                wp_register_style( 'ect-notice-positioning', false, array(), ECTBE_VERSION );
+            }
+            wp_enqueue_style( 'ect-notice-positioning', false, array(), ECTBE_VERSION );
+            wp_add_inline_style( 'ect-notice-positioning', $css );
+
+            // Add inline JavaScript
+            $js = "
+			jQuery(document).ready(function($) {
+				// Wait for the page to load
+				setTimeout(function() {
+					// Move ONLY top admin notices (page top) - do not touch inline/content notices
+					// Also: jis notice me yeh text aaye, usko move mat karo (neeche hi rahe)
+					var skipText = 'to continue receiving updates and priority support.';
+					var topNotices = $('#wpbody-content').find(
+						'> .notice, > .error, > .updated, > .notice-error, > .notice-warning, > .notice-info, > .notice-success,' +
+						'> .wrap > .notice, > .wrap > .error, > .wrap > .updated, > .wrap > .notice-error, > .wrap > .notice-warning, > .wrap > .notice-info, > .wrap > .notice-success'
+					);
+
+					var noticesToMove = topNotices.filter(function() {
+						var txt = $(this).text() || '';
+						return txt.indexOf(skipText) === -1;
+					});
+
+					if (noticesToMove.length > 0) {
+						var headerContainer = $('.ect-top-header');
+						if (headerContainer.length > 0) {
+							noticesToMove.detach().insertAfter(headerContainer);
+							noticesToMove.addClass('ect-moved-notice');
+						}
+					}
+				}, 100);
+			});
+			";
+            wp_add_inline_script( 'jquery', $js );
         }
 
     }   // end of main class ectbe_admin_notices;
