@@ -1,11 +1,11 @@
 === Events Widgets For Elementor And The Events Calendar === 
-Contributors: narinder-singh, satindersingh, coolplugins
+Contributors: narinder-singh, satindersingh, coolplugins, eventscalendaraddons
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: the events calendar, events, event calendar, elementor, events calendar
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Elementor tested up to: 3.35.5
@@ -253,7 +253,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 1.7.0 | 23/02/2026
+= 1.7.1 | Feb 26, 2026 =
+* Fixed: Minor styling issues for better UI consistency.
+* Improved: Code structure and performance optimization.
+
+= 1.7.0 | Feb 23, 2026 =
 * Improvements: Improved dashboard design and usability.
 * Improvements: Code optimizations and refinements.
 * Fixed: Issues reported by “Plugin Check” plugin.
