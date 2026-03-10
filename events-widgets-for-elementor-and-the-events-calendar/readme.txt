@@ -5,10 +5,10 @@ Tags: the events calendar, events, event calendar, elementor, events calendar
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 3.35.5
+Elementor tested up to: 3.35.6
 Elementor Pro tested up to: 3.35.1
 
 The Events Calendar Elementor widgets to show upcoming events list, grid, carousel or event calendar layout with advanced styling in Elementor pages.
@@ -252,6 +252,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 ---
 
 == Changelog ==
+
+= 1.7.2 | Mar 10, 2026 =
+* Improved: Dashboard header usability.
+* Tested upto: Elementor version 3.35.6 & Elementor Pro version 3.35.1
+* Tested upto: The Events Calendar version 6.15.17.1
 
 = 1.7.1 | Feb 26, 2026 =
 * Fixed: Minor styling issues for better UI consistency.
