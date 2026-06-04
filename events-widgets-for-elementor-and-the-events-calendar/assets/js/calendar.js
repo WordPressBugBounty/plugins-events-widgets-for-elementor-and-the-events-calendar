@@ -97,7 +97,7 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
                 var imgurl = eventEl.image.url ? eventEl.image.url : '';
                 events.push({
                   'id': eventEl.id,
-                  'title': decodeHtmlCharCodes(eventEl.title),
+                  'title': eventEl.title,
                   'start': eventEl.start_date,
                   'end': eventEl.end_date,
                   'textColor': textColor,
@@ -166,12 +166,6 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
         popupmodal.css("display", "none");
       });
       calendar.render();
-
-      function decodeHtmlCharCodes(str) {
-        return str.replace(/(&#(\d+);)/g, function (match, capture, charCode) {
-          return String.fromCharCode(charCode);
-        });
-      }
     }
   }
 }

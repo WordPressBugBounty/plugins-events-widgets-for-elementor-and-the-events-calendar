@@ -31,7 +31,7 @@ class ectbe_feedback {
 	function enqueue_feedback_scripts() {
 		$screen = get_current_screen();
 		if ( isset( $screen ) && $screen->id == 'plugins' ) {
-			wp_enqueue_script( __NAMESPACE__ . 'feedback-script', $this->plugin_url . 'admin/feedback/js/admin-feedback.js', array( 'jquery' ), $this->plugin_version, false );
+			wp_enqueue_script( __NAMESPACE__ . 'feedback-script', $this->plugin_url . 'admin/feedback/js/admin-feedback.js', array( 'jquery' ), $this->plugin_version, true );
 			wp_enqueue_style( 'cool-plugins-feedback-css', $this->plugin_url . 'admin/feedback/css/admin-feedback.css', null, $this->plugin_version );
 		}
 	}
@@ -127,10 +127,9 @@ class ectbe_feedback {
 	
 		// Server and WP environment details
 		$server_info = [
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			'server_software'        => isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field($_SERVER['SERVER_SOFTWARE']) : 'N/A',
+			'server_software'        => isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])) : 'N/A',
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			'mysql_version'          => $wpdb ? sanitize_text_field($wpdb->get_var("SELECT VERSION()")) : 'N/A',
+			'mysql_version'          => isset( $wpdb ) ? sanitize_text_field( $wpdb->db_version() ) : 'N/A',
 			'php_version'            => sanitize_text_field(phpversion() ?: 'N/A'),
 			'wp_version'             => sanitize_text_field(get_bloginfo('version') ?: 'N/A'),
 			'wp_debug'               => (defined('WP_DEBUG') && WP_DEBUG) ? 'Enabled' : 'Disabled',
@@ -184,12 +183,11 @@ class ectbe_feedback {
 
 
 	function submit_deactivation_response() {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_POST['_wpnonce'] ), '_cool-plugins_deactivate_feedback_nonce' ) ) {
-			wp_send_json_error();
-		} else {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			$reason             = isset( $_POST['reason'] ) ? sanitize_text_field( $_POST['reason'] ) : '';
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error( 'Unauthorized' );
+		}
+		check_ajax_referer( '_cool-plugins_deactivate_feedback_nonce' );
+			$reason             = isset( $_POST['reason'] ) ? sanitize_text_field( wp_unslash( $_POST['reason'] ) ) : '';
 			$deactivate_reasons = array(
 				'didnt_work_as_expected'         => array(
 					'title'             => __( 'The plugin didn\'t work as expected', 'events-widgets-for-elementor-and-the-events-calendar' ),
@@ -214,26 +212,30 @@ class ectbe_feedback {
 			);
 
 			$plugin_initial =  get_option( 'ectbe_initial_save_version' );
-			$deativation_reason = array_key_exists( $reason, $deactivate_reasons ) ? $reason : 'other';
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			$sanitized_message = empty( $_POST['message'] ) || sanitize_text_field( $_POST['message'] ) == '' ? 'N/A' : sanitize_text_field( $_POST['message'] );
+			$deactivation_reason = array_key_exists( $reason, $deactivate_reasons ) ? $reason : 'other';
+			$message = isset( $_POST['message'] )
+						? sanitize_text_field( wp_unslash( $_POST['message'] ) )
+						: '';
+
+			$sanitized_message = '' === $message ? 'N/A' : $message;
 			$admin_email       = sanitize_email( get_option( 'admin_email' ) );
-			$site_url          = esc_url( site_url() );
+			$site_url          = esc_url_raw( site_url() );
 			$install_date 		= get_option('ectbe-install-date');
 			$unique_key     	= '24';  // Ensure this key is unique per plugin to prevent collisions when site URL and install date are the same across plugins
             $site_id        	= $site_url . '-' . $install_date . '-' . $unique_key;
 			$feedback_url      = ECTBE_FEEDBACK_API .'wp-json/coolplugins-feedback/v1/feedback';
+			$user_info = $this->cpfm_get_user_info();
 			$response          = wp_remote_post(
 				$feedback_url,
 				array(
 					'timeout' => 30,
 					'body'    => array(
-						'server_info' => serialize($this->cpfm_get_user_info()['server_info']), 
-						'extra_details' => serialize($this->cpfm_get_user_info()['extra_details']),
+						'server_info'     => wp_json_encode( $user_info['server_info'] ),
+			            'extra_details'   => wp_json_encode( $user_info['extra_details'] ),
 						'plugin_initial'  => isset($plugin_initial) ? sanitize_text_field($plugin_initial) : 'N/A',
 						'plugin_version' => sanitize_text_field($this->plugin_version),
 						'plugin_name'    => sanitize_text_field($this->plugin_name),
-						'reason'         => sanitize_text_field($deativation_reason),
+						'reason'         => sanitize_text_field($deactivation_reason),
 						'review'         => $sanitized_message,
 						'email'          => $admin_email,
 						'domain'         => $site_url,
@@ -242,8 +244,11 @@ class ectbe_feedback {
 				)
 			);
 
-			die( json_encode( array( 'response' => $response ) ) );
-		}
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error( 'Feedback submission failed' );
+			}
+			
+			wp_send_json_success( 'Feedback submitted successfully' );
 
 	}
 }

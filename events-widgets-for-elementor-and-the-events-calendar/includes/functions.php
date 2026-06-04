@@ -138,8 +138,8 @@ function ectbe_event_schedule( $event_id, $date_format, $template ) {
 	$ev_time        = ectbe_tribe_event_time( $event_id, false );
 	if ( $date_format == 'DM' ) {
 		  $event_schedule = '<div class="ectbe-date-area">
-                                <span class="ectbe-ev-day">' . esc_attr( tribe_get_start_date( $event_id, false, 'd' ) ) . '</span>
-                                <span class="ectbe-ev-mo">' . esc_attr( tribe_get_start_date( $event_id, false, 'M' ) ) . '</span>
+                                <span class="ectbe-ev-day">' . esc_html( tribe_get_start_date( $event_id, false, 'd' ) ) . '</span>
+                                <span class="ectbe-ev-mo">' . esc_html( tribe_get_start_date( $event_id, false, 'M' ) ) . '</span>
 							
                                 </div>';
 
@@ -184,10 +184,10 @@ function ectbe_event_schedule( $event_id, $date_format, $template ) {
 
 	} elseif ( $date_format == 'MD,YT' ) {
 		$event_schedule = '<div class="ectbe-date-area">
-                                <span class="ectbe-ev-mo">' . tribe_get_start_date( $event_id, false, 'M' ) . '</span>
-                                <span class="ectbe-ev-day">' . tribe_get_start_date( $event_id, false, 'd' ) . ', </span>
-                                <span class="ectbe-ev-yr">' . tribe_get_start_date( $event_id, false, 'Y' ) . '</span>
-                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span>' . $ev_time . '</span>
+                                <span class="ectbe-ev-mo">' . esc_html( tribe_get_start_date( $event_id, false, 'M' ) ) . '</span>
+                                <span class="ectbe-ev-day">' . esc_html( tribe_get_start_date( $event_id, false, 'd' ) ) . ', </span>
+                                <span class="ectbe-ev-yr">' . esc_html( tribe_get_start_date( $event_id, false, 'Y' ) ) . '</span>
+                                <span class="ectbe-evt-time"><span class="ectbe-icon"><i class="ectbe-icon-clock" aria-hidden="true"></i></span>' . esc_html( $ev_time ) . '</span>
                                 </div>';
 
 	} elseif ( $date_format == 'jMl' ) {
@@ -258,8 +258,8 @@ function ectbe_event_schedule( $event_id, $date_format, $template ) {
 		} else {
 
 			$event_schedule .= '<span class="ectbe-ev-hyphon"> - </span>
-			<span class="ectbe-ev-day">' . esc_attr( tribe_get_end_date( $event_id, false, 'd' ) ) . '</span>
-			<span class="ectbe-ev-mo">' . esc_attr( tribe_get_end_date( $event_id, false, 'F' ) ) . '</span>
+			<span class="ectbe-ev-day">' . esc_html( tribe_get_end_date( $event_id, false, 'd' ) ) . '</span>
+			<span class="ectbe-ev-mo">' . esc_html( tribe_get_end_date( $event_id, false, 'F' ) ) . '</span>
 			<span class="ectbe-ev-yr">' . esc_html( tribe_get_end_date( $event_id, false, 'Y' ) ) . '</span>';
 		}
 		$event_schedule .= '</div>';
@@ -316,32 +316,76 @@ function ectbe_older_v_compatibility( $post_id, $settings, $layout, $widget_id )
 	$widgetID      = '.elementor-' . $post_id . ' .elementor-element.elementor-element-' . $widget_id;
 	$selector      = $widgetID . ' .ectbe-' . $layout . '-wrapper';
 	$typo_index    = '_typography';
-	if ( isset( $settings['ectbe_main_skin_color'] ) && $settings['ectbe_main_skin_color'] != '' ) {
-		$custom_styles .= $selector . '{--e-ectbe-date-area-background:' . $settings['ectbe_main_skin_color'] . ';}';
+	$ectbe_main_skin_color = isset( $settings['ectbe_main_skin_color'] )
+		? sanitize_hex_color( $settings['ectbe_main_skin_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_main_skin_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-date-area-background:' . $ectbe_main_skin_color . ';}';
 	}
-	if ( isset( $settings['ectbe_featured_skin_color'] ) && $settings['ectbe_featured_skin_color'] != '' ) {
-		$custom_styles .= $selector . '{--ectbe-featd-evt-bg-color:' . $settings['ectbe_featured_skin_color'] . ';}';
+
+	$ectbe_featured_skin_color = isset( $settings['ectbe_featured_skin_color'] )
+		? sanitize_hex_color( $settings['ectbe_featured_skin_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_featured_skin_color ) ) {
+		$custom_styles .= $selector . '{--ectbe-featd-evt-bg-color:' . $ectbe_featured_skin_color . ';}';
 	}
-	if ( isset( $settings['ectbe_event_bgcolor'] ) && $settings['ectbe_event_bgcolor'] != '' ) {
-		$custom_styles .= $selector . '{--e-ectbe-content-box-background:' . $settings['ectbe_event_bgcolor'] . ';}';
+
+	$ectbe_event_bgcolor = isset( $settings['ectbe_event_bgcolor'] )
+		? sanitize_hex_color( $settings['ectbe_event_bgcolor'] )
+		: '';
+
+	if ( ! empty( $ectbe_event_bgcolor ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-content-box-background:' . $ectbe_event_bgcolor . ';}';
 	}
-	if ( isset( $settings['ectbe_featured_font_color'] ) && $settings['ectbe_featured_font_color'] != '' ) {
-		$custom_styles .= $selector . '{--ectbe-featd-evt-color:' . $settings['ectbe_featured_font_color'] . ';}';
+
+	$ectbe_featured_font_color = isset( $settings['ectbe_featured_font_color'] )
+		? sanitize_hex_color( $settings['ectbe_featured_font_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_featured_font_color ) ) {
+		$custom_styles .= $selector . '{--ectbe-featd-evt-color:' . $ectbe_featured_font_color . ';}';
 	}
-	if ( isset( $settings['ectbe_date_color'] ) && $settings['ectbe_date_color'] != '' ) {
-		$custom_styles .= $selector . '{--e-ectbe-date-area-color:' . $settings['ectbe_date_color'] . ';}';
+
+	$ectbe_date_color = isset( $settings['ectbe_date_color'] )
+		? sanitize_hex_color( $settings['ectbe_date_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_date_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-date-area-color:' . $ectbe_date_color . ';}';
 	}
-	if ( isset( $settings['ectbe_title_color'] ) && $settings['ectbe_title_color'] != '' ) {
-		$custom_styles .= $selector . '{--e-ectbe-evt-title-color:' . $settings['ectbe_title_color'] . ';}';
+
+	$ectbe_title_color = isset( $settings['ectbe_title_color'] )
+		? sanitize_hex_color( $settings['ectbe_title_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_title_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-evt-title-color:' . $ectbe_title_color . ';}';
 	}
-	if ( isset( $settings['ectbe_desc_color'] ) && $settings['ectbe_desc_color'] != '' ) {
-		$custom_styles .= $selector . '{--e-ectbe-evt-description-color:' . $settings['ectbe_desc_color'] . ';}';
+
+	$ectbe_desc_color = isset( $settings['ectbe_desc_color'] )
+		? sanitize_hex_color( $settings['ectbe_desc_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_desc_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-evt-description-color:' . $ectbe_desc_color . ';}';
 	}
-	if ( isset( $settings['ectbe_venue_color'] ) && $settings['ectbe_venue_color'] != '' ) {
-		$custom_styles .= $selector . '{--e-ectbe-evt-venue-color:' . $settings['ectbe_venue_color'] . ';}';
+
+	$ectbe_venue_color = isset( $settings['ectbe_venue_color'] )
+		? sanitize_hex_color( $settings['ectbe_venue_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_venue_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-evt-venue-color:' . $ectbe_venue_color . ';}';
 	}
-	if ( isset( $settings['ectbe_read_more_color'] ) && $settings['ectbe_read_more_color'] != '' ) {
-		$custom_styles .= $selector . '{--e-ectbe-evt-read-more-color:' . $settings['ectbe_read_more_color'] . ';}';
+
+	$ectbe_read_more_color = isset( $settings['ectbe_read_more_color'] )
+		? sanitize_hex_color( $settings['ectbe_read_more_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_read_more_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-evt-read-more-color:' . $ectbe_read_more_color . ';}';
 	}
 	$title_key = 'ectbe_title_typography';
 	if ( isset( $settings[ $title_key . $typo_index ] ) &&
@@ -400,15 +444,18 @@ function ectbe_get_typography_settings( $key, $all_settings ) {
 	foreach ( $fields as $field ) {
 		$index     = $key . '_' . $field;
 		$attribute = str_replace( '_', '-', $field );
-		if ( isset( $all_settings[ $index ] ) && $all_settings[ $index ] !== '' ) {
+		if ( isset( $all_settings[ $index ] ) && '' !== $all_settings[ $index ] ) {
 			if ( is_array( $all_settings[ $index ] ) ) {
-				if ( $all_settings[ $index ]['size'] !== '' ) {
-					$unit       = $all_settings[ $index ]['unit'];
-					$size       = $all_settings[ $index ]['size'];
+				if ( ! empty( $all_settings[ $index ]['size'] ) ) {
+					$allowed_units = array( 'px', 'em', 'rem', '%', 'vw', 'vh' );
+					$unit = isset( $all_settings[ $index ]['unit'] ) ? sanitize_text_field( $all_settings[ $index ]['unit'] ) : 'px';
+					$unit = in_array( $unit, $allowed_units, true ) ? $unit : 'px';
+					$size = isset( $all_settings[ $index ]['size'] ) ? floatval( $all_settings[ $index ]['size'] ) : 0;
 					$field_css .= $attribute . ':' . $size . $unit . ';';
 				}
 			} else {
-				$field_css .= $attribute . ':' . $all_settings[ $index ] . ';';
+				$field_value = sanitize_text_field( $all_settings[ $index ] );
+				$field_css .= $attribute . ':' . $field_value . ';';
 			}
 		}
 	}

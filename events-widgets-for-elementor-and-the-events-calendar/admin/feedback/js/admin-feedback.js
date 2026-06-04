@@ -35,7 +35,7 @@
         })
 
         $(document).on('click','#cool-plugin-submitNdeactivate.'+plugin_slug, function(event){
-            let nonce = $('#_wpnonce').val();
+            let nonce = $('#cool-plugins-feedback-' + plugin_slug).find('input[name="_wpnonce"]').val();
             let reason = $('.cp-feedback-input:checked').val();
             let reasonkeychecked = $('.cp-feedback-input-wrapper>input').is(":checked");
             let message = '';

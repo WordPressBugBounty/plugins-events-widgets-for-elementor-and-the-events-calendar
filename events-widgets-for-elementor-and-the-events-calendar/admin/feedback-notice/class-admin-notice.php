@@ -150,10 +150,14 @@ if (!class_exists('ectbe_admin_notices')):
                 
                 // grab plugin installation date and compare it with current date
                 $display_date = gmdate( 'Y-m-d h:i:s' );
-                $install_date= new DateTime( $installation_date );
-                $current_date = new DateTime( $display_date );
-                $difference = $install_date->diff($current_date);
-                $diff_days= $difference->days;
+                $diff_days    = 0;  
+                try {
+                    $install_date = new DateTime( $installation_date );
+                    $current_date = new DateTime( $display_date );
+                    $diff_days    = $install_date->diff( $current_date )->days;
+                } catch ( Exception $e ) {
+                    return;
+                }
               
                 // check if installation days is greator then week
               if (isset($diff_days) && $diff_days>= $days ) {
@@ -234,17 +238,17 @@ if (!class_exists('ectbe_admin_notices')):
         
             return sprintf(
                 $html,
-                $ajax_url,              // %1$s
-                esc_attr( $slug ),      // %2$s
-                esc_attr( $review_nonce ),// %3$s
-                $id_attr,               // %4$s
-                esc_attr( $ajax_callback ),// %5$s
-                esc_attr( $wrap_cls ),  // %6$s
-                $message_safe,          // %7$s
-                $plugin_link,           // %8$s
-                $like_it_text,          // %9$s
-                $already_rated,         // %10$s
-                $not_interested         // %11$s
+                esc_url( $ajax_url ),                    // %1$s
+                esc_attr( $slug ),                       // %2$s
+                esc_attr( $review_nonce ),               // %3$s
+                esc_attr( $id_attr ),                    // %4$s
+                esc_attr( $ajax_callback ),              // %5$s
+                esc_attr( $wrap_cls ),                   // %6$s
+                wp_kses_post( $message_safe ),           // %7$s
+                esc_url( $plugin_link ),                 // %8$s
+                esc_html( $like_it_text ),               // %9$s
+                esc_html( $already_rated ),              // %10$s
+                esc_html( $not_interested )              // %11$s
             );
         }
 
@@ -252,23 +256,31 @@ if (!class_exists('ectbe_admin_notices')):
         * This function will dismiss the review notice.
         * This is called by a wordpress ajax hook
         */
-        public function ectbe_admin_review_notice_dismiss(){
-            $id = isset($_REQUEST['id']) ? sanitize_text_field( wp_unslash( $_REQUEST['id'] ) ) : '';
+        public function ectbe_admin_review_notice_dismiss() {
+
+            if ( ! current_user_can( 'manage_options' ) ) {
+                wp_send_json_error(
+                    array(
+                        'error' => 'insufficient permissions!',
+                    )
+                );
+            }
+        
+            $id = isset( $_REQUEST['id'] )
+                ? sanitize_text_field( wp_unslash( $_REQUEST['id'] ) )
+                : '';
+        
             $nonce_key = $id . '_review_nonce';
-
-            if ( ! check_ajax_referer($nonce_key, '_nonce', false ) ) {
-                echo wp_json_encode( array("error" => "nonce verification failed!") );
-                die();
-            }
-
-            if ( ! current_user_can('manage_options') ) {
-                echo wp_json_encode( array("error" => "insufficient permissions!") );
-                die();
-            }
-
+        
+            check_ajax_referer( $nonce_key, '_nonce' );
+        
             update_option( 'ectbe-ratingDiv', 'yes' );
-            echo wp_json_encode( array("success" => "true") );
-            die();
+        
+            wp_send_json_success(
+                array(
+                    'success' => true,
+                )
+            );
         }
 
         /**************************************************************

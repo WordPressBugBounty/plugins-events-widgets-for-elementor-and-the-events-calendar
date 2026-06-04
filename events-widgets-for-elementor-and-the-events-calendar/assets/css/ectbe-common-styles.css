@@ -119,7 +119,7 @@
   --e-ectbe-week-day-text-size: 0.45em;
   --e-ectbe-date-area-color: #00445e;
   --e-ectbe-evt-title-color: #00445e;
-  --e-ectbe-evt-title-size: 18px;
+  --e-ectbe-evt-title-size: 20px;
   --e-ectbe-evt-time-size: 14px;
   --e-ectbe-evt-venue-color: #515d64;
   --e-ectbe-evt-venue-size: 14px;
@@ -131,7 +131,7 @@
   --e-ectbe-evt-details-width: 200px;
   --e-ectbe-evt-read-more-color: #008cff;
   --e-ectbe-evt-read-more-size: 14px;
-  --e-ectbe-cate-single-padding: 1px 3px 3px 3px;
+  --e-ectbe-cate-single-padding: 3px 8px 3px 8px;
   --e-ectbe-cate-single-border-radius: 3px;
   --e-ectbe-each-cate-text-size: 12px;
   --e-ectbe-ev-day-padding: 0px 0px 0px 0px;

@@ -3,14 +3,14 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.7.3
+ * Version:     1.8.0
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: events-widgets-for-elementor-and-the-events-calendar
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Elementor tested up to: 4.0.0
- * Elementor Pro tested up to: 4.0.0
+ * Elementor tested up to: 4.1.1
+ * Elementor Pro tested up to: 4.1.0
  * Requires Plugins: elementor, the-events-calendar
 
  */
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.7.3');
+define('ECTBE_VERSION', '1.8.0');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -82,11 +82,11 @@ final class Events_Calendar_Addon
 			
         // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded, Generic.Metrics.NestingLevel.MaxExceeded
         $events_pages = false;
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['page'])) {
             
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
-            $page_param = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $page_param = sanitize_key(wp_unslash( $_GET['page'] ));
 
             $allowed_pages = array(
                 'cool-plugins-events-addon',

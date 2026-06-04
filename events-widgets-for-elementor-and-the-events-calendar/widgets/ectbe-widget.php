@@ -746,7 +746,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		} else {
 				$all_events = ectbe_get_the_events_calendar_events( $settings );
 				global $post;
-				$event_output .= '<!=========Events ' . $layout . ' Template ' . ECTBE_VERSION . '=========>';
+				$event_output .= '<!------Events ' . $layout . ' Template ' . ECTBE_VERSION . '------>';
 				if(isset($settings['ectbe_disable_schema']) && $settings['ectbe_disable_schema'] !== 'yes'){
 					if ( $all_events && class_exists( 'Tribe__Events__JSON_LD__Event' ) ) {
 						$args    = array(
@@ -808,7 +808,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					$venue_details = tribe_get_venue_details( $event_id );
 					if ( tribe_has_venue( $event_id ) && isset( $venue_details['linked_name'] ) && $ectbe_venue != 'yes' ) {
 						$venue_details_html = '<div class="ectbe-evt-venue"><span class="ectbe-icon"><i class="ectbe-icon-location" aria-hidden="true"></i></span>
-						<span class="ectbe-venue-details ectbe-address">' . implode( ',<br>', preg_replace( '#<a.*?>([^>]*)</a>#i', '$1', $venue_details ) ) . '</span></div>';
+						<span class="ectbe-venue-details ectbe-address">' . wp_kses_post( implode( ',<br>', preg_replace( '#<a.*?>([^>]*)</a>#i', '$1', $venue_details ) ) ) . '</span></div>';
 					}
 					if ( $display_desc == 'yes' ) {
 						$evt_desc = '<div class="ectbe-evt-description">' . tribe_events_get_the_excerpt( $event_id, wp_kses_allowed_html( 'post' ) ) . '</div>';
@@ -823,7 +823,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					$ev_endyear      = tribe_get_end_date( $event_id, false, 'Y' );
 					if ( ( $layout == 'list' && $style == 'style-2' ) && $event_year != $display_year ) {
 						$display_year = $event_year;
-						$ectbe_events_html .= '<div class="ectbe-month-header ' . esc_attr( $event_type ) . '">' . esc_attr( $display_year ) . '</div>';
+						$ectbe_events_html .= '<div class="ectbe-month-header ' . esc_attr( $event_type ) . '">' . esc_html( $display_year ) . '</div>';
 					}
 					$ectbe_events_html .= '<div id="event-' . esc_attr( $event_id ) . '" class="ectbe-inner-wrapper ' . esc_attr( $event_type ) . '">';
 
@@ -838,7 +838,8 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $event_output;
 			if ( $compatibility_styles != '' ) {
-				echo '<style type="text/css">' . esc_attr( wp_strip_all_tags( $compatibility_styles ) ) . '</style>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo '<style type="text/css">' . wp_strip_all_tags( $compatibility_styles ) . '</style>';
 			}
 		}
 	}

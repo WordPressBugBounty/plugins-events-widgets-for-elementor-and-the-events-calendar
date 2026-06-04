@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
  * 
  * Do not call or initialize this class directly, instead use the function mentioned at the bottom of this file
  */
-//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound, WordPress.Security.NonceVerification.Recommended
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 if ( !class_exists('cool_plugins_events_addons')) {
 
     class cool_plugins_events_addons {
@@ -59,13 +59,6 @@ if ( !class_exists('cool_plugins_events_addons')) {
             }
             
             public function ect_dashboard_install_plugin() {
-
-
-                if ( ! current_user_can( 'install_plugins' ) ) {
-                    $status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'events-widgets-for-elementor-and-the-events-calendar' );
-                    wp_send_json_error( $status );
-                }
-
 			    if ( empty( $_POST['slug'] ) ) {
 				    wp_send_json_error( array(
 					    'slug'         => '',
@@ -77,6 +70,12 @@ if ( !class_exists('cool_plugins_events_addons')) {
 		        $plugin_slug = sanitize_key( wp_unslash( $_POST['slug'] ) );
 
 			    check_ajax_referer('ect-plugin-install-' . $plugin_slug);
+
+                if ( ! current_user_can( 'install_plugins' ) ) {
+                    $status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'events-widgets-for-elementor-and-the-events-calendar' );
+                    wp_send_json_error( $status );
+                }
+
                 // Only allow installation of known marketing plugins (ignore client-manipulated slugs).
 			    $allowed_slugs = array(
 				    "event-page-templates-addon-for-the-events-calendar",
@@ -102,7 +101,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
 
 			    $status = array(
 				    'install' => 'plugin',
-				    'slug'    => sanitize_key( wp_unslash( $_POST['slug'] ) ),
+				    'slug'    => $plugin_slug,
 			    );
 			
                 require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
@@ -118,7 +117,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
                     'events-speakers-and-sponsors',
                 );
 
-			if ( in_array( $plugin_slug, $pro_plugins_slugs ) ) {
+			if ( in_array( $plugin_slug, $pro_plugins_slugs, true ) ) {
 
 				if ( ! current_user_can( 'activate_plugin', $plugin_slug ) ) {
 					wp_send_json_error( array( 'message' => __( 'Permission denied', 'events-widgets-for-elementor-and-the-events-calendar' ) ) );
@@ -126,7 +125,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
 
 				$plugin_file = $plugin_slug . '/' . $plugin_slug . '.php';
 
-				$pagenow        = isset($_POST['pagenow']) ? sanitize_key($_POST['pagenow']) : '';
+				$pagenow        = isset($_POST['pagenow']) ? sanitize_key(wp_unslash($_POST['pagenow'])) : '';
 				$network_wide = (is_multisite() && 'import' !== $pagenow);
 				$activation_result = activate_plugin($plugin_file, '', $network_wide);
 
@@ -148,7 +147,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
 				));
 
 				if ( is_wp_error( $api ) ) {
-					$status['errorMessage'] = $api->get_error_message();
+					$status['errorMessage'] = sanitize_text_field($api->get_error_message());
 					wp_send_json_error( $status );
 				}
 
@@ -173,11 +172,11 @@ if ( !class_exists('cool_plugins_events_addons')) {
 					if($skin->result->get_error_message() === 'Destination folder already exists.'){
 							
 						$install_status = install_plugin_install_status( $api );
-						$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key( $_POST['pagenow'] ) : '';
+						$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key(wp_unslash($_POST['pagenow'])) : '';
 
 						if ( current_user_can( 'activate_plugin', $install_status['file'] )) {
 
-							$network_wide = ( is_multisite() && 'import' !== $pagenow );
+                            $network_wide = (is_multisite() && current_user_can( 'manage_network_plugins' ) && 'import' !== $pagenow );
 							$activation_result = activate_plugin( $install_status['file'], '', $network_wide );
 							if ( is_wp_error( $activation_result ) ) {
 								
@@ -219,7 +218,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
 				}
 
 				$install_status = install_plugin_install_status( $api );
-				$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key( $_POST['pagenow'] ) : '';
+				$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key(wp_unslash($_POST['pagenow'])) : '';
 
 				// 🔄 Auto-activate the plugin right after successful install
 				if ( current_user_can( 'activate_plugin', $install_status['file'] ) && is_plugin_inactive( $install_status['file'] ) ) {
@@ -706,7 +705,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
                         <?php elseif ( $type === 'pro' ) : ?>
                             <div class="<?php echo esc_attr($prefix); ?>-card-footer">
                                 <?php $buy_link = ! empty( $plugin['buyLink'] ) ? esc_url( $plugin['buyLink'] ) : '#'; ?>
-                                <a href="<?php echo esc_attr( $buy_link ); ?>"
+                                <a href="<?php echo esc_url( $buy_link ); ?>"
                                    target="_blank"
                                    rel="noopener noreferrer"
                                    class="button <?php echo esc_attr($prefix); ?>-button-primary <?php echo esc_attr($prefix); ?>-btn-buy">
@@ -749,7 +748,18 @@ if ( !class_exists('cool_plugins_events_addons')) {
                 return array();
             }
             
-            $json_content = file_get_contents($json_file);
+            global $wp_filesystem;
+
+            if ( empty( $wp_filesystem ) ) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                WP_Filesystem();
+            }
+
+            $json_content = $wp_filesystem->get_contents( $json_file );
+
+            if ( false === $json_content ) {
+                return array();
+            }
            
             $version_constants = array(
                 'ECT_VERSION',
