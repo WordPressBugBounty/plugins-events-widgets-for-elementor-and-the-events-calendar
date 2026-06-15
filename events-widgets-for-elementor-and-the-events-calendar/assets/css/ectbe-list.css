@@ -42,7 +42,7 @@
   gap: 8px;
 }
 .ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area .ectbe-ev-day {
-  font-size: 35px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0px;
 }
@@ -52,8 +52,16 @@
   margin: 0px;
 }
 .ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area .ectbe-ev-yr {
-  font-size: 13px;
+  font-size: 15px;
   margin: 0px;
+}
+.ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area .ectbe-week-day {
+  font-size: 15px;
+  margin: 0px;
+  text-transform: uppercase;
+}
+.ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area .ectbe-evt-time{
+  margin-bottom: 0px;
 }
 .ectbe-list-wrapper.style-1 .ectbe-inner-wrapper .ectbe-content-box .ectbe-evt-venue {
   gap: 4px;
@@ -69,6 +77,9 @@
 /******* LIST STYLE 1 END*******/
 
 /******* LIST STYLE 2 *******/
+.ectbe-wrapper.ectbe-list-wrapper.style-2 .ectbe-week-day {
+    font-size: 18px;
+}
 .ectbe-list-wrapper.style-2 .ectbe-inner-wrapper .ectbe-evt-img {
   width: 45%;
   height: 250px;
@@ -322,7 +333,7 @@ text-transform: uppercase;
 .ectbe-list-wrapper.style-2 .ectbe-content-box .ectbe-date-area{
   display: flex;
   flex-direction: row;
-  text-align: center;
+  text-align: left;
   align-items: center;
   justify-content: flex-start;
 }

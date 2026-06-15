@@ -5,7 +5,7 @@ Tags: the events calendar, events, event calendar, elementor widget, events cale
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Elementor tested up to: 4.1.1
@@ -395,6 +395,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 ---
 
 == Changelog ==
+
+= 1.8.1 | Jun 15, 2026 =
+* Improved: Cleaned up the notice registration logic for better readability.
 
 = 1.8.0 | Jun 04, 2026 =
 * Improved: Refined all layouts and enhanced calendar popup design.
