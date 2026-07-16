@@ -218,6 +218,42 @@ overflow: hidden !important;
   cursor: pointer;
 }
 
+/* Calendar event colors via Elementor Global Color CSS variables (same pattern as Main Skin). */
+.ectbe-calendar-wrapper {
+  --e-ectbe-calendar-bg-color: #5725ff;
+  --e-ectbe-calendar-text-color: #ffffff;
+}
+.ectbe-calendar-wrapper .fc-h-event,
+.ectbe-calendar-wrapper .fc-v-event,
+.ectbe-calendar-wrapper .fc-daygrid-event,
+.ectbe-calendar-wrapper .fc-timegrid-event {
+  background-color: var(--e-ectbe-calendar-bg-color);
+  border-color: var(--e-ectbe-calendar-bg-color);
+}
+.ectbe-calendar-wrapper .fc-event .fc-event-main {
+  color: var(--e-ectbe-calendar-text-color);
+}
+.ectbe-calendar-wrapper .fc-list-event-dot {
+  border-color: var(--e-ectbe-calendar-bg-color);
+}
+.ectbe-calendar-wrapper .fc-list-event:hover td {
+  background-color: transparent;
+}
+.ectbe-calendar-wrapper .fc-list-event-title a,
+.ectbe-calendar-wrapper a.fc-event,
+.ectbe-calendar-wrapper a.fc-event:hover {
+  color: var(--e-ectbe-calendar-text-color);
+}
+.ectbe-calendar-wrapper .fc-daygrid-dot-event .fc-event-title {
+  color: inherit;
+}
+.ectbe-calendar-wrapper .fc-daygrid-dot-event .fc-daygrid-event-dot {
+  border-color: var(--e-ectbe-calendar-bg-color);
+}
+.ectbe-calendar-wrapper .fc-daygrid-dot-event {
+  color: var(--e-ectbe-calendar-bg-color);
+}
+
 
 @media screen and (max-width:767px) {
 .ectbe-calendar-wrapper .ectbe-event-calendar-cls.fc .fc-toolbar {

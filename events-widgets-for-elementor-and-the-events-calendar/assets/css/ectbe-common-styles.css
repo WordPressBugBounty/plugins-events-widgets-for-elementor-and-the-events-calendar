@@ -223,11 +223,10 @@ abbr.tribe-region.tribe-events-abbr {
 /* -------------------------- Date & Time Style Ends ---------------------------------*/
 /* -------------------------- Content Style Starts ---------------------------------*/
 .ectbe-wrapper .ectbe-evt-venue,
-.ectbe-wrapper .ectbe-evt-google a,
 .ectbe-wrapper .ectbe-evt-cost  {
   color: var(--e-ectbe-evt-venue-color);
   font-size: var(--e-ectbe-evt-venue-size);
-   margin: var(--e-ectbe-evt-venue-margin);
+  margin: var(--e-ectbe-evt-venue-margin);
   margin-bottom: 10px;
   display: var(--e-ectbe-evt-venue-flex);
 }

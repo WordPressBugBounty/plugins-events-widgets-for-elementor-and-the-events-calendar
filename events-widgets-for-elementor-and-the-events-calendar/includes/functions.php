@@ -88,12 +88,10 @@ function ectbe_get_the_events_calendar_events( $settings ) {
 		if ( ! tribe_event_is_all_day( $event->ID ) ) {
 			$all_day = '';
 		}
-		// $description     = mb_strimwidth( $event->post_content, 0, 150, '...' );
 		$description     = substr( $event->post_content, 0, 150 );
 		$imgurl          = ectbe_get_event_image( $event->ID );
 		$eventCost       = tribe_get_cost( $event->ID, true );
-		$template        = '';
-		$event_schedule  = ectbe_event_schedule( $event->ID, $date_format, $template );
+		$event_schedule  = ectbe_event_schedule( $event->ID, $date_format);
 		$ev_time         = ectbe_tribe_event_time( $event->ID, false );
 		$calendar_data[] = array(
 			'id'             => $event->ID,
@@ -103,9 +101,6 @@ function ectbe_get_the_events_calendar_events( $settings ) {
 			),
 			'start'          => tribe_get_start_date( $event->ID, true, $date_format ),
 			'end'            => tribe_get_end_date( $event->ID, true, $date_format ),
-			// 'borderColor' => !empty($settings['ectbe_event_global_popup_ribbon_color']) ? $settings['ectbe_event_global_popup_ribbon_color'] : '#10ecab',
-			'textColor'      => $settings['ectbe_calendar_text_color'],
-			'color'          => $settings['ectbe_calendar_bg_color'],
 			'url'            => ( $settings['ectbe_hide_read_more_link'] !== 'yes' ) ? tribe_get_event_link( $event->ID ) : '',
 			'allDay'         => $all_day,
 			'description'    => $description,
@@ -132,7 +127,7 @@ function ectbe_display_category( $event_id ) {
 	return $ectbe_cate;
 }
 // generate events dates html
-function ectbe_event_schedule( $event_id, $date_format, $template ) {
+function ectbe_event_schedule( $event_id, $date_format ) {
 	   /*Date Format START*/
 	$event_schedule = '';
 	$ev_time        = ectbe_tribe_event_time( $event_id, false );
@@ -386,6 +381,22 @@ function ectbe_older_v_compatibility( $post_id, $settings, $layout, $widget_id )
 
 	if ( ! empty( $ectbe_read_more_color ) ) {
 		$custom_styles .= $selector . '{--e-ectbe-evt-read-more-color:' . $ectbe_read_more_color . ';}';
+	}
+	
+	$ectbe_calendar_bg_color = isset( $settings['ectbe_calendar_bg_color'] )
+		? sanitize_hex_color( $settings['ectbe_calendar_bg_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_calendar_bg_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-calendar-bg-color:' . $ectbe_calendar_bg_color . ';}';
+	}
+	
+	$ectbe_calendar_text_color = isset( $settings['ectbe_calendar_text_color'] )
+		? sanitize_hex_color( $settings['ectbe_calendar_text_color'] )
+		: '';
+
+	if ( ! empty( $ectbe_calendar_text_color ) ) {
+		$custom_styles .= $selector . '{--e-ectbe-calendar-text-color:' . $ectbe_calendar_text_color . ';}';
 	}
 	$title_key = 'ectbe_title_typography';
 	if ( isset( $settings[ $title_key . $typo_index ] ) &&

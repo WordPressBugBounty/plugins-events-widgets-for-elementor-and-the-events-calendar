@@ -16,9 +16,7 @@ $ectbe_calendar_html .= '<div id="ectbe-event-calendar-'.esc_attr( $this->get_id
     data-rangestart = "'.esc_attr( $rangeStart).'"
     data-rangeend = "'.esc_attr( $rangeEnd ).'"
     data-max_events = "'.esc_attr( $max_events ).'"
-    data-ev_category="'.esc_attr( htmlspecialchars(json_encode($ev_category), ENT_QUOTES, 'UTF-8' )).'"
-    data-textcolor = "'.esc_attr( $textColor ).'"
-    data-color = "'.esc_attr( $color ).'">';
+    data-ev_category="'.esc_attr( htmlspecialchars(json_encode($ev_category), ENT_QUOTES, 'UTF-8' )).'">';
     $ectbe_calendar_html .= '</div>';
 
 

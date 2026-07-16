@@ -1,5 +1,4 @@
-.ectbe-feedback-notice-wrapper.notice.notice-info.is-dismissible,
-.ectbe-elementor-addon-notice_admin_notice {
+.ectbe-feedback-notice-wrapper.notice.notice-info.is-dismissible{
     padding: 5px;
     display: table;
     /* width: calc(100% - 10px); */
@@ -9,23 +8,7 @@
     box-sizing: border-box;
 }
 
-.ectbe-feedback-notice-wrapper .logo_container,
-.ectbe-simple-notice .logo_container {
-    width: 80px;
-    display: table-cell;
-    padding: 0 10px 0 0;
-    vertical-align: middle;
-}
-
-.ectbe-feedback-notice-wrapper .logo_container a,
-.ectbe-feedback-notice-wrapper .logo_container img {
-    width: 100%;
-    height: auto;
-    display: inline-block;
-}
-
-.ectbe-feedback-notice-wrapper .message_container,
-.ectbe-simple-notice .message_container {
+.ectbe-feedback-notice-wrapper .message_container{
     display: table-cell;
     padding: 5px 22px 5px 5px;
     vertical-align: middle;
@@ -53,16 +36,4 @@ CSS for X in button */
 
 .ectbe-feedback-notice-wrapper ul li .button-primary:hover {
     border: 1px solid #2271b1;
-}
-
-.ctp-notice-red.uninstall {
-    max-width: 700px;
-    display: block;
-    padding: 8px;
-    border: 2px solid #157d0f;
-    margin: 10px 0;
-    background: #13a50b;
-    font-weight: bold;
-    font-size: 13px;
-    color: #ffffff;
 }

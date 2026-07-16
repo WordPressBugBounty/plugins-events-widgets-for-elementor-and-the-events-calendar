@@ -61,7 +61,7 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		return $scripts;
 	}
 	public function get_style_depends() {
-		return array( 'ectbe-calendar-main-css', 'ectbe-custom-css', 'ectbe-list-css', 'ectbe-minimal-list', 'ectbe-common-styles' );
+		return array( 'ectbe-calendar-main-css', 'ectbe-custom-css', 'ectbe-list-css', 'ectbe-common-styles' );
 	}
 	public function get_name() {
 		return 'the-events-calendar-addon';
@@ -286,6 +286,9 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 				'condition'   => array(
 					'ectbe_layout' => 'calendar',
 				),
+				'selectors' => array(
+					'{{WRAPPER}} .ectbe-calendar-wrapper' => '--e-ectbe-calendar-bg-color: {{VALUE}}',
+				),
 			)
 		);
 		$this->add_control(
@@ -296,6 +299,9 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 				'default'   => '#ffffff',
 				'condition' => array(
 					'ectbe_layout' => 'calendar',
+				),
+				'selectors' => array(
+					'{{WRAPPER}} .ectbe-calendar-wrapper' => '--e-ectbe-calendar-text-color: {{VALUE}}',
 				),
 			)
 		);
@@ -711,8 +717,6 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$local                = get_bloginfo( 'language' );
 		$default_view         = $settings['ectbe_calendar_default_view'];
 		$details_link         = $settings['ectbe_hide_read_more_link'];
-		$textColor            = $settings['ectbe_calendar_text_color'];
-		$color                = $settings['ectbe_calendar_bg_color'];
 		$ectbe_venue          = $settings['ectbe_venue'];
 		$daterange            = '';
 		$compatibility_styles = '';
@@ -728,8 +732,6 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		}
 		$ectbe_events_html  = '';
 		$event_output = '';
-		$ectbe_cost   = '';
-		$evt_desc     = '';
 		$display_cate = $settings['ectbe_display_cate'];
 		$display_desc = $settings['ectbe_display_desc'];
 		$display_year = '';
@@ -748,15 +750,20 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 				global $post;
 				$event_output .= '<!------Events ' . $layout . ' Template ' . ECTBE_VERSION . '------>';
 				if(isset($settings['ectbe_disable_schema']) && $settings['ectbe_disable_schema'] !== 'yes'){
-					if ( $all_events && class_exists( 'Tribe__Events__JSON_LD__Event' ) ) {
-						$args    = array(
-							'post_type'      => 'tribe_events',	
-							'posts_per_page' => -1,
-							'order'          => 'ASC',
-						);
-						$events = new WP_Query($args);
-						$event_output .= Tribe__Events__JSON_LD__Event::instance()->get_markup( $events->posts);
-					}
+					if ( ! empty( $all_events ) && class_exists( 'Tribe__Events__JSON_LD__Event' ) ) {
+						$schema_events = array();
+							foreach ( $all_events as $event ) {
+								$event_id = ! empty( $event['id'] ) ? absint( $event['id'] ) : 0;
+								if ( $event_id ) {
+									$schema_events[] = get_post( $event_id );
+								}
+							}
+							$schema_events = array_filter( $schema_events );
+						
+							if ( ! empty( $schema_events ) ) {
+								$event_output .= Tribe__Events__JSON_LD__Event::instance()->get_markup( $schema_events );
+							}
+						}
 				}
 				$event_output .= '<div ' . $this->get_render_attribute_string( 'ectbe-wrapper' ) . '>';
 			if ( ! empty( $all_events ) ) {
@@ -770,16 +777,14 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					$description        = $event['description'];
 					$eventimgurl        = $event['eventimgurl'];
 					$eventcost          = $event['eventcost'];
-					$template           = '';
-					$date_format        = '';
 					$ectbe_cost         = '';
 					$evt_title          = '';
 					$ectbe_cate         = '';
-					$header_html        = '';
+		            $evt_desc           = '';
 					$cate               = ectbe_display_category( $event_id );
 					$venue_details_html = '';
 					$event_type         = tribe( 'tec.featured_events' )->is_featured( $event_id ) ? 'ectbe-featured-event' : 'ectbe-simple-event';
-					$ev_post_img        = ectbe_get_event_image( $event_id, $size = 'large' );
+					$ev_post_img        = ! empty( $event['eventimgurl'] ) ? $event['eventimgurl'] : '';
 					if ( ! empty( $ev_post_img ) ) {
 						$ev_post_img_url = esc_url( $ev_post_img );
 						$ev_post_img_html = '<div class="ectbe-evt-img"><img src="' . $ev_post_img_url . '" alt="" /></div>';
@@ -798,11 +803,12 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 					if ( ! empty( $cate && $display_cate == 'yes' ) ) {
 						$ectbe_cate = '<div class="ectbe-ev-cate">' . wp_kses_post( $cate ) . '</div>';
 					}
-					if ( tribe_get_cost( $event_id ) ) {
+					$event_cost = ! empty( $event['eventcost'] ) ? $event['eventcost'] : '';
+					if ( ! empty( $event_cost ) ) {
 						$ectbe_cost = '<div class="ectbe-evt-cost">
-							<span class="ectbe-icon"><i class="ectbe-icon-ticket" aria-hidden="true"></i></span>
-							<span class="ectbe-rate">' . wp_kses_post( tribe_get_cost( $event_id, true ) ) . '</span>
-						</div>';
+									<span class="ectbe-icon"><i class="ectbe-icon-ticket" aria-hidden="true"></i></span>
+									<span class="ectbe-rate">' . wp_kses_post( $event_cost ) . '</span>
+									</div>';
 					}
 					// Address
 					$venue_details = tribe_get_venue_details( $event_id );
@@ -810,8 +816,17 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 						$venue_details_html = '<div class="ectbe-evt-venue"><span class="ectbe-icon"><i class="ectbe-icon-location" aria-hidden="true"></i></span>
 						<span class="ectbe-venue-details ectbe-address">' . wp_kses_post( implode( ',<br>', preg_replace( '#<a.*?>([^>]*)</a>#i', '$1', $venue_details ) ) ) . '</span></div>';
 					}
-					if ( $display_desc == 'yes' ) {
-						$evt_desc = '<div class="ectbe-evt-description">' . tribe_events_get_the_excerpt( $event_id, wp_kses_allowed_html( 'post' ) ) . '</div>';
+					if ( 'yes' === $display_desc ) {
+						$event_post    = get_post( $event_id );
+						$raw_content   = '';
+						if ( $event_post instanceof WP_Post ) {
+							// Prefer manual excerpt when set; otherwise use full content so Words Count can go beyond Tribe's default ~55-word limit.
+							$raw_content = ! empty( $event_post->post_excerpt )
+								? $event_post->post_excerpt
+								: $event_post->post_content;
+						}
+						$excerpt    = wp_trim_words( wp_strip_all_tags( $raw_content ), 50, '...' );
+						$evt_desc   = '<div class="ectbe-evt-description">' . wp_kses_post( $excerpt ) . '</div>';
 					}
 					$ectbe_read_more = '<div class="ectbe-evt-more-box"><a class="ectbe-evt-read-more" href="' . esc_url( $url ) . '">' . esc_html__( 'Find out more', 'events-widgets-for-elementor-and-the-events-calendar' ) . '</a></div>';
 					$ev_time         = '<div class="ectbe-evt-time"><i class="ectbe-icon-clock"></i>' . esc_html( $ev_time ) . '</div>';

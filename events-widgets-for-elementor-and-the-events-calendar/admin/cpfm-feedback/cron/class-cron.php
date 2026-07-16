@@ -10,24 +10,23 @@ if (!class_exists('ECTBE_cronjob')) {
         public function __construct() {
           // Register cron jobs
             add_filter('cron_schedules', array($this, 'ectbe_cron_schedules'));
-            add_action('ectbe_extra_data_update', array($this, 'ectbe_cron_extra_data_autoupdater'));
-        }
-        
-        function ectbe_cron_extra_data_autoupdater() {
-                if (class_exists('ECTBE_cronjob')) {
-                    ECTBE_cronjob::ectbe_send_data();
-                }
+            add_action('ectbe_extra_data_update', array(__CLASS__, 'ectbe_send_data'));
         }
            
        static public function ectbe_send_data() {
                    
-            $feedback_url = ECTBE_FEEDBACK_API . 'wp-json/coolplugins-feedback/v1/site';
-            require_once ECTBE_PATH . 'admin/feedback/admin-feedback-form.php';
-
-            if (!defined('ECTBE_PATH')  || !class_exists('\ECTBE\feedback\ectbe_feedback') ) {
+            if ( ! defined( 'ECTBE_PATH' ) || ! defined( 'ECTBE_FEEDBACK_API' ) ) {
                 return;
             }
-            
+
+            require_once ECTBE_PATH . 'admin/feedback/admin-feedback-form.php';
+
+            if ( ! class_exists( '\ECTBE\feedback\ectbe_feedback' ) ) {
+                return;
+            }
+
+            $feedback_url = ECTBE_FEEDBACK_API . 'wp-json/coolplugins-feedback/v1/site';
+
             $extra_data         = new \ECTBE\feedback\ectbe_feedback();
             $extra_data_details = $extra_data->cpfm_get_user_info();
 
@@ -94,5 +93,5 @@ if (!class_exists('ECTBE_cronjob')) {
 
     }
 
-    $ectbe_cron_init = new ECTBE_cronjob();
+    new ECTBE_cronjob();
 }

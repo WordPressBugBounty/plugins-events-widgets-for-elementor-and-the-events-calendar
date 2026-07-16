@@ -3,14 +3,14 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.8.1
+ * Version:     1.8.2
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: events-widgets-for-elementor-and-the-events-calendar
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Elementor tested up to: 4.1.1
- * Elementor Pro tested up to: 4.1.0
+ * Elementor tested up to: 4.1.5
+ * Elementor Pro tested up to: 4.1.3
  * Requires Plugins: elementor, the-events-calendar
 
  */
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.8.1');
+define('ECTBE_VERSION', '1.8.2');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -62,11 +62,9 @@ final class Events_Calendar_Addon
     private function __construct()
     {
         $this->include_files();
-        // Load the plugin after Elementor (and other plugins) are loaded.
-        add_action('init', array($this, 'ectbe_add_text_domain'));
         add_action('plugins_loaded', array($this, 'ectbe_plugins_loaded'));
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'ectbe_add_action_links'));
-        add_action('plugin_row_meta', array($this, 'ectbe_addMeta_Links'), 10, 2);
+        add_action('plugin_row_meta', array($this, 'ectbe_add_meta_links'), 10, 2);
         add_filter('tribe_rest_event_max_per_page', function($max) {
             return 999;
         });
@@ -224,12 +222,12 @@ final class Events_Calendar_Addon
      *
      * @return array The modified action links array.
      */
-    public function ectbe_addMeta_Links($links, $file)
+    public function ectbe_add_meta_links($links, $file)
     {
-        if (strpos($file, basename(__FILE__))) {
+        if ( strpos( $file, basename( __FILE__ ) ) !== false ) {
             $ectanchor = esc_html__('Video Tutorials', 'events-widgets-for-elementor-and-the-events-calendar');
             $ectvideourl = 'https://youtube.com/playlist?list=PLAs6S1hKb-gNX_A-ZpsD-tO9aQdMmwrU5&si=m9mE0xDu8Ei0x41u';
-            $links[] = '<a href="' . esc_url($ectvideourl) . '" target="_blank">' . $ectanchor . '</a>';
+            $links[] = '<a href="' . esc_url($ectvideourl) . '" target="_blank" rel="noopener noreferrer" >' . $ectanchor . '</a>';
         }
 
         return $links;
@@ -241,17 +239,6 @@ final class Events_Calendar_Addon
         $plugin_visit_website = 'https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list';
         $links[] = '<a  style="font-weight:bold" href="' . esc_url($plugin_visit_website) . '" target="_blank">' . esc_html__('Get Pro', 'events-widgets-for-elementor-and-the-events-calendar') . '</a>';
         return $links;
-    }
-
-    public function ectbe_add_text_domain()
-    {
-        if (!get_option( 'ectbe_initial_save_version' ) ) {
-            add_option( 'ectbe_initial_save_version', ECTBE_VERSION );
-        }
-
-        if(!get_option( 'ectbe-install-date' ) ) {
-            add_option( 'ectbe-install-date', gmdate('Y-m-d h:i:s') );
-        }
     }
     /**
      * Code you want to run when all other plugins loaded.

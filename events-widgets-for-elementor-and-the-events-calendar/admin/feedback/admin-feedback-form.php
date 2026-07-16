@@ -38,15 +38,11 @@ class ectbe_feedback {
 
 	/*
 	|-----------------------------------------------------------------|
-	|   HTML for creating feedback popup form                         |
+	|   Deactivation feedback reason options                          |
 	|-----------------------------------------------------------------|
 	*/
-	public function show_deactivate_feedback_popup() {
-		$screen = get_current_screen();
-		if ( ! isset( $screen ) || $screen->id != 'plugins' ) {
-			return;
-		}
-		$deactivate_reasons = array(
+	private function get_deactivate_reasons() {
+		return array(
 			'didnt_work_as_expected'         => array(
 				'title'             => __( 'The plugin didn\'t work as expected.', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'input_placeholder' => 'What did you expect?',
@@ -68,6 +64,19 @@ class ectbe_feedback {
 				'input_placeholder' => __( 'Please share the reason.', 'events-widgets-for-elementor-and-the-events-calendar' ),
 			),
 		);
+	}
+
+	/*
+	|-----------------------------------------------------------------|
+	|   HTML for creating feedback popup form                         |
+	|-----------------------------------------------------------------|
+	*/
+	public function show_deactivate_feedback_popup() {
+		$screen = get_current_screen();
+		if ( ! isset( $screen ) || $screen->id != 'plugins' ) {
+			return;
+		}
+		$deactivate_reasons = $this->get_deactivate_reasons();
 
 		?>
 		<div id="cool-plugins-feedback-<?php echo esc_attr( $this->plugin_slug ); ?>" class="hide-feedback-popup">
@@ -188,28 +197,7 @@ class ectbe_feedback {
 		}
 		check_ajax_referer( '_cool-plugins_deactivate_feedback_nonce' );
 			$reason             = isset( $_POST['reason'] ) ? sanitize_text_field( wp_unslash( $_POST['reason'] ) ) : '';
-			$deactivate_reasons = array(
-				'didnt_work_as_expected'         => array(
-					'title'             => __( 'The plugin didn\'t work as expected', 'events-widgets-for-elementor-and-the-events-calendar' ),
-					'input_placeholder' => 'What did you expect?',
-				),
-				'found_a_better_plugin'          => array(
-					'title'             => __( 'I found a better plugin', 'events-widgets-for-elementor-and-the-events-calendar' ),
-					'input_placeholder' => __( 'Please share which plugin.', 'events-widgets-for-elementor-and-the-events-calendar' ),
-				),
-				'couldnt_get_the_plugin_to_work' => array(
-					'title'             => __( 'The plugin is not working', 'events-widgets-for-elementor-and-the-events-calendar' ),
-					'input_placeholder' => 'Please share your issue. So we can fix that for other users.',
-				),
-				'temporary_deactivation'         => array(
-					'title'             => __( 'It\'s a temporary deactivation.', 'events-widgets-for-elementor-and-the-events-calendar' ),
-					'input_placeholder' => '',
-				),
-				'other'                          => array(
-					'title'             => __( 'Other', 'events-widgets-for-elementor-and-the-events-calendar' ),
-					'input_placeholder' => __( 'Please share the reason.', 'events-widgets-for-elementor-and-the-events-calendar' ),
-				),
-			);
+			$deactivate_reasons = $this->get_deactivate_reasons();
 
 			$plugin_initial =  get_option( 'ectbe_initial_save_version' );
 			$deactivation_reason = array_key_exists( $reason, $deactivate_reasons ) ? $reason : 'other';

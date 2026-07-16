@@ -2,9 +2,7 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
   getDefaultSettings() {
     return {
       selectors: {
-        calendarWrapper: '.ectbe-calendar-wrapper',
         calenderSelector: '.ectbe-event-calendar-cls',
-        calendarEl: '#ectbe-event-calendar',
         popupmodal: '#ectbe-popup-wraper',
         popupClose: '.ectbe-modal-close',
       },
@@ -14,9 +12,7 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
   getDefaultElements() {
     const selectors = this.getSettings('selectors');
     return {
-      $calendarWrapper: this.$element.find(selectors.calendarWrapper),
       $calenderSelector: this.$element.find(selectors.calenderSelector),
-      $calendarEl: this.$element.find(selectors.calendarEl),
       $popupmodal: this.$element.find(selectors.popupmodal),
       $popupClose: this.$element.find(selectors.popupClose),
     };
@@ -34,8 +30,6 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
         rangeEnd = selector.data("rangeend"),
         max_events = selector.data("max_events"),
         ev_category = selector.data("ev_category"),
-        textColor = selector.data("textcolor"),
-        color = selector.data("color"),
         calendarEl = document.getElementById('ectbe-event-calendar-' + cal_id);
 
       var isenglish = locale.indexOf('en-') !== -1;
@@ -95,16 +89,19 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
               var events = [];
               jQuery.map(result.events, function (eventEl) {
                 var imgurl = eventEl.image.url ? eventEl.image.url : '';
+                var descriptionWords = eventEl.description.split(" ");
+                var descriptionExcerpt = descriptionWords.slice(0, 10).join(" ");
+                if (descriptionWords.length > 10) {
+                  descriptionExcerpt += "...";
+                }
                 events.push({
                   'id': eventEl.id,
                   'title': eventEl.title,
                   'start': eventEl.start_date,
                   'end': eventEl.end_date,
-                  'textColor': textColor,
-                  'color': color,
                   extendedProps: {
                     'imgurl': imgurl,
-                    'description': (eventEl.description.split(" ").length > 10) ? eventEl.description.split(" ").splice(0, 10).join(" ") + "..." : eventEl.description.split(" ").splice(0, 10).join(" "),
+                    'description': descriptionExcerpt,
                     'detailurl': eventEl.url,
                     'eventcost': (eventEl.cost_details.values.length !== 0) ? (eventEl.cost_details.values[0] !== "0") ? eventEl.cost_details.currency_symbol + eventEl.cost_details.values[0] : "FREE" : ""
                   }
@@ -129,27 +126,38 @@ class ECAECalendarClass extends elementorModules.frontend.handlers.Base {
           jQuery('.ectbe-event-date-end').text(enddate);
 
           var feature_image = info.event.extendedProps.imgurl;
-          if (feature_image && feature_image.trim() !== '') { 
-            if (jQuery('.ectbe-featured-img').length === 0) {
-                jQuery('.ectbe-modal-content').prepend('<div class="ectbe-featured-img"></div>');
-            }
-        
-            jQuery('.ectbe-featured-img')
-                .empty()
-                .append(jQuery('<img>', { src: encodeURI(feature_image) }))
-                .find('img').addClass('ectbe-img');
-        
+          var $featured_image = jQuery( '.ectbe-featured-img' );
+
+          if ( feature_image && feature_image.trim() !== '' ) {
+          if ( $featured_image.length === 0 ) {
+          $featured_image = jQuery( '<div>', {
+          class: 'ectbe-featured-img'
+          } );
+
+            jQuery( '.ectbe-modal-content' ).prepend( $featured_image );
+          }
+
+          $featured_image
+            .empty()
+            .append(
+              jQuery( '<img>', {
+                src: encodeURI( feature_image ),
+                class: 'ectbe-img'
+              } )
+            );
+
           } else {
-              jQuery('.ectbe-featured-img').remove();
+          $featured_image.remove();
           }
 
           let cost = info.event.extendedProps.eventcost;
+          var $cost = jQuery( '.ectbe-modal-body span.ectbe-cost' );
           if (cost != '') {
-            jQuery('.ectbe-modal-body span.ectbe-cost').addClass('fa fa-money');
+            $cost.addClass('fa fa-money');
           } else {
-            jQuery('.ectbe-modal-body span.ectbe-cost').removeClass('fa fa-money');
+            $cost.removeClass('fa fa-money');
           }
-          jQuery('.ectbe-modal-body span.ectbe-cost').text(cost);
+          $cost.text(cost);
 
           var description = info.event.extendedProps.description;
           description = description.length > 300 ? description.substring(0, 250) + "..." : description;

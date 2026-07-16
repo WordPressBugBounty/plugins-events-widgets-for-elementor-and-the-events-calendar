@@ -162,8 +162,6 @@ class CPFM_Feedback_Notice {
         if (!current_user_can('manage_options') || !function_exists('get_current_screen')) { 
             return;
         }
-
-        $screen         = get_current_screen();
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading page for display context only.
         $current_page   = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
 

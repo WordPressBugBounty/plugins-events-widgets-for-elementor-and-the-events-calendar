@@ -5,11 +5,11 @@ Tags: the events calendar, events, event calendar, elementor widget, events cale
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Elementor tested up to: 4.1.1
-Elementor Pro tested up to: 4.1.0
+Elementor tested up to: 4.1.5
+Elementor Pro tested up to: 4.1.3
 
 The Events Calendar Elementor widgets help you manage and display an upcoming events list with date, time, venue and event ticket booking details.
 
@@ -395,6 +395,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 ---
 
 == Changelog ==
+
+= 1.8.2 | Jul 16, 2026 =
+* Improved: Code quality and overall plugin stability.
+* Tested upto: Elementor version 4.1.5 & Elementor Pro version 4.1.3
+* Tested upto: The Events Calendar 6.17.0
 
 = 1.8.1 | Jun 15, 2026 =
 * Improved: Cleaned up the notice registration logic for better readability.

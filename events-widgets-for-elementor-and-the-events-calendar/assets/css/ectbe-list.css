@@ -6,13 +6,14 @@
   background-color: var(--ectbe-featd-evt-bg-color);
 }
 .ectbe-minimal-list-wrapper .ectbe-date-area {
-  width: 5.4em !important;
+  width: 5.4em;
   justify-content: center;
   background-color: var(--e-ectbe-date-area-background);
   border-radius: 14px;
-}
-.ectbe-minimal-list-wrapper .ectbe-content-box {
-  padding-left: 18px;
+  align-items: center;
+  padding: var(--e-ectbe-date-area-padding);
+  display: var(--e-ectbe-date-area-flex);
+  flex-direction: var(--e-ectbe-date-area-direction);
 }
 .ectbe-minimal-list-wrapper .ectbe-content-box {
   padding: 4px 18px 4px 18px;
@@ -26,6 +27,10 @@
   background-color: white;
   border-radius: 12px;
   padding: 18px !important;
+  margin-top: 20px;
+  overflow: hidden;
+  display: var(--e-ectbe-minimal-list-layout-flex);
+  align-items: var(--e-ectbe-minimal-list-layout-align);
 }
 /*******  MINIMAL LIST END*******/
 
@@ -62,6 +67,7 @@
 }
 .ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area .ectbe-evt-time{
   margin-bottom: 0px;
+  text-align: center;
 }
 .ectbe-list-wrapper.style-1 .ectbe-inner-wrapper .ectbe-content-box .ectbe-evt-venue {
   gap: 4px;
@@ -103,9 +109,6 @@
 /******* LIST STYLE 2 END*******/
 /* ---------------------------- NEW CSS END -----------------------------------------*/
 
-
-
-
 /* ---------------------------- (Common Css)-----------------------------------------*/
 /* -------------------------- Event Listing Styles Start -------------------------- */
 .ectbe-list-wrapper .ectbe-inner-wrapper {
@@ -137,16 +140,9 @@ align-items: var(--e-ectbe-evt-details-align);
 /* -------------------------- Event Button Styles End -------------------------- */
 /* End Common CSS */
 /* ---------------------------- (Style 1 Css Start)-----------------------------------------*/
-.ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area{
-font-size: 36px;
-}
 .ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-evt-time {
 font-size: var(--e-ectbe-evt-time-size);
 margin-bottom: 10px;
-}
-
-.ectbe-wrapper.ectbe-list-wrapper.style-1 .ectbe-date-area .ectbe-evt-time{
-text-align: center;
 }
 .ectbe-list-wrapper.style-1 .ectbe-ev-day,.ectbe-week-day {
 padding: var(--e-ectbe-ev-day-padding);
@@ -197,9 +193,6 @@ background-color: var(--e-ectbe-content-box-background);
 }
 /* ---------------------------- (Style 1 Css End)-----------------------------------------*/
 /* ---------------------------- (Style 2 Css Start)-----------------------------------------*/
-.ectbe-wrapper.ectbe-list-wrapper.style-2 .ectbe-date-area{
-font-size: 18px;
-}
 .ectbe-month-header:after {
 background-color: #d5d5d5;
 content: "";
@@ -254,9 +247,6 @@ border-left: 0px;
 border-left: var(--ectbe-cbx-left-bd-width) var(--ectbe-cbx-left-bd-style)
   var(--ectbe-featd-evt-bg-color);
 }
-.style-2 .ectbe-evt-details {
-justify-content: flex-start;
-}
 .style-2 #ectbe-date {
 padding: 7px 24px;
 --e-ectbe-date-area-width: 100px;
@@ -271,24 +261,6 @@ margin-top: 5px;
 /* ---------------------------- (Style 2 Css End)-----------------------------------------*/
 /* ---------------------------- (Minimal List Layout (Style 1) Css Start)------------------*/
 /* -------------------------- Event Listing Styles Start -------------------------- */
-.ectbe-minimal-list-wrapper .ectbe-inner-wrapper {
-padding: 0 5px 0 5px;
-margin-top: 20px;
-overflow: hidden;
-display: var(--e-ectbe-minimal-list-layout-flex);
-align-items: var(--e-ectbe-minimal-list-layout-align);
-}
-/* .ectbe-wrapper.ectbe-minimal-list-wrapper .ectbe-inner-wrapper.ectbe-featured-event  {
-border-left: 3px solid var(--ectbe-featd-evt-bg-color);
-} */
-/* -------------------------- Event Date Styles Start -------------------------- */
-.ectbe-minimal-list-wrapper .ectbe-date-area {
-align-items: center;
-width: var(--e-ectbe-date-area-width);
-padding: var(--e-ectbe-date-area-padding);
-display: var(--e-ectbe-date-area-flex);
-flex-direction: var(--e-ectbe-date-area-direction);
-}
 .ectbe-minimal-list-wrapper .ectbe-ev-day{
 font-weight: 700;
 font-size: 24px;
