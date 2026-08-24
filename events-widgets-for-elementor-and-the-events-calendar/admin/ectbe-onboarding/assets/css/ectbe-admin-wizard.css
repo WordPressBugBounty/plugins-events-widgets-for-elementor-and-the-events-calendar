@@ -1,0 +1,235 @@
+/**
+ * WP-admin integration ONLY — does not change the uploaded design CSS
+ * (ectbe-base.css / ectbe-wizard.css).
+ *
+ * Purpose:
+ * 1) Hide WP admin chrome so the wizard is fullscreen like the HTML prototype
+ * 2) Force rem = 16px (WP admin often shrinks root font-size)
+ * 3) Zero WP layout margins without touching design tokens/components
+ */
+
+/* Hide WP chrome / notices */
+body.ectbe-onboarding-page #wpadminbar,
+body.ectbe-onboarding-page #adminmenumain,
+body.ectbe-onboarding-page #adminmenuback,
+body.ectbe-onboarding-page #adminmenuwrap,
+body.ectbe-onboarding-page #wpfooter,
+body.ectbe-onboarding-page .notice,
+body.ectbe-onboarding-page .updated,
+body.ectbe-onboarding-page .update-nag,
+body.ectbe-onboarding-page .error,
+body.ectbe-onboarding-page #cpfNoticePanel,
+body.ectbe-onboarding-page #screen-meta,
+body.ectbe-onboarding-page #screen-meta-links,
+body.ewpe-onboarding-page #wpadminbar,
+body.ewpe-onboarding-page #adminmenumain,
+body.ewpe-onboarding-page #adminmenuback,
+body.ewpe-onboarding-page #adminmenuwrap,
+body.ewpe-onboarding-page #wpfooter,
+body.ewpe-onboarding-page .notice,
+body.ewpe-onboarding-page .updated,
+body.ewpe-onboarding-page .update-nag,
+body.ewpe-onboarding-page .error,
+body.ewpe-onboarding-page #cpfNoticePanel,
+body.ewpe-onboarding-page #screen-meta,
+body.ewpe-onboarding-page #screen-meta-links {
+	display: none !important;
+}
+
+/*
+ * Prototype CSS assumes 1rem = 16px (see .ectbe-wizard-shell in ectbe-wizard.css).
+ * Force root font-size on this page only so rem-based sizes match the HTML demo.
+ */
+html.wp-toolbar:has(> body.ectbe-onboarding-page),
+html:has(> body.ectbe-onboarding-page),
+html.wp-toolbar:has(> body.ewpe-onboarding-page),
+html:has(> body.ewpe-onboarding-page) {
+	font-size: 16px !important;
+	padding-top: 0 !important;
+}
+
+body.ectbe-onboarding-page,
+body.ectbe-onboarding-page.admin-bar,
+body.ewpe-onboarding-page,
+body.ewpe-onboarding-page.admin-bar {
+	margin: 0 !important;
+	padding: 0 !important;
+	min-width: 0 !important;
+	background: var(--ectbe-bg, #F5F7FA) !important;
+	color: var(--ectbe-text, #020E21) !important;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+}
+
+body.ectbe-onboarding-page #wpwrap,
+body.ectbe-onboarding-page #wpcontent,
+body.ectbe-onboarding-page.folded #wpcontent,
+body.ectbe-onboarding-page.auto-fold #wpcontent,
+body.ectbe-onboarding-page #wpbody,
+body.ectbe-onboarding-page #wpbody-content,
+body.ewpe-onboarding-page #wpwrap,
+body.ewpe-onboarding-page #wpcontent,
+body.ewpe-onboarding-page.folded #wpcontent,
+body.ewpe-onboarding-page.auto-fold #wpcontent,
+body.ewpe-onboarding-page #wpbody,
+body.ewpe-onboarding-page #wpbody-content {
+	margin: 0 !important;
+	margin-left: 0 !important;
+	padding: 0 !important;
+	float: none !important;
+	width: 100% !important;
+	max-width: none !important;
+	box-sizing: border-box !important;
+	background: transparent !important;
+}
+
+/* WP .wrap default: margin 10px 20px 0 2px */
+body.ectbe-onboarding-page .wrap,
+body.ectbe-onboarding-page .ectbe-wizard-wrap,
+body.ectbe-onboarding-page .ectbe-onboarding-admin,
+body.ewpe-onboarding-page .wrap,
+body.ewpe-onboarding-page .ectbe-wizard-wrap,
+body.ewpe-onboarding-page .ectbe-onboarding-admin {
+	margin: 0 !important;
+	padding: 0 !important;
+	max-width: none !important;
+	background: transparent !important;
+	min-height: 100vh;
+}
+
+body.ectbe-onboarding-page .wrap > h1,
+body.ewpe-onboarding-page .wrap > h1 {
+	display: none !important;
+}
+
+body.ectbe-onboarding-page .ectbe-wizard-shell,
+body.ewpe-onboarding-page .ectbe-wizard-shell {
+	font-size: 1rem;
+	min-height: 100vh;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Don't let WP underline/admin-link color bleed onto undecorated anchors. */
+body.ectbe-onboarding-page .ectbe-wizard-shell a,
+body.ewpe-onboarding-page .ectbe-wizard-shell a {
+	text-decoration: none;
+	box-shadow: none;
+}
+
+body.ectbe-onboarding-page .ectbe-wizard-shell img,
+body.ewpe-onboarding-page .ectbe-wizard-shell img {
+	border: 0;
+	box-shadow: none;
+}
+
+/* Dashicons must keep the WP font inside the wizard. */
+body.ectbe-onboarding-page .ectbe-wizard-shell .dashicons,
+body.ewpe-onboarding-page .ectbe-wizard-shell .dashicons {
+	font-family: dashicons !important;
+	display: inline-block;
+	line-height: 1;
+	font-weight: 400;
+	font-style: normal;
+	speak: never;
+	text-decoration: inherit;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	vertical-align: middle;
+}
+
+/*
+ * WP admin a:focus resets every link to border-radius:2px and paints a blue
+ * ring. Selection cards must keep their own radius + selected styling.
+ */
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option:focus-visible,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus-visible {
+	border-radius: 0.75rem !important;
+	box-shadow: none;
+	color: inherit;
+}
+
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option.is-selected:focus-visible {
+	border-color: var(--ectbe-primary);
+	background: var(--ectbe-primary-soft);
+	box-shadow: 0 0 0 0.125rem rgba(6, 147, 227, 0.15) !important;
+}
+
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-editor-option:focus-visible {
+	outline: 0.125rem solid var(--ectbe-focus);
+	outline-offset: 0.125rem;
+}
+
+/* Layout + style cards (also <a>) — same WP focus radius reset as editor options. */
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card:focus-visible,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus-visible,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card:focus-visible,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus-visible {
+	border-radius: 0.5rem !important;
+	box-shadow: none;
+	color: inherit;
+}
+
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus-visible,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card.is-selected:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card.is-selected:focus-visible {
+	border-color: var(--ectbe-primary);
+	background: var(--ectbe-primary-soft);
+	box-shadow: 0 0 0 0.125rem rgba(6, 147, 227, 0.15) !important;
+}
+
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card:focus-visible,
+body.ectbe-onboarding-page .ectbe-wizard-shell .ectbe-style-card:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-layout-card:focus-visible,
+body.ewpe-onboarding-page .ectbe-wizard-shell .ectbe-style-card:focus-visible {
+	outline: 0.125rem solid var(--ectbe-focus);
+	outline-offset: 0.125rem;
+}

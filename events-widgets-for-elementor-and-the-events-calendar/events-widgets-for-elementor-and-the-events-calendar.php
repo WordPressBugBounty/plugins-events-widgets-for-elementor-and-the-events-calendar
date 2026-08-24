@@ -3,7 +3,7 @@
  * Plugin Name: Events Widgets For Elementor And The Events Calendar
  * Description: <a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Events Widget to show The Events Calendar plugin events list easily inside Elementor page builder pages.
  * Plugin URI:  https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
- * Version:     1.8.2
+ * Version:     1.9.0
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=ectbe_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Text Domain: events-widgets-for-elementor-and-the-events-calendar
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 if (defined('ECTBE_VERSION')) {
     return;
 }
-define('ECTBE_VERSION', '1.8.2');
+define('ECTBE_VERSION', '1.9.0');
 define('ECTBE_FILE', __FILE__);
 define('ECTBE_PATH', plugin_dir_path(ECTBE_FILE));
 define('ECTBE_URL', plugin_dir_url(ECTBE_FILE));
@@ -61,8 +61,11 @@ final class Events_Calendar_Addon
      */
     private function __construct()
     {
+        $this->cpfm_feedback_cron_init();
         $this->include_files();
         add_action('plugins_loaded', array($this, 'ectbe_plugins_loaded'));
+        add_action('init', array($this, 'register_cpfm_notices'), 999);
+        add_action('cpfm_after_opt_in_ectbe', array($this, 'ectbe_handle_cpfm_opt_in'));
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'ectbe_add_action_links'));
         add_action('plugin_row_meta', array($this, 'ectbe_add_meta_links'), 10, 2);
         add_filter('tribe_rest_event_max_per_page', function($max) {
@@ -75,6 +78,14 @@ final class Events_Calendar_Addon
             return $params;
         });
         add_action('admin_print_scripts', [$this, 'ect_hide_unrelated_notices']);
+
+        add_action( 'plugin_opt_in_events-widgets-for-elementor-and-the-events-calendar', function () {
+			update_option( 'ectbe_has_usage_tracking_consent', true, false );
+            $this->ectbe_register_cpfm_usage_cron();
+            if ( class_exists( '\CPFM_Usage_Cron' ) ) {
+                \CPFM_Usage_Cron::cpfm_schedule_event( 'ectbe_extra_data_update' );
+            }
+        } );
     }
     public function ect_hide_unrelated_notices(){ 
 			
@@ -86,17 +97,19 @@ final class Events_Calendar_Addon
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             $page_param = sanitize_key(wp_unslash( $_GET['page'] ));
 
-            $allowed_pages = array(
-                'cool-plugins-events-addon',
-                'cool-events-registration',
-                'tribe-events-shortcode-template-settings',
-                'tribe_events-events-template-settings',
-                'countdown_for_the_events_calendar',
-                'esas-speaker-sponsor-settings',
-                'esas_speaker', 
-                'esas_sponsor',
-                'ewpe',
-                'epta'
+            $allowed_pages = array_merge(
+                array(
+                    'cool-plugins-events-addon',
+                    'tribe-events-shortcode-template-settings',
+                    'tribe_events-events-template-settings',
+                    'countdown_for_the_events_calendar',
+                    'esas-speaker-sponsor-settings',
+                    'esas_speaker',
+                    'esas_sponsor',
+                    'ewpe',
+                    'epta',
+                ),
+                ECTBE_ECA_Integration::admin_page_slugs()
             );
 
             if (in_array($page_param, $allowed_pages, true)) {
@@ -193,26 +206,277 @@ final class Events_Calendar_Addon
     }
 
     /**
-    * Initialize cron : MUST USE ON PLUGIN ACTIVATION
-    */
-    public static function ectbe_cron_job_init() {
-        $review_option = get_option("cpfm_opt_in_choice_cool_events");
-
-        if ($review_option === 'yes') {
-            if (!wp_next_scheduled('ectbe_extra_data_update')) {
-
-                wp_schedule_event(time(), 'every_30_days', 'ectbe_extra_data_update');
-
+     * Boot CPFM loader, usage cron registration, and onboarding telemetry filter.
+     * Loaded unconditionally so WP-Cron requests can execute data sharing without is_admin().
+     *
+     * @return void
+     */
+    public function cpfm_feedback_cron_init() {
+        if ( ! class_exists( 'CPFM_Loader' ) ) {
+            $file = ECTBE_PATH . 'admin/cpfm-feedback/class-cpfm-loader.php';
+            if ( file_exists( $file ) ) {
+                require_once $file;
             }
         }
+
+        if ( class_exists( 'CPFM_Loader' ) ) {
+            CPFM_Loader::load();
+        }
+
+        $this->ectbe_register_cpfm_usage_cron();
+
+        if ( $this->ectbe_has_usage_tracking_consent() && ! wp_next_scheduled( 'ectbe_extra_data_update' ) ) {
+            $this->ectbe_maybe_schedule_tracking_cron();
+        }
+
+        if ( ! class_exists( 'ECTBE_Onboarding_Cpfm_Data', false ) ) {
+            $onboarding_file = ECTBE_PATH . 'admin/ectbe-onboarding/includes/class-ectbe-onboarding-cpfm-data.php';
+            if ( file_exists( $onboarding_file ) ) {
+                require_once $onboarding_file;
+            }
+        }
+
+        
+    }
+
+    /**
+     * Register the shared usage-data cron (admin + WP-Cron).
+     *
+     * @return void
+     */
+    public function ectbe_register_cpfm_usage_cron() {
+        static $usage_cron_registered = false;
+
+        if ( $usage_cron_registered || ! class_exists( 'CPFM_Usage_Cron' ) ) {
+            return;
+        }
+
+        $usage_cron_registered = true;
+
+        CPFM_Usage_Cron::cpfm_register(
+            array(
+                'id'                     => 'ectbe',
+                'plugin_name'            => 'Events Widgets For Elementor And The Events Calendar',
+                'version'                => ECTBE_VERSION,
+                'api'                    => ECTBE_FEEDBACK_API,
+                'cron_hook'              => 'ectbe_extra_data_update',
+                'consent_master_option'  => 'cpfm_opt_in_choice_cool_events',
+                'consent_callback'       => array( $this, 'ectbe_has_usage_tracking_consent' ),
+                'install_date_option'    => 'ectbe-install-date',
+                'initial_version_option' => 'ectbe_initial_save_version',
+                'site_key'               => '24',
+                'onboarding_data' => 'cpfm_onboarding_preferences_cool_events',
+            )
+        );
+    }
+
+    /**
+     * @return bool
+     */
+    public function ectbe_has_usage_tracking_consent() {
+        return ( 'yes' === get_option( 'cpfm_opt_in_choice_cool_events' ) );
+    }
+
+    /**
+     * @return void
+     */
+    public function ectbe_maybe_schedule_tracking_cron() {
+        $this->ectbe_register_cpfm_usage_cron();
+
+        if ( class_exists( 'CPFM_Usage_Cron' ) ) {
+            CPFM_Usage_Cron::cpfm_schedule_event( 'ectbe_extra_data_update' );
+        }
+    }
+
+    /**
+     * Opt-in handler: send first payload and schedule cron.
+     *
+     * @param string $category Notice category key.
+     * @return void
+     */
+    public function ectbe_handle_cpfm_opt_in( $category ) {
+        if ( 'cool_events' !== $category ) {
+            return;
+        }
+
+        $this->ectbe_register_cpfm_usage_cron();
+        do_action( 'ectbe_extra_data_update' );
+        $this->ectbe_maybe_schedule_tracking_cron();
+    }
+
+    /**
+     * Register CPFM consent, review, and deactivation notices.
+     *
+     * @return void
+     */
+    public function register_cpfm_notices() {
+        if ( ! is_admin() ) {
+            return;
+        }
+
+        static $registered = false;
+        if ( $registered ) {
+            return;
+        }
+        $registered = true;
+
+        $pages = class_exists( 'ECTBE_ECA_Integration' )
+            ? ECTBE_ECA_Integration::admin_page_slugs()
+            : array( 'cool-plugins-events-addon', 'ectbe-onboarding' );
+
+        add_action(
+            'cpfm_register_notice',
+            function () use ( $pages ) {
+                if ( ! class_exists( 'CPFM_Feedback_Notice' ) || ! current_user_can( 'manage_options' ) ) {
+                    return;
+                }
+
+                $notice = array(
+                    'title'          => __( 'Events Addons By Cool Plugins', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                    'message'        => __( 'Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                    'pages'          => $pages,
+                    'always_show_on' => $pages,
+                    'plugin_name'    => 'ectbe',
+                );
+
+                CPFM_Feedback_Notice::cpfm_register_notice( 'cool_events', $notice );
+
+                if ( ! isset( $GLOBALS['cool_plugins_feedback'] ) ) {
+                    $GLOBALS['cool_plugins_feedback'] = array(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+                }
+
+                $GLOBALS['cool_plugins_feedback']['cool_events'][] = $notice; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+            }
+        );
+
+        if ( class_exists( 'CPFM_Deactivation_Feedback' ) ) {
+            CPFM_Deactivation_Feedback::cpfm_register(
+                array(
+                    'id'                     => 'ectbe',
+                    'slug'                   => 'events-widgets-for-elementor-and-the-events-calendar',
+                    'plugin_name'            => 'Events Widgets For Elementor And The Events Calendar',
+                    'version'                => defined( 'ECTBE_VERSION' ) ? ECTBE_VERSION : '',
+                    'api'                    => defined( 'ECTBE_FEEDBACK_API' ) ? ECTBE_FEEDBACK_API : 'https://feedback.coolplugins.net/',
+                    'site_key'               => '24',
+                    'install_date_option'    => 'ectbe-install-date',
+                    'initial_version_option' => 'ectbe_initial_save_version',
+                    'onboarding_data' => 'cpfm_onboarding_preferences_cool_events',
+                    'reasons'                => array(
+                        'not_working'  => array(
+                            'title'       => __( "The plugin isn't working", 'events-widgets-for-elementor-and-the-events-calendar' ),
+                            'placeholder' => __( 'Which problem did you run into? We read every reply.', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        ),
+                        'not_expected' => array(
+                            'title'       => __( "It didn't do what I expected", 'events-widgets-for-elementor-and-the-events-calendar' ),
+                            'placeholder' => __( 'What were you hoping it would do?', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        ),
+                        'found_better' => array(
+                            'title'       => __( 'I found a better plugin', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                            'placeholder' => __( 'Mind sharing which one?', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        ),
+                        'temporary'    => array(
+                            'title'       => __( "It's a temporary deactivation", 'events-widgets-for-elementor-and-the-events-calendar' ),
+                            'placeholder' => '',
+                        ),
+                        'other'        => array(
+                            'title'       => __( 'Another reason', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                            'placeholder' => __( 'Please tell us more', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        ),
+                    ),
+                    'i18n'                   => array(
+                        'title'        => __( 'Before you go…', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        /* translators: %s: plugin name (bold). */
+                        'intro'        => __( 'What made you deactivate %s? Your answer helps us fix it.', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        'submit'       => __( 'Submit & Deactivate', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        'skip'         => __( 'Skip & Deactivate', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        'deactivating' => __( 'Deactivating…', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        'pick_reason'  => __( 'Please choose a reason.', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        'close_label'  => __( 'Close', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        /* translators: %s: company name. */
+                        'byline'       => __( 'A plugin by %s', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                        'consent'      => __( 'Submitting shares your reason plus your site URL, admin email and basic environment details (PHP, WordPress, active plugins). Skip & Deactivate sends nothing.', 'events-widgets-for-elementor-and-the-events-calendar' ),
+                    ),
+                )
+            );
+        }
+
+        if ( ! class_exists( 'CPFM_Review' ) ) {
+            $review = ECTBE_PATH . 'admin/cpfm-feedback/class-cpfm-review.php';
+            if ( file_exists( $review ) ) {
+                require_once $review;
+            }
+        }
+
+        if ( ! class_exists( 'CPFM_Review' ) ) {
+            return;
+        }
+
+        CPFM_Review::cpfm_register(
+            array(
+                'id'          => 'ectbe',
+                'plugin_file' => ECTBE_FILE,
+                'plugin_name' => 'Events Widgets For Elementor And The Events Calendar',
+                'review_url'  => 'https://wordpress.org/support/plugin/events-widgets-for-elementor-and-the-events-calendar/reviews/#new-post',
+                'capability'  => 'activate_plugins',
+                'quiet_days'  => 0,
+                'own_screens' => array(
+                    'toplevel_page_cool-plugins-events-addon',
+                    'events-addons_page_ectbe-onboarding',
+                    'cool-plugins-events-addon_page_ectbe-onboarding',
+                ),
+                'trigger'     => array(
+                    'type'  => 'install_age',
+                    'hours' => 24,
+                ),
+                'notice'      => array(
+                    'enabled'        => true,
+                    'template'       => 'two_step',
+                    'screens'        => array(
+                        'plugins',
+                        'toplevel_page_cool-plugins-events-addon',
+                        'events-addons_page_ectbe-onboarding',
+                        'cool-plugins-events-addon_page_ectbe-onboarding',
+                    ),
+                    'inline_screens' => array(),
+                ),
+                'row'         => array( 'enabled' => true ),
+                'legacy'      => array(
+                    'done_options'  => array(
+                        'ectbe-ratingDiv' => array( 'yes', 'done', 'dismissed' ),
+                    ),
+                    'install_dates' => array( 'ectbe-installDate', 'ectbe-install-date' ),
+                ),
+				'i18n'        => array(
+					'like_question' => sprintf(
+						/* translators: %s: plugin name. */
+						__( 'Do you like the %s plugin?', 'events-widgets-for-elementor-and-the-events-calendar' ),
+						'Events Widgets For Elementor And The Events Calendar'
+					),
+					'yes_button'    => __( 'Yes, I like it', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'dismiss_link'  => __( 'Not good, dismiss', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'later_link'    => __( 'Ask me later', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'thanks_line'   => __( 'That is great to hear! A quick review on WordPress.org would really help us.', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'submit_button' => __( 'Submit review', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'no_link'       => __( 'I do not like it, dismiss', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'row_question'  => __( 'Do you like this plugin?', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'inline_title'  => sprintf(
+						/* translators: %s: plugin name. */
+						__( 'Enjoying %s?', 'events-widgets-for-elementor-and-the-events-calendar' ),
+						'Events Widgets For Elementor And The Events Calendar'
+					),
+					'inline_text'   => __( 'A short review helps other event organisers find it.', 'events-widgets-for-elementor-and-the-events-calendar' ),
+					'close_label'   => __( 'Close', 'events-widgets-for-elementor-and-the-events-calendar' ),
+				),
+            )
+        );
     }
 
     public function include_files()
     {
-        require_once __DIR__ . '/admin/events-addon-page/events-addon-page.php';
-        cool_plugins_events_addon_settings_page('the-events-calendar', 'cool-plugins-events-addon', '📅 Events Addons For The Events Calendar');
-
-        require_once ECTBE_PATH . 'admin/cpfm-feedback/cron/class-cron.php';
+        if ( is_admin() ) {
+            require_once ECTBE_PATH . 'admin/class-ectbe-eca-integration.php';
+            ECTBE_ECA_Integration::boot_admin();
+        }
     }
     /**
      * Add meta links to the Plugins list page.
@@ -251,44 +515,7 @@ final class Events_Calendar_Addon
         if (is_admin()) {
             add_action('admin_init', array($this, 'ectbe_show_upgrade_notice'));
             require __DIR__ . '/admin/feedback-notice/class-admin-notice.php';
-            require_once __DIR__ . '/admin/feedback/admin-feedback-form.php';
         }
-
-        if(!class_exists('CPFM_Feedback_Notice')){
-            require_once ECTBE_PATH . 'admin/cpfm-feedback/cpfm-feedback-notice.php';
-        }
-
-        add_action('cpfm_register_notice', function () {
-        
-            if (!class_exists('CPFM_Feedback_Notice') || !current_user_can('manage_options')) {
-                return;
-            }
-            $notice = [
-                'title' => __('Events Addons By Cool Plugins', 'events-widgets-for-elementor-and-the-events-calendar'),
-                'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'events-widgets-for-elementor-and-the-events-calendar'),
-                'pages' => ['cool-plugins-events-addon'],
-                'always_show_on' => ['cool-plugins-events-addon'], // This enables auto-show
-                'plugin_name'=>'ectbe',
-                
-            ];
-
-            \CPFM_Feedback_Notice::cpfm_register_notice('cool_events', $notice);
-
-                if (!isset($GLOBALS['cool_plugins_feedback'])) {
-                    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-                    $GLOBALS['cool_plugins_feedback'] = [];
-                }
-            
-                // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-                $GLOBALS['cool_plugins_feedback']['cool_events'][] = $notice;
-       
-        });
-        add_action('cpfm_after_opt_in_ectbe', function($category) {
-
-            if ($category === 'cool_events') {
-                \ECTBE_cronjob::ectbe_send_data();
-            }
-        });
     } // end of ctla_loaded()
     public function ectbe_show_upgrade_notice()
     {
@@ -323,11 +550,19 @@ final class Events_Calendar_Addon
      */
     public static function ectbe_activate()
     {
+        // Decide the post-activation redirect BEFORE writing options so
+        // fresh-install detection sees a pristine state.
+        // Fresh install → Getting Started; reactivation → Dashboard.
+        require_once ECTBE_PATH . 'admin/ectbe-onboarding/class-ectbe-onboarding-page.php';
+        if ( class_exists( 'ECTBE_Onboarding_Page' ) ) {
+            ECTBE_Onboarding_Page::maybe_schedule_redirect();
+        }
+
         update_option('ectbe-v', ECTBE_VERSION);
         update_option('ectbe-type', 'FREE');
         update_option('ectbe-installDate', gmdate('Y-m-d h:i:s'));
 
-        Events_Calendar_Addon::ectbe_cron_job_init();
+        Events_Calendar_Addon::get_instance()->ectbe_maybe_schedule_tracking_cron();
 
             if (!get_option( 'ectbe_initial_save_version' ) ) {
                 add_option( 'ectbe_initial_save_version', ECTBE_VERSION );

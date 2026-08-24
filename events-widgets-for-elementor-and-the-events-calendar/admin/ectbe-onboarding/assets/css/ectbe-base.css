@@ -1,0 +1,300 @@
+/* =========================================================================
+   Events Calendar Addons — Admin UI base styles
+   Design system tokens + shell + primitives.
+   Class prefix: ectbe-
+   ========================================================================= */
+
+:root {
+  /* Brand — primary blue */
+  --ectbe-primary: #0693E3;
+  --ectbe-primary-hover: #0072B3;
+  --ectbe-primary-active: #005F95;
+  --ectbe-primary-soft: #E6F4FC;
+  --ectbe-primary-soft-hover: #D1EAF8;
+  --ectbe-primary-border: #BBE0F4;
+
+  /* Brand — orange accent (RESERVED for Pro / upgrade CTAs only) */
+  --ectbe-accent: #E3680B;
+  --ectbe-accent-hover: #BC580B;
+  --ectbe-accent-active: #9C490A;
+  --ectbe-accent-soft: #FCEFE0;
+  --ectbe-accent-soft-hover: #F7E1C8;
+  --ectbe-accent-border: #F2D2B0;
+
+  /* Brand — success (activated / installed) */
+  --ectbe-success: #35B572;
+  --ectbe-success-soft: #E6F7EE;
+  --ectbe-success-border: #B6E5CC;
+
+  /* Text */
+  --ectbe-text: #020E21;
+  --ectbe-text-muted: #4B5563;
+  --ectbe-text-soft: #6B7280;
+
+  /* Surfaces */
+  --ectbe-bg: #F5F7FA;
+  --ectbe-card-bg: #FFFFFF;
+  --ectbe-border: #D7DEE5;
+  --ectbe-border-soft: #E6EBF0;
+
+  /* Disabled */
+  --ectbe-disabled-bg: #F3F4F6;
+  --ectbe-disabled-text: #667085;
+  --ectbe-disabled-border: #E5E7EB;
+
+  /* Focus — do not change */
+  --ectbe-focus: #F59E0B;
+
+  /* Radius */
+  --ectbe-radius-sm: 8px;
+  --ectbe-radius-md: 12px;
+  --ectbe-radius-lg: 16px;
+
+  /* Shadow */
+  --ectbe-shadow-sm: 0 1px 2px rgba(2, 14, 33, 0.06);
+  --ectbe-shadow-md: 0 12px 28px rgba(2, 14, 33, 0.08);
+  --ectbe-shadow-header: 0 2px 14px rgba(2, 14, 33, 0.06);
+
+  /* Spacing scale (use numbers; do not bake into tokens for everything) */
+  --ectbe-space-1: 4px;
+  --ectbe-space-2: 8px;
+  --ectbe-space-3: 12px;
+  --ectbe-space-4: 16px;
+  --ectbe-space-5: 20px;
+  --ectbe-space-6: 24px;
+  --ectbe-space-8: 32px;
+}
+
+/* -------------------------------------------------------------------------
+   Reset + base
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard-shell, .ectbe-wizard-shell * { box-sizing: border-box; }
+html, body { min-height: 100%; margin: 0; }
+.ectbe-wizard-shell {
+  min-height: 100vh;
+  background: var(--ectbe-bg);
+  color: var(--ectbe-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Ensure HTML [hidden] always wins over author display rules
+   (Dashicons, our inline-flex pills, grid containers, etc).
+   Per HTML spec recommendation. */
+.ectbe-wizard-shell [hidden] { display: none !important; }
+
+/* -------------------------------------------------------------------------
+   Sections + cards (shared chrome)
+   ------------------------------------------------------------------------- */
+
+.ectbe-cross-sell {
+  background: var(--ectbe-card-bg);
+  border: 1px solid var(--ectbe-border-soft);
+  border-radius: var(--ectbe-radius-lg);
+  box-shadow: var(--ectbe-shadow-sm);
+}
+
+.ectbe-cross-sell__title {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.35;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+/* -------------------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------------------- */
+
+/* Base button styles — use plain class selectors so variant rules
+   below match specificity (0,1,0) and their border-color etc. wins. */
+.ectbe-btn-primary,
+.ectbe-btn-secondary,
+.ectbe-btn-accent,
+.ectbe-btn-ghost,
+.ectbe-btn-disabled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+}
+
+.ectbe-btn-primary {
+  background: var(--ectbe-primary);
+  border-color: var(--ectbe-primary);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(6, 147, 227, 0.22);
+}
+.ectbe-btn-primary:hover,
+.ectbe-btn-primary:visited { color: #fff; text-decoration: none; }
+.ectbe-btn-primary:hover { background: var(--ectbe-primary-hover); border-color: var(--ectbe-primary-hover); }
+.ectbe-btn-primary:active { background: var(--ectbe-primary-active); border-color: var(--ectbe-primary-active); transform: translateY(1px); }
+
+.ectbe-btn-secondary {
+  background: #fff;
+  border-color: var(--ectbe-primary);
+  color: var(--ectbe-primary);
+  box-shadow: 0 1px 2px rgba(6, 147, 227, 0.10);
+}
+.ectbe-btn-secondary:hover,
+.ectbe-btn-secondary:visited { text-decoration: none; }
+.ectbe-btn-secondary:hover { background: var(--ectbe-primary-soft); border-color: var(--ectbe-primary-hover); color: var(--ectbe-primary-hover); }
+.ectbe-btn-secondary:active { background: var(--ectbe-primary-soft-hover); border-color: var(--ectbe-primary-active); color: var(--ectbe-primary-active); transform: translateY(1px); }
+
+/* Accent — Pro / upgrade only */
+.ectbe-btn-accent {
+  background: var(--ectbe-accent);
+  border-color: var(--ectbe-accent);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(227, 104, 11, 0.25);
+}
+.ectbe-btn-accent:hover,
+.ectbe-btn-accent:visited { color: #fff; text-decoration: none; }
+.ectbe-btn-accent:hover { background: var(--ectbe-accent-hover); border-color: var(--ectbe-accent-hover); }
+.ectbe-btn-accent:active { background: var(--ectbe-accent-active); border-color: var(--ectbe-accent-active); transform: translateY(1px); }
+
+/* Ghost — quiet bordered action, often inside a card */
+.ectbe-btn-ghost {
+  background: #fff;
+  border-color: var(--ectbe-border);
+  color: var(--ectbe-text);
+  box-shadow: 0 1px 2px rgba(2, 14, 33, 0.04);
+}
+.ectbe-btn-ghost:hover {
+  background: var(--ectbe-bg);
+  border-color: var(--ectbe-text-soft);
+  color: var(--ectbe-text);
+  text-decoration: none;
+}
+.ectbe-btn-ghost:active { transform: translateY(1px); }
+
+/* Disabled */
+.ectbe-btn-disabled,
+.ectbe-btn-disabled:hover,
+.ectbe-btn-disabled:active,
+.ectbe-btn-disabled:visited {
+  background: var(--ectbe-disabled-bg);
+  border-color: var(--ectbe-disabled-border);
+  color: var(--ectbe-disabled-text);
+  cursor: not-allowed;
+  pointer-events: none;
+  text-decoration: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Button-with-icon */
+.ectbe-btn-primary .dashicons,
+.ectbe-btn-secondary .dashicons,
+.ectbe-btn-accent .dashicons,
+.ectbe-btn-ghost .dashicons,
+.ectbe-btn-disabled .dashicons {
+  width: 16px; height: 16px; font-size: 16px; line-height: 1; color: currentColor;
+}
+
+/* Modifier — use when the icon slot contains a Dashicons glyph
+   instead of a branded addon SVG. Adds back the white-chip frame. */
+.ectbe-cross-sell__icon--chip {
+  background: #fff;
+  border: 1px solid var(--ectbe-border-soft);
+  border-radius: 12px;
+}
+
+/* -------------------------------------------------------------------------
+   Cross-sell sidecar — Tier-2 promotion of a sibling FREE addon
+   Blue/neutral tinted so orange stays Pro-only.
+   ------------------------------------------------------------------------- */
+
+.ectbe-cross-sell {
+  margin-top: 20px;
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  background: var(--ectbe-primary-soft);
+  border-color: var(--ectbe-primary-border);
+}
+.ectbe-cross-sell__icon {
+  width: 52px; height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ectbe-cross-sell__icon img { width: 52px; height: 52px; object-fit: contain; display: block; }
+.ectbe-cross-sell__title { font-size: 16px; }
+.ectbe-cross-sell__desc {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ectbe-text-muted);
+}
+.ectbe-cross-sell__actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* (The old fixed-state Preview Mode toggle CSS lived here. It was replaced
+   by the prototype-only stack simulator — markup injected by
+   assets/ectbe-sim.js, styled by the .ectbe-sim* block in ectbe-wizard.css.
+   Step / option / card focus rings and prefers-reduced-motion guards for
+   the wizard shell live in ectbe-wizard.css.) */
+
+/* -------------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 1140px) and (min-width: 781px) {
+  .ectbe-btn-primary, .ectbe-btn-secondary, .ectbe-btn-accent, .ectbe-btn-ghost { min-height: 38px; padding: 8px 12px; font-size: 13px; }
+}
+
+@media (max-width: 980px) {
+  .ectbe-cross-sell { grid-template-columns: 44px 1fr; row-gap: 12px; }
+  .ectbe-cross-sell__actions { grid-column: 1 / -1; }
+}
+
+
+/* =========================================================================
+   WordPress-admin a:focus shield.
+   wp-admin core CSS sets, on EVERY focused <a>:
+     a:focus { color:#043959; border-radius:2px;
+               box-shadow:0 0 0 1.5px #3858e9; outline:2px solid transparent; }
+   which recolours our buttons, squares their corners, drops their shadow and
+   paints a blue ring. Neutralise it INSIDE our surface only. Our sheet enqueues
+   AFTER core admin CSS, so :where() (same 0,1,1 specificity as core's rule)
+   wins by source order without out-ranking our own component states
+   (:hover / .is-selected / :focus-visible are 0,2,0). Harmless in the
+   standalone prototype (no core rule to fight).
+   ========================================================================= */
+:where(.ectbe-wizard-shell) a:focus { box-shadow: none; }
+:where(.ectbe-wizard-shell) a:focus:not(:focus-visible) { outline: none; }
+:where(.ectbe-wizard-shell) a:focus-visible { outline: 2px solid var(--ectbe-focus); outline-offset: 2px; }
+/* Keep buttons their own text colour + 6px radius on focus (0,2,0 beats core). */
+.ectbe-btn-primary:focus, .ectbe-btn-accent:focus, .ectbe-btn-success:focus { color: #fff; }
+.ectbe-btn-secondary:focus { color: var(--ectbe-primary); }
+.ectbe-btn-ghost:focus { color: var(--ectbe-text); }
+.ectbe-btn-primary:focus, .ectbe-btn-secondary:focus, .ectbe-btn-accent:focus,
+.ectbe-btn-ghost:focus, .ectbe-btn-disabled:focus, .ectbe-btn-success:focus { border-radius: 6px; }
+/* Layout/style cards keep default radius under WP a:focus (core forces 2px). */
+.ectbe-layout-card:focus,
+.ectbe-layout-card:focus-visible,
+.ectbe-layout-card.is-selected:focus,
+.ectbe-layout-card.is-selected:focus-visible,
+.ectbe-style-card:focus,
+.ectbe-style-card:focus-visible,
+.ectbe-style-card.is-selected:focus,
+.ectbe-style-card.is-selected:focus-visible {
+  border-radius: 0.5rem;
+}

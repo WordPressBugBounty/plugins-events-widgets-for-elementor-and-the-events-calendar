@@ -1,0 +1,2000 @@
+/* =========================================================================
+   idea-2 — Wizard shell, steps, options, footer, success state.
+   All wizard pages share this CSS. Per-page step content goes in the HTML.
+
+   NOTE: The Events Shortcodes & Blocks wizard uses the "v2 shell" defined
+   at the bottom of this file (search for "STEP-1 V2 SHELL"). That variant
+   replaces the admin-header + sticky-footer combo with a header-as-progress
+   bar + inline card nav pattern.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   Progress strip (v1 format) — kept because ectbe-wizard.js
+   renderProgressStrip() can still emit this markup for non-v2 strips.
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard-progress__step {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ectbe-text-soft);
+  transition: color 0.2s;
+}
+
+.ectbe-wizard-progress__step::after {
+  content: '';
+  width: 28px;
+  height: 2px;
+  background: var(--ectbe-border);
+  margin: 0 14px;
+  border-radius: 1px;
+  transition: background 0.2s;
+}
+.ectbe-wizard-progress__step:last-child::after { display: none; }
+
+.ectbe-wizard-progress__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ectbe-bg);
+  border: 1px solid var(--ectbe-border);
+  font-weight: 700;
+  font-size: 13px;
+  transition: background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.25s;
+  flex: 0 0 auto;
+}
+
+.ectbe-wizard-progress__step.is-current {
+  color: var(--ectbe-text);
+}
+.ectbe-wizard-progress__step.is-current .ectbe-wizard-progress__num {
+  background: var(--ectbe-primary);
+  border-color: var(--ectbe-primary);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--ectbe-primary-soft);
+}
+
+.ectbe-wizard-progress__step.is-done {
+  color: var(--ectbe-text);
+}
+.ectbe-wizard-progress__step.is-done .ectbe-wizard-progress__num {
+  background: var(--ectbe-success);
+  border-color: var(--ectbe-success);
+  color: #fff;
+}
+.ectbe-wizard-progress__step.is-done::after { background: var(--ectbe-success); }
+.ectbe-wizard-progress__step.is-done .ectbe-wizard-progress__num-label { display: none; }
+.ectbe-wizard-progress__step.is-done .ectbe-wizard-progress__num::before {
+  content: "\f147"; /* dashicons-yes */
+  font-family: dashicons;
+  font-size: 16px;
+}
+
+/* -------------------------------------------------------------------------
+   Step container
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard-step {
+  width: 100%;
+  max-width: 800px;
+  display: none;
+  animation: ectbeWizardFade 0.32s ease;
+}
+.ectbe-wizard-step.is-active { display: block; }
+
+@keyframes ectbeWizardFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------------------------------------------------------------
+   Option grid (radio cards)
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 20px 22px;
+  background: #fff;
+  border: 2px solid var(--ectbe-border);
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s, background-color 0.15s;
+}
+.ectbe-wizard-option:hover {
+  border-color: var(--ectbe-primary-border);
+  box-shadow: var(--ectbe-shadow-sm);
+  transform: translateY(-1px);
+}
+.ectbe-wizard-option.is-selected {
+  border-color: var(--ectbe-primary);
+  background: var(--ectbe-primary-soft);
+  box-shadow: 0 0 0 3px rgba(6, 147, 227, 0.15);
+}
+
+.ectbe-wizard-option__name {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--ectbe-text);
+  line-height: 1.3;
+}
+
+/* Locked Pro option — clickable to trigger upsell */
+.ectbe-wizard-option.is-locked:hover {
+  border-color: var(--ectbe-accent-border);
+}
+
+/* -------------------------------------------------------------------------
+   Color swatches — used in Display step
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard-swatch {
+  position: relative;
+  padding: 12px;
+  background: #fff;
+  border: 2px solid var(--ectbe-border);
+  border-radius: 12px;
+  cursor: pointer;
+  font: inherit;
+  text-align: center;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.ectbe-wizard-swatch:hover {
+  border-color: var(--ectbe-primary-border);
+  transform: translateY(-1px);
+}
+.ectbe-wizard-swatch.is-selected {
+  border-color: var(--ectbe-primary);
+  box-shadow: 0 0 0 3px rgba(6, 147, 227, 0.15);
+}
+
+/* -------------------------------------------------------------------------
+   Review step — summary items (markup generated by wizard.js renderSummary)
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard-summary__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--ectbe-border-soft);
+}
+.ectbe-wizard-summary__item:last-child { border-bottom: 0; }
+.ectbe-wizard-summary__label {
+  color: var(--ectbe-text-muted);
+  font-weight: 500;
+}
+.ectbe-wizard-summary__value {
+  color: var(--ectbe-text);
+  font-weight: 650;
+}
+
+/* -------------------------------------------------------------------------
+   Sticky footer — Back / Skip / Next
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard__footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--ectbe-border-soft);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ectbe-wizard__footer [data-wizard-back] { visibility: hidden; }
+.ectbe-wizard__footer [data-wizard-back].is-visible { visibility: visible; }
+
+/* -------------------------------------------------------------------------
+   Success state
+   ------------------------------------------------------------------------- */
+
+.ectbe-wizard-success {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.ectbe-wizard-success__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: var(--ectbe-success-soft);
+  border: 2px solid var(--ectbe-success-border);
+  color: var(--ectbe-success);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ectbe-wizard-success__icon .dashicons {
+  width: 40px; height: 40px; font-size: 40px;
+}
+
+.ectbe-wizard-success__title {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ectbe-text);
+}
+
+.ectbe-wizard-success__lede {
+  margin: 0 auto;
+  max-width: 500px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ectbe-text-muted);
+}
+
+.ectbe-wizard-success__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+/* -------------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 980px) {
+  .ectbe-wizard-progress__step { font-size: 12px; }
+  .ectbe-wizard-progress__step-label { display: none; }
+  .ectbe-wizard-progress__step::after { width: 16px; margin: 0 6px; }
+  .ectbe-wizard__footer { padding: 12px 16px; }
+}
+
+@media (max-width: 540px) {
+  .ectbe-wizard-progress__num { width: 26px; height: 26px; font-size: 12px; }
+  .ectbe-wizard-progress__step::after { width: 12px; }
+  .ectbe-wizard__footer { padding: 10px 14px; gap: 8px; }
+  .ectbe-wizard__footer .ectbe-btn-primary,
+  .ectbe-wizard__footer .ectbe-btn-ghost {
+    padding: 8px 14px;
+    font-size: 13px;
+    min-height: 38px;
+  }
+}
+
+/* =========================================================================
+   STEP-1 V2 SHELL — used by wizard-shortcodes-blocks.html
+   Header-as-progress-bar + card-with-inline-nav. Rem-based sizing.
+   ========================================================================= */
+
+.ectbe-wizard-shell {
+  min-height: 100vh;
+  background: var(--ectbe-bg);
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem; /* baseline: 1rem = 16px */
+}
+
+/* ----- Header (3-col: brand + steps + exit) ----- */
+
+.ectbe-wizard-header {
+  background: #fff;
+  border-bottom: 0.0625rem solid var(--ectbe-border-soft);
+  padding: 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: center;
+  min-height: 5rem;
+}
+
+.ectbe-wizard-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.ectbe-wizard-header__brand-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  display: block;
+  object-fit: contain;
+}
+.ectbe-wizard-header__brand-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+.ectbe-wizard-header__brand-name strong {
+  font-size: 0.9375rem;
+  font-weight: 650;
+  color: var(--ectbe-text);
+}
+.ectbe-wizard-header__brand-name em {
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ectbe-text-muted);
+  margin-top: 0.125rem;
+}
+
+.ectbe-wizard-header__steps {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-self: center;
+}
+
+.ectbe-wizard-header-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 3.5rem;
+}
+.ectbe-wizard-header-step__num {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  border: 0.125rem solid var(--ectbe-border);
+  background: #fff;
+  color: var(--ectbe-text-soft);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  position: relative;
+}
+.ectbe-wizard-header-step__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ectbe-text-soft);
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.ectbe-wizard-header__connector {
+  width: 2.5rem;
+  height: 0.125rem;
+  background: var(--ectbe-border);
+  margin-top: 0.9375rem;
+  border-radius: 0.0625rem;
+  transition: background 0.2s;
+  flex: 0 0 auto;
+}
+
+.ectbe-wizard-header-step.is-done .ectbe-wizard-header-step__num {
+  background: var(--ectbe-accent);
+  border-color: var(--ectbe-accent);
+  color: transparent;
+  font-size: 0;
+}
+.ectbe-wizard-header-step.is-done .ectbe-wizard-header-step__num::before {
+  content: "\f147"; /* dashicons-yes */
+  font-family: dashicons;
+  font-size: 1.125rem;
+  color: #fff;
+}
+.ectbe-wizard-header-step.is-done .ectbe-wizard-header-step__label {
+  color: var(--ectbe-text);
+}
+.ectbe-wizard-header__connector.is-done {
+  background: var(--ectbe-accent);
+}
+.ectbe-wizard-header-step.is-current .ectbe-wizard-header-step__num {
+  border-color: var(--ectbe-accent);
+  color: var(--ectbe-accent);
+  background: #fff;
+}
+.ectbe-wizard-header-step.is-current .ectbe-wizard-header-step__label {
+  color: var(--ectbe-text);
+  font-weight: 700;
+}
+
+.ectbe-wizard-header__exit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--ectbe-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  justify-self: end;
+  transition: color 0.15s, background-color 0.15s;
+}
+.ectbe-wizard-header__exit:hover {
+  background: var(--ectbe-bg);
+  color: var(--ectbe-text);
+  text-decoration: none;
+}
+.ectbe-wizard-header__exit .dashicons {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ----- Main + Card ----- */
+
+.ectbe-wizard-main {
+  flex: 1 1 auto;
+  padding: 2.5rem 1.5rem 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.ectbe-wizard-card {
+  background: #fff;
+  border: 0.0625rem solid var(--ectbe-border-soft);
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 1rem rgba(2, 14, 33, 0.05);
+  padding: 2rem 2.25rem;
+  width: 100%;
+  max-width: 68rem;
+}
+
+/* Reuse existing .ectbe-wizard-step as the step wrapper; the wizard JS
+   already toggles .is-active on it. Inside the card, we adjust its
+   padding/appearance for the new layout. */
+.ectbe-wizard-card .ectbe-wizard-step {
+  max-width: none;
+}
+
+.ectbe-wizard-card__heading {
+  margin-bottom: 1.75rem;
+}
+.ectbe-wizard-card__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ectbe-text);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.ectbe-wizard-card__desc {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ectbe-text-muted);
+  max-width: 54rem;
+}
+
+/* Inline nav row */
+.ectbe-wizard-card__nav {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 0.0625rem solid var(--ectbe-border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Attention pulse — soft blue glow + expanding ring — on any primary CTA
+   in the wizard nav (Continue when enabled, or Install/Open in promo mode).
+   Draws the user's eye to the next action. Hover pauses it. */
+@keyframes wizardCtaPulse {
+  0%, 100% {
+    box-shadow:
+      0 0.125rem 0.375rem rgba(6, 147, 227, 0.4),
+      0 0 0 0 rgba(6, 147, 227, 0.55);
+  }
+  60% {
+    box-shadow:
+      0 0.125rem 0.375rem rgba(6, 147, 227, 0.4),
+      0 0 0 0.625rem rgba(6, 147, 227, 0);
+  }
+}
+.ectbe-wizard-card__nav .ectbe-btn-primary,
+.ectbe-wizard-success__actions .ectbe-btn-primary {
+  animation: wizardCtaPulse 2.2s ease-out infinite;
+}
+.ectbe-wizard-card__nav .ectbe-btn-primary:hover,
+.ectbe-wizard-card__nav .ectbe-btn-primary:focus,
+.ectbe-wizard-success__actions .ectbe-btn-primary:hover,
+.ectbe-wizard-success__actions .ectbe-btn-primary:focus {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ectbe-wizard-card__nav .ectbe-btn-primary,
+  .ectbe-wizard-success__actions .ectbe-btn-primary { animation: none; }
+}
+.ectbe-wizard-card__nav-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-left: auto;
+}
+.ectbe-wizard-card__nav [data-wizard-back] { visibility: hidden; }
+.ectbe-wizard-card__nav [data-wizard-back].is-visible { visibility: visible; }
+
+.ectbe-wizard-card__nav .ectbe-btn-ghost,
+.ectbe-wizard-card__nav .ectbe-btn-primary,
+.ectbe-wizard-card__nav .ectbe-btn-secondary {
+  min-height: 2.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9375rem;
+  border-radius: 0.5rem;
+}
+.ectbe-wizard-card__nav .dashicons {
+  width: 1rem; height: 1rem; font-size: 1rem;
+}
+
+/* ----- Editor selector (2-col: options 45% + video 55%) ----- */
+
+.ectbe-editor-selector {
+  display: grid;
+  grid-template-columns: 55fr 45fr;   /* video left (wide), options right */
+  gap: 1.5rem;
+  align-items: start;   /* independent column heights — video stays at natural aspect-ratio */
+}
+/* Visually place the video on the left and the options on the right, while
+   keeping DOM order options-first so tab order + mobile stacking lead with the
+   decision (options above the video). */
+.ectbe-editor-selector__video   { grid-column: 1; grid-row: 1; }
+.ectbe-editor-selector__options { grid-column: 2; grid-row: 1; }
+
+.ectbe-editor-selector__options {
+  display: grid;
+  /* Widgets has only 2 options ever, so single-column stacked reads best
+     at every width (the shortcodes wizard used 2-col for 5 options). */
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  align-content: start;
+  align-self: center;
+}
+
+/* Using anchor tags — override anchor defaults so the option renders as a card.
+   Canonical small-option-card pattern: horizontal flex row, vertically center
+   aligned — icon + text on the left, radio-style check ring on the right. */
+.ectbe-editor-option {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 0.9375rem;
+  background: #fff;
+  border: 0.125rem solid var(--ectbe-border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.ectbe-editor-option:hover,
+.ectbe-editor-option:focus,
+.ectbe-editor-option:visited {
+  color: inherit;
+  text-decoration: none;
+}
+.ectbe-editor-option:hover {
+  border-color: var(--ectbe-primary-border);
+}
+.ectbe-editor-option:focus-visible {
+  outline: 0.125rem solid var(--ectbe-focus);
+  outline-offset: 0.125rem;
+}
+.ectbe-editor-option.is-selected {
+  border-color: var(--ectbe-primary);
+  background: var(--ectbe-primary-soft);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0 0.125rem rgba(6, 147, 227, 0.15);
+}
+.ectbe-editor-option__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 0.375rem;
+}
+/* Name + description stack in a flexible middle column so the check ring
+   sits to the right of BOTH lines, vertically centered. */
+.ectbe-editor-option__text {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+.ectbe-editor-option__name {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  color: var(--ectbe-text);
+  line-height: 1.25;
+}
+.ectbe-editor-option__sub {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--ectbe-text-muted);
+}
+
+/* Check indicator — ALWAYS visible: hollow gray ring when unselected,
+   filled brand-blue circle with white check when selected. The dashicon
+   is always in the DOM and revealed via opacity only. */
+.ectbe-editor-option__check {
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--ectbe-border);
+  background: transparent;
+  color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.ectbe-editor-option:hover .ectbe-editor-option__check {
+  border-color: var(--ectbe-primary-border);
+}
+.ectbe-editor-option.is-selected .ectbe-editor-option__check {
+  background: var(--ectbe-primary);
+  border-color: var(--ectbe-primary);
+  color: #fff;
+}
+.ectbe-editor-option__check .dashicons {
+  width: 0.8125rem; height: 0.8125rem; font-size: 0.8125rem; line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.ectbe-editor-option.is-selected .ectbe-editor-option__check .dashicons {
+  opacity: 1;
+}
+
+/* Video preview column — YouTube thumbnail as background, injected via inline
+   background-image when an editor is picked. Fallback dark background so the
+   red play button stays visible if the thumbnail hasn't loaded yet. */
+.ectbe-editor-selector__video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-image 0.3s;
+}
+/* Whole thumbnail is clickable once a walkthrough is loaded — the play
+   button is now just a visual affordance. Cursor turns to default once the
+   iframe is playing (clicks inside iframe are handled by YouTube). */
+.ectbe-editor-selector__video[data-editor] { cursor: pointer; }
+.ectbe-editor-selector__video.is-playing { cursor: default; }
+
+/* Dark gradient overlay — top slightly darkened, bottom more so, for label
+   readability + play-button contrast against any thumbnail color. */
+.ectbe-editor-selector__video::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.60) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Editor icon watermark in top-right */
+.ectbe-editor-selector__video-watermark {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  opacity: 0.35;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* YouTube-style red play button — pill-shaped, red by default */
+.ectbe-editor-selector__video-play {
+  position: relative;
+  z-index: 3;
+  width: 4.5rem;
+  height: 3.125rem;
+  border-radius: 0.75rem;
+  background: #ff0000;    /* YouTube red */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1.5rem rgba(255, 0, 0, 0.4), 0 0.25rem 0.75rem rgba(0, 0, 0, 0.35);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.ectbe-editor-selector__video-play:hover,
+.ectbe-editor-selector__video-play:focus {
+  background: #cc0000;    /* darker YouTube red on hover */
+  transform: scale(1.08);
+  text-decoration: none;
+}
+/* White triangle inside the play button */
+.ectbe-editor-selector__video-play::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0.6875rem 0 0.6875rem 1.125rem;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 0.25rem;
+}
+
+/* Ripple waves around the play button — white for contrast on red button */
+.ectbe-editor-selector__video-waves {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 4.5rem;
+  height: 3.125rem;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.ectbe-editor-selector__video-waves::before,
+.ectbe-editor-selector__video-waves::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  border: 0.125rem solid rgba(255, 255, 255, 0.7);
+  animation: youtubeRipple 2.4s infinite ease-out;
+}
+.ectbe-editor-selector__video-waves::after {
+  animation-delay: 1.2s;
+}
+@keyframes youtubeRipple {
+  0%   { transform: scale(1);   opacity: 0.9; }
+  70%  { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* When a video is actually playing, hide the play button / waves / label /
+   watermark and let the iframe fill the box. */
+.ectbe-editor-selector__video-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: #000;
+  display: none;
+}
+.ectbe-editor-selector__video-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.ectbe-editor-selector__video.is-playing .ectbe-editor-selector__video-frame { display: block; }
+.ectbe-editor-selector__video.is-playing .ectbe-editor-selector__video-play,
+.ectbe-editor-selector__video.is-playing .ectbe-editor-selector__video-waves,
+.ectbe-editor-selector__video.is-playing .ectbe-editor-selector__video-label,
+.ectbe-editor-selector__video.is-playing .ectbe-editor-selector__video-watermark { display: none; }
+
+.ectbe-editor-selector__video-label {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(0.25rem);
+}
+.ectbe-editor-selector__video-label .dashicons {
+  width: 0.875rem; height: 0.875rem; font-size: 0.875rem;
+}
+
+/* Prefers-reduced-motion — kill the ripple */
+@media (prefers-reduced-motion: reduce) {
+  .ectbe-editor-selector__video-waves::before,
+  .ectbe-editor-selector__video-waves::after { animation: none; opacity: 0; }
+}
+
+/* ----- Sibling promotion box (compact horizontal: icon + title + desc) -----
+   No video inside (main video above swaps to that editor). No buttons
+   inside — action buttons live in the card's nav row via variant swap. */
+
+.ectbe-editor-promo {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+}
+.ectbe-editor-promo[hidden] { display: none !important; }
+
+.ectbe-editor-promo--suggest {
+  background: var(--ectbe-accent-soft);
+  border: 0.0625rem solid var(--ectbe-accent-border);
+}
+.ectbe-editor-promo--ready {
+  background: var(--ectbe-success-soft);
+  border: 0.0625rem solid var(--ectbe-success-border);
+}
+
+.ectbe-editor-promo__icon {
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ectbe-editor-promo__icon img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+}
+
+.ectbe-editor-promo__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ectbe-editor-promo__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.1875rem;
+}
+.ectbe-editor-promo--suggest .ectbe-editor-promo__kicker { color: var(--ectbe-accent-hover); }
+.ectbe-editor-promo--ready .ectbe-editor-promo__kicker { color: var(--ectbe-success); }
+.ectbe-editor-promo__kicker .dashicons {
+  width: 0.8125rem; height: 0.8125rem; font-size: 0.8125rem;
+}
+
+.ectbe-editor-promo__title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ectbe-text);
+  line-height: 1.3;
+}
+.ectbe-editor-promo__desc {
+  margin: 0.1875rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ectbe-text-muted);
+}
+
+/* ----- Nav variants (swap Continue for promo-specific actions) ----- */
+/* Default: Continue button shown; promo variants hidden.
+   When step 1 shows Elementor/Divi promo, JS toggles data-nav-mode on
+   the nav-right container to reveal the right buttons. */
+
+.ectbe-wizard-card__nav-right [data-nav-variant] { display: none; }
+.ectbe-wizard-card__nav-right[data-nav-mode="default"] [data-nav-variant="default"] { display: inline-flex; }
+.ectbe-wizard-card__nav-right[data-nav-mode="promo-suggest"] [data-nav-variant="promo-install"],
+.ectbe-wizard-card__nav-right[data-nav-mode="promo-suggest"] [data-nav-variant="promo-dismiss"] { display: inline-flex; }
+.ectbe-wizard-card__nav-right[data-nav-mode="promo-ready"] [data-nav-variant="promo-open"],
+.ectbe-wizard-card__nav-right[data-nav-mode="promo-ready"] [data-nav-variant="promo-dismiss"] { display: inline-flex; }
+
+/* Classic Editor active — Block Editor option is dulled, unselectable,
+   and hovers show a tooltip. Shortcode remains available (user's fallback). */
+body[data-preview-state="classic-editor"] .ectbe-editor-option[data-value="block"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  position: relative;
+  filter: grayscale(0.6);
+}
+body[data-preview-state="classic-editor"] .ectbe-editor-option[data-value="block"]::before {
+  content: "You're using Classic Editor \2014 block editor is disabled";
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(0.25rem);
+  padding: 0.3125rem 0.5rem;
+  background: var(--ectbe-text);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 20;
+}
+body[data-preview-state="classic-editor"] .ectbe-editor-option[data-value="block"]::after {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 0.25rem);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0.3125rem solid transparent;
+  border-top-color: var(--ectbe-text);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 20;
+}
+body[data-preview-state="classic-editor"] .ectbe-editor-option[data-value="block"]:hover::before,
+body[data-preview-state="classic-editor"] .ectbe-editor-option[data-value="block"]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ----- 1-column layout for no-builder state ----- */
+/* When only Block + Shortcode are shown (no builder detected), stack them
+   vertically and vertically-center the group next to the video so it doesn't
+   sit lonely at the top of a tall video. */
+body[data-preview-state="no-builder"] .ectbe-editor-selector__options,
+body[data-preview-state="classic-editor"] .ectbe-editor-selector__options {
+  grid-template-columns: 1fr;
+  align-self: center;
+}
+
+/* =========================================================================
+   STEP-2 — Layout & Style settings panel (row-based)
+   Each row is a 35/65 split: icon + small title + one-line description on
+   the left, the actual options on the right. No preview column — every
+   option carries its own "view demo" link that opens a live example in a
+   new tab.
+   ========================================================================= */
+
+.ectbe-settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* One row = one setting (Layout / Style / Filter Bar / Date Format) */
+.ectbe-settings-row {
+  display: grid;
+  grid-template-columns: 35fr 65fr;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.125rem 1.25rem;
+  background: #fff;
+  border: 0.0625rem solid var(--ectbe-border-soft);
+  border-radius: 0.75rem;
+}
+.ectbe-settings-row[hidden] { display: none !important; }
+
+.ectbe-settings-row__info {
+  display: flex;
+  gap: 0.6875rem;
+  align-items: flex-start;
+}
+.ectbe-settings-row__icon {
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  border-radius: 0.5rem;
+  background: var(--ectbe-primary-soft);
+  color: var(--ectbe-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ectbe-settings-row__icon .dashicons {
+  width: 1.125rem; height: 1.125rem; font-size: 1.125rem;
+}
+.ectbe-settings-row__meta { min-width: 0; }
+.ectbe-settings-row__title {
+  margin: 0 0 0.1875rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ectbe-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  line-height: 1.25;
+}
+.ectbe-settings-row__desc {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ectbe-text-muted);
+}
+.ectbe-settings-row__body { min-width: 0; }
+
+/* ----- Compact layout cards ----- */
+.ectbe-layout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.ectbe-layout-grid[hidden] { display: none !important; }
+
+.ectbe-layout-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 0.875rem;  /* symmetric — no per-card demo icon to reserve space for */
+  background: #fff;
+  border: 0.125rem solid var(--ectbe-border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.ectbe-layout-card:hover {
+  border-color: var(--ectbe-primary-border);
+  text-decoration: none;
+  color: inherit;
+}
+.ectbe-layout-card:focus-visible {
+  outline: 0.125rem solid var(--ectbe-focus);
+  outline-offset: 0.125rem;
+}
+.ectbe-layout-card.is-selected {
+  border-color: var(--ectbe-primary);
+  background: var(--ectbe-primary-soft);
+  box-shadow: 0 0 0 0.125rem rgba(6, 147, 227, 0.15);
+}
+.ectbe-layout-card__icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex: 0 0 auto;
+  border-radius: 0.375rem;
+  background: var(--ectbe-bg);
+  color: var(--ectbe-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+.ectbe-layout-card.is-selected .ectbe-layout-card__icon {
+  background: rgba(255, 255, 255, 0.7);
+}
+.ectbe-layout-card__icon .dashicons {
+  width: 1rem; height: 1rem; font-size: 1rem;
+}
+.ectbe-layout-card__name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ectbe-text);
+  line-height: 1.2;
+  text-align: left;
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Pro pill — top-LEFT, sitting HALF ABOVE the card border (badge tab style).
+   Horizontally aligned with the layout icon inside the card. */
+.ectbe-layout-card__pro {
+  position: absolute;
+  top: -0.5rem;
+  left: 0.6875rem; /* aligns with the icon left edge (padding-left) */
+  padding: 0.125rem 0.375rem;
+  background: var(--ectbe-accent);
+  color: #fff;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 0.25rem; /* ~4px rounded tab, not a pill */
+  text-transform: uppercase;
+  line-height: 1;
+  box-shadow: 0 0.0625rem 0.125rem rgba(227, 104, 11, 0.35);
+  z-index: 2;
+}
+
+/* Check indicator — sits at the RIGHT edge of the card (always the LAST
+   flex child), vertically centered with the icon + name. Radio-button
+   style: outline circle when unselected, filled brand-blue circle with
+   white check when the card is selected. Card never "jumps" because the
+   reserved 1.125rem square is always drawn. */
+.ectbe-layout-card__check,
+.ectbe-style-card__check {
+  flex: 0 0 auto;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  border: 0.125rem solid var(--ectbe-border);
+  background: transparent;
+  color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.ectbe-layout-card:hover .ectbe-layout-card__check,
+.ectbe-style-card:hover .ectbe-style-card__check {
+  border-color: var(--ectbe-primary-border);
+}
+.ectbe-layout-card.is-selected .ectbe-layout-card__check,
+.ectbe-style-card.is-selected .ectbe-style-card__check {
+  background: var(--ectbe-primary);
+  border-color: var(--ectbe-primary);
+  color: #fff;
+}
+.ectbe-layout-card__check .dashicons,
+.ectbe-style-card__check .dashicons {
+  width: 0.75rem; height: 0.75rem; font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.ectbe-layout-card.is-selected .ectbe-layout-card__check .dashicons,
+.ectbe-style-card.is-selected .ectbe-style-card__check .dashicons {
+  opacity: 1;
+}
+
+/* ----- Style cards (name only, tickmark on select — no preview, no demo) ----- */
+.ectbe-style-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.ectbe-style-card {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.625rem;  /* space between the name and the tick indicator */
+  padding: 0.6875rem 0.875rem;
+  min-height: 2.5rem;
+  background: #fff;
+  border: 0.125rem solid var(--ectbe-border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.ectbe-style-card:hover {
+  border-color: var(--ectbe-primary-border);
+  text-decoration: none;
+  color: inherit;
+}
+.ectbe-style-card:focus-visible {
+  outline: 0.125rem solid var(--ectbe-focus);
+  outline-offset: 0.125rem;
+}
+.ectbe-style-card.is-selected {
+  border-color: var(--ectbe-primary);
+  background: var(--ectbe-primary-soft);
+  box-shadow: 0 0 0 0.125rem rgba(6, 147, 227, 0.15);
+}
+.ectbe-style-card__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ectbe-text);
+  line-height: 1.25;
+  text-align: left;
+}
+/* Reduced motion — collapse the option-card micro-transitions to instant */
+@media (prefers-reduced-motion: reduce) {
+  .ectbe-editor-option, .ectbe-editor-option *,
+  .ectbe-editor-option *::before, .ectbe-editor-option *::after,
+  .ectbe-layout-card, .ectbe-layout-card *,
+  .ectbe-layout-card *::before, .ectbe-layout-card *::after,
+  .ectbe-style-card, .ectbe-style-card *,
+  .ectbe-style-card *::before, .ectbe-style-card *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ----- Toggle option — light rail, dark "sliding" thumb on the selected side.
+   Matches the light aesthetic of the rest of Step 2. The active option gets
+   a navy background + white text so it feels affirmative, not decorative. -- */
+.ectbe-toggle-option {
+  position: relative;
+  padding: 0.4375rem 1.125rem;
+  background: transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ectbe-text-muted);
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
+  z-index: 1;
+}
+.ectbe-toggle-option:hover {
+  color: var(--ectbe-text);
+  text-decoration: none;
+}
+.ectbe-toggle-option.is-selected {
+  background: var(--ectbe-primary);
+  color: #fff;
+  box-shadow: 0 0.125rem 0.375rem rgba(6, 147, 227, 0.35);
+}
+/* Small orange dot on the Pro-locked option so users see the upsell at a glance */
+.ectbe-toggle-option[data-pro="true"]::before {
+  content: "";
+  position: absolute;
+  top: 0.4375rem;
+  right: 0.5rem;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  background: var(--ectbe-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.125rem rgba(227, 104, 11, 0.2);
+}
+.ectbe-toggle-option[data-pro="true"] { padding-right: 1.5rem; }
+.ectbe-toggle-option[data-pro="true"].is-selected::before { display: none; }
+
+/* Small "see it live" text link — used next to toggle and under date select */
+.ectbe-demo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ectbe-primary);
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s, color 0.15s;
+}
+.ectbe-demo-link:hover,
+.ectbe-demo-link:focus-visible {
+  background: var(--ectbe-primary-soft);
+  color: var(--ectbe-primary-hover);
+  text-decoration: none;
+  outline: none;
+}
+.ectbe-demo-link .dashicons {
+  width: 0.8125rem; height: 0.8125rem; font-size: 0.8125rem;
+}
+.ectbe-demo-link[hidden] { display: none !important; }
+
+/* ----- Pro notice bar ----- */
+.ectbe-pro-notice {
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--ectbe-accent-soft) 0%, #fff5e8 100%);
+  border: 0.0625rem solid var(--ectbe-accent-border);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+.ectbe-pro-notice[hidden] { display: none !important; }
+.ectbe-pro-notice__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ectbe-accent);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.25rem 0.75rem rgba(227, 104, 11, 0.35);
+}
+.ectbe-pro-notice__icon .dashicons {
+  width: 1.125rem; height: 1.125rem; font-size: 1.125rem;
+}
+.ectbe-pro-notice__body { flex: 1 1 auto; min-width: 0; }
+.ectbe-pro-notice__title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ectbe-text);
+}
+.ectbe-pro-notice__desc {
+  margin: 0.125rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ectbe-text-muted);
+}
+
+/* Step 2 nav variant swap (Continue ↔ Upgrade to Pro) */
+[data-step2-nav-right] [data-step2-nav-variant] { display: none; }
+[data-step2-nav-right][data-nav-mode="default"] [data-step2-nav-variant="default"] { display: inline-flex; }
+[data-step2-nav-right][data-nav-mode="upgrade"] [data-step2-nav-variant="upgrade"] { display: inline-flex; }
+
+/* =========================================================================
+   STEP-3 — Events Query settings
+   Reuses .ectbe-settings-row / .ectbe-style-row / .ectbe-toggle-row from Step 2.
+   New primitives: multiselect widget + 3-column style-row variant +
+   a per-section footer for one shared demo link.
+   ========================================================================= */
+
+/* 3-column variant for the Events Status row (Upcoming / Past / Both) */
+.ectbe-style-row--3col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* Section-level demo link sitting under the row's small description text,
+   inside the left-hand meta column (e.g. Load Events by Date Range). Small
+   top offset keeps it clearly separated from the desc without wasting
+   vertical space. Negative left offset makes the icon flush with the desc. */
+.ectbe-settings-row__demo {
+  margin-top: 0.4375rem;
+  margin-left: -0.5rem;
+}
+
+/* ----- Multiselect (Select2-style) --------------------------------------
+   The visible control is a click-to-open target with chips inside; the
+   dropdown holds the option anchors. Values persist to a hidden input as
+   a comma-separated list so wizard.js state persistence works with zero
+   extra plumbing. WP integration point: populate .ectbe-multiselect__option
+   entries dynamically from Events categories. */
+.ectbe-multiselect {
+  position: relative;
+  width: 100%;
+}
+.ectbe-multiselect__control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.375rem;
+  padding: 0.3125rem 0.5rem;
+  background: #fff;
+  border: 0.0625rem solid var(--ectbe-border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ectbe-multiselect__control:hover { border-color: var(--ectbe-primary-border); }
+.ectbe-multiselect.is-open .ectbe-multiselect__control,
+.ectbe-multiselect__control:focus-visible {
+  outline: none;
+  border-color: var(--ectbe-primary);
+  box-shadow: 0 0 0 0.1875rem var(--ectbe-primary-soft);
+}
+.ectbe-multiselect__chips {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3125rem;
+}
+.ectbe-multiselect__placeholder {
+  flex: 1 1 auto;
+  color: var(--ectbe-text-muted);
+  font-size: 0.8125rem;
+}
+.ectbe-multiselect__placeholder[hidden] { display: none !important; }
+.ectbe-multiselect__caret {
+  flex: 0 0 auto;
+  color: var(--ectbe-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, color 0.15s;
+}
+.ectbe-multiselect__caret .dashicons {
+  width: 1rem; height: 1rem; font-size: 1rem;
+}
+.ectbe-multiselect.is-open .ectbe-multiselect__caret {
+  transform: rotate(180deg);
+  color: var(--ectbe-primary);
+}
+
+/* Individual chip in the control */
+.ectbe-multiselect__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1875rem 0.375rem 0.1875rem 0.5rem;
+  background: var(--ectbe-primary-soft);
+  color: var(--ectbe-primary-hover);
+  border: 0.0625rem solid var(--ectbe-primary-border);
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.ectbe-multiselect__chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  border-radius: 0.1875rem;
+  color: var(--ectbe-primary-hover);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+.ectbe-multiselect__chip-remove:hover,
+.ectbe-multiselect__chip-remove:focus-visible {
+  background: rgba(6, 147, 227, 0.15);
+  color: var(--ectbe-accent-hover);
+  outline: none;
+}
+.ectbe-multiselect__chip-remove .dashicons {
+  width: 0.75rem; height: 0.75rem; font-size: 0.75rem;
+}
+
+/* Dropdown */
+.ectbe-multiselect__dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 0.25rem;
+  background: #fff;
+  border: 0.0625rem solid var(--ectbe-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(2, 14, 33, 0.12);
+  max-height: 15rem;
+  overflow-y: auto;
+}
+.ectbe-multiselect__dropdown[hidden] { display: none !important; }
+
+.ectbe-multiselect__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4375rem 0.5rem;
+  border-radius: 0.375rem;
+  color: var(--ectbe-text);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.1s, color 0.1s;
+}
+.ectbe-multiselect__option:hover,
+.ectbe-multiselect__option:focus-visible {
+  background: var(--ectbe-bg);
+  color: var(--ectbe-text);
+  text-decoration: none;
+  outline: none;
+}
+.ectbe-multiselect__option.is-selected {
+  background: var(--ectbe-primary-soft);
+  color: var(--ectbe-primary-hover);
+}
+.ectbe-multiselect__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.1875rem;
+  background: transparent;
+  border: 0.0625rem solid var(--ectbe-border);
+  color: #fff;
+  transition: background-color 0.1s, border-color 0.1s;
+}
+.ectbe-multiselect__check .dashicons {
+  width: 0.75rem; height: 0.75rem; font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.ectbe-multiselect__option.is-selected .ectbe-multiselect__check {
+  background: var(--ectbe-primary);
+  border-color: var(--ectbe-primary);
+}
+.ectbe-multiselect__option.is-selected .ectbe-multiselect__check .dashicons { opacity: 1; }
+.ectbe-multiselect__label { min-width: 0; }
+
+/* =========================================================================
+   STEP-4 (Review) + STEP-5 (Done) — recap panel, telemetry consent,
+   success header, cross-sell footer.
+   ========================================================================= */
+
+/* Step 5 recap — single centered card (no settings summary alongside).
+   Max-width keeps a long shortcode readable without stretching to full page. */
+.ectbe-review-recap {
+  max-width: 40rem;
+  margin: 1.25rem auto 0;
+}
+
+.ectbe-review-panel {
+  padding: 1.125rem 1.25rem;
+  background: #fff;
+  border: 0.0625rem solid var(--ectbe-border-soft);
+  border-radius: 0.75rem;
+}
+.ectbe-review-panel[hidden] { display: none !important; }
+
+/* Builder card (block / bricks "where it goes") — no header row: the
+   success-header above the recap already communicates "created". Panel is
+   tightened vertically and the logo is bumped up so the card carries
+   visual weight without an icon-title chrome above it. */
+.ectbe-review-panel--builder {
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #fff 0%, var(--ectbe-primary-soft) 140%);
+  border-color: var(--ectbe-primary-border);
+}
+.ectbe-review-builder {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.ectbe-review-builder__logo {
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.375rem;
+  box-shadow: 0 0.125rem 0.375rem rgba(6, 147, 227, 0.12);
+}
+.ectbe-review-builder__title {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ectbe-text);
+  line-height: 1.3;
+  margin-bottom: 0.1875rem;
+}
+.ectbe-review-builder__desc {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ectbe-text-muted);
+}
+
+/* Telemetry consent bar — white card matching the other settings rows;
+   only the checkbox area (wrapped in a small <label>) toggles the value,
+   so clicks on the description text don't accidentally uncheck. */
+.ectbe-telemetry {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.125rem;
+  margin-top: 1.25rem;
+  background: #fff;
+  border: 0.0625rem solid var(--ectbe-border-soft);
+  border-radius: 0.75rem;
+  transition: border-color 0.15s;
+}
+.ectbe-telemetry__checkbox-wrap {
+  display: inline-flex;
+  align-items: flex-start;
+  cursor: pointer;
+  flex: 0 0 auto;
+  margin-top: 0.125rem;
+}
+.ectbe-telemetry__checkbox {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ectbe-telemetry__mark {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: 0 0 auto;
+  border-radius: 0.25rem;
+  background: #fff;
+  border: 0.125rem solid var(--ectbe-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.ectbe-telemetry__checkbox-wrap:hover .ectbe-telemetry__mark {
+  border-color: var(--ectbe-primary-border);
+}
+.ectbe-telemetry__mark .dashicons {
+  width: 0.875rem; height: 0.875rem; font-size: 0.875rem;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.ectbe-telemetry__checkbox:checked + .ectbe-telemetry__mark {
+  background: var(--ectbe-primary);
+  border-color: var(--ectbe-primary);
+}
+.ectbe-telemetry__checkbox:checked + .ectbe-telemetry__mark .dashicons { opacity: 1; }
+.ectbe-telemetry__checkbox:focus-visible + .ectbe-telemetry__mark {
+  outline: 0.125rem solid var(--ectbe-focus);
+  outline-offset: 0.125rem;
+}
+.ectbe-telemetry__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  min-width: 0;
+}
+.ectbe-telemetry__title {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ectbe-text);
+}
+.ectbe-telemetry__desc {
+  font-size: 0.75rem;
+  color: var(--ectbe-text-muted);
+  line-height: 1.5;
+}
+.ectbe-telemetry__policy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1875rem;
+  margin-left: 0.25rem;
+  color: var(--ectbe-primary);
+  text-decoration: underline;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ectbe-telemetry__policy:hover,
+.ectbe-telemetry__policy:focus-visible {
+  color: var(--ectbe-primary-hover);
+  outline: none;
+}
+.ectbe-telemetry__policy .dashicons {
+  width: 0.75rem; height: 0.75rem; font-size: 0.75rem;
+}
+
+/* ---------- STEP 5 — Success header + success nav + cross-sell -------- */
+.ectbe-wizard-success__icon--lg {
+  width: 4.5rem;
+  height: 4.5rem;
+  background: linear-gradient(135deg, var(--ectbe-success) 0%, #2a9c60 100%);
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0.5rem 1.5rem rgba(53, 181, 114, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  animation: ectbeSuccessPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ectbe-wizard-success__icon--lg .dashicons {
+  width: 2.5rem; height: 2.5rem; font-size: 2.5rem;
+}
+@keyframes ectbeSuccessPop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ectbe-wizard-success__icon--lg { animation: none; }
+}
+
+/* Success actions row — Create / Preview / Edit / Change / Recreate / Finish.
+   Reuses the shared .ectbe-wizard-success__actions primitive (already flex +
+   wrap + centered); this override adds the divider above and the space
+   needed after the recap card. */
+.ectbe-wizard-success__actions {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 0.0625rem solid var(--ectbe-border-soft);
+}
+
+/* Small builder-aware hint to the left of the Step 3 primary CTA when
+   Block or Bricks is picked. Reads like "Insert Events Block in Block Editor". */
+.ectbe-wizard-card__nav-hint {
+  font-size: 0.75rem;
+  color: var(--ectbe-text-muted);
+  font-style: italic;
+  margin-right: 0.5rem;
+  align-self: center;
+  white-space: nowrap;
+}
+.ectbe-wizard-card__nav-hint[hidden] { display: none !important; }
+@media (max-width: 32rem) {
+  .ectbe-wizard-card__nav-hint { white-space: normal; }
+}
+
+/* Finish button — success green (#35B572 = --ectbe-success). Distinct from
+   the primary blue so users can tell "exit the wizard" apart from
+   "preview my new page". */
+.ectbe-btn-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5625rem 1rem;
+  background: var(--ectbe-success);
+  color: #fff;
+  border: 0.125rem solid var(--ectbe-success);
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.ectbe-btn-success:hover,
+.ectbe-btn-success:focus-visible {
+  background: #2a9c60;
+  border-color: #2a9c60;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-0.0625rem);
+  box-shadow: 0 0.25rem 0.75rem rgba(53, 181, 114, 0.3);
+  outline: none;
+}
+
+/* Progress strip on the Done step, once the page has been created: turn the
+   current-step number chip green with a checkmark so users see the whole
+   wizard visually complete. */
+body[data-page-created="true"] .ectbe-wizard-header-step.is-current .ectbe-wizard-header-step__num {
+  background: var(--ectbe-success);
+  color: #fff;
+  border-color: var(--ectbe-success);
+}
+
+/* Cross-sell footer — Single Page Builder promo */
+.ectbe-cross-sell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #fff5e8 0%, var(--ectbe-accent-soft) 100%);
+  border: 0.0625rem solid var(--ectbe-accent-border);
+  border-radius: 0.75rem;
+}
+/* The plugin brand SVGs already ship with a rounded-frame border and
+   internal padding — the outer container is just a flex slot, no chrome. */
+.ectbe-cross-sell__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ectbe-cross-sell__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+/* Chip modifier — applied when the icon slot holds a Dashicons glyph
+   (e.g. the bundle promo) instead of a pre-framed plugin SVG. Adds the
+   white rounded frame back so the glyph doesn't sit bare on the orange
+   promo background. Mirrors the same rule used on Dashboard bundle icons. */
+.ectbe-cross-sell__icon--chip {
+  background: #fff;
+  border: 0.0625rem solid var(--ectbe-accent-border);
+  border-radius: 0.5rem;
+  color: var(--ectbe-accent);
+}
+.ectbe-cross-sell__icon--chip .dashicons {
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1;
+}
+
+/* Bundle-promo variant — slightly richer than a regular sibling cross-sell
+   because the bundle CTA is doing the work of several per-addon cards. */
+.ectbe-cross-sell--bundle {
+  border-color: var(--ectbe-accent);
+  box-shadow: 0 0.125rem 0.5rem rgba(227, 104, 11, 0.12);
+}
+.ectbe-cross-sell--bundle .ectbe-cross-sell__title {
+  font-size: 0.9375rem;
+}
+.ectbe-cross-sell__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+.ectbe-cross-sell__title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ectbe-text);
+}
+.ectbe-cross-sell__desc {
+  font-size: 0.75rem;
+  color: var(--ectbe-text-muted);
+  line-height: 1.5;
+}
+.ectbe-cross-sell__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Responsive stacking for cross-sell */
+@media (max-width: 48rem) {
+  .ectbe-cross-sell { flex-direction: column; align-items: stretch; text-align: center; }
+  .ectbe-cross-sell__actions { justify-content: center; }
+  .ectbe-review-builder { flex-direction: column; text-align: center; }
+}
+
+/* Accent (Upgrade to Pro) pulse — orange */
+@keyframes wizardCtaPulseAccent {
+  0%, 100% {
+    box-shadow:
+      0 0.125rem 0.375rem rgba(227, 104, 11, 0.4),
+      0 0 0 0 rgba(227, 104, 11, 0.55);
+  }
+  60% {
+    box-shadow:
+      0 0.125rem 0.375rem rgba(227, 104, 11, 0.4),
+      0 0 0 0.625rem rgba(227, 104, 11, 0);
+  }
+}
+.ectbe-wizard-card__nav .ectbe-btn-accent {
+  animation: wizardCtaPulseAccent 2.2s ease-out infinite;
+}
+.ectbe-wizard-card__nav .ectbe-btn-accent:hover,
+.ectbe-wizard-card__nav .ectbe-btn-accent:focus {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ectbe-wizard-card__nav .ectbe-btn-accent { animation: none; }
+}
+
+/* Responsive: collapse to single-column at narrow widths */
+@media (max-width: 60rem) {
+  .ectbe-settings-row { grid-template-columns: 1fr; }
+  .ectbe-layout-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 40rem) {
+  .ectbe-style-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ----- Responsive ----- */
+
+@media (max-width: 60rem) {
+  .ectbe-wizard-header {
+    grid-template-columns: minmax(0, auto) minmax(0, auto);
+    grid-template-rows: auto auto;
+    row-gap: 1rem;
+    padding: 0.875rem 1rem;
+    min-height: auto;
+  }
+  .ectbe-wizard-header__brand { grid-column: 1; grid-row: 1; }
+  .ectbe-wizard-header__exit  { grid-column: 2; grid-row: 1; }
+  .ectbe-wizard-header__steps { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+}
+
+@media (max-width: 48rem) {
+  .ectbe-editor-selector {
+    grid-template-columns: 1fr;
+  }
+  /* stacked: reset the desktop swap so DOM order applies (options above video) */
+  .ectbe-editor-selector__video,
+  .ectbe-editor-selector__options { grid-column: auto; grid-row: auto; }
+  .ectbe-editor-selector__options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ectbe-wizard-header-step__label { display: none; }
+  .ectbe-wizard-header__connector { width: 1.5rem; }
+  .ectbe-wizard-header-step { min-width: 2rem; }
+  .ectbe-wizard-card { padding: 1.5rem; }
+  .ectbe-wizard-main { padding: 1.5rem 1rem 2rem; }
+}
+
+@media (max-width: 32rem) {
+  .ectbe-wizard-card__nav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .ectbe-wizard-card__nav-right { width: 100%; justify-content: flex-end; }
+}
+
+/* -------------------------------------------------------------------------
+   Stack simulator panel (prototype only) — styles the panel injected by
+   assets/ectbe-sim.js — must NOT ship in the WP plugin. Copied from the
+   Dashboard's .eca-sim* block (eca-dashboard.css) with the prefix renamed
+   to .ectbe-sim* and tokens mapped to the identical --ectbe-* values; the
+   unused segmented Off/Free/Pro control rules are omitted (this panel is
+   checkbox-only). */
+.ectbe-sim {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  width: 20rem;
+  max-width: calc(100vw - 40px);
+  background: #020E21;
+  color: #fff;
+  border: 2px dashed #4B5563;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(2, 14, 33, 0.35);
+  font-size: 0.8125rem;
+}
+.ectbe-sim__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ectbe-sim__summary::-webkit-details-marker { display: none; }
+.ectbe-sim__summary .dashicons { font-size: 1rem; width: 1rem; height: 1rem; }
+.ectbe-sim__body {
+  padding: 0.25rem 1rem 1rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.ectbe-sim__group { padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.ectbe-sim__group:last-child { border-bottom: 0; }
+.ectbe-sim__title { text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.6875rem; color: #9aa5b1; margin-bottom: 0.5rem; }
+.ectbe-sim__row-checks { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; }
+.ectbe-sim__check { display: inline-flex; align-items: center; gap: 0.3125rem; color: #cbd5e1; cursor: pointer; text-transform: capitalize; }
+.ectbe-sim__check input { accent-color: var(--ectbe-primary); margin: 0; }
+/* Elementor is locked ON here (this is the Events Widgets for Elementor setup):
+   dimmed label + "required" hint, non-interactive checkbox. */
+.ectbe-sim__req { display: inline; margin-left: 0.25rem; font-size: 0.625rem; text-transform: none; color: #f59e0b; }
+.ectbe-sim__check--locked { color: #94a3b8; cursor: not-allowed; }
+.ectbe-sim__check--locked input { cursor: not-allowed; }
+.ectbe-sim__reset {
+  font: inherit;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+}
+.ectbe-sim__reset:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+.ectbe-sim :focus-visible {
+  outline: 3px solid var(--ectbe-focus);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* `?clean=1` — ectbe-wizard.js stamps body[data-preview-clean]; hide the
+   simulator chrome while the persisted preview state still applies. */
+body[data-preview-clean] .ectbe-sim { display: none; }
+
+/* =========================================================================
+   PRO TIER (Events Widgets Pro) - the SAME wizard with Pro options unlocked
+   + widget-specific quick-setup rows. Tier on <body data-tier="pro"> from
+   ?tier=pro or the sim Free/Pro toggle (WP: the plugin's FREE/PRO build).
+   ========================================================================= */
+body:not([data-tier="pro"]) [data-tier-only="pro"] { display: none !important; }  /* Pro-only content */
+body[data-tier="pro"] [data-tier-only="free"] { display: none !important; }        /* Free-only content */
+
+/* In Pro tier every Pro option is a normal choice: hide the badges + notice. */
+body[data-tier="pro"] .ectbe-layout-card__pro,
+body[data-tier="pro"] .ectbe-style-card__pro,
+body[data-tier="pro"] .ectbe-toggle-option__pro { display: none !important; }
+body[data-tier="pro"] [data-pro-notice] { display: none !important; }
+
+/* Two-option style row (Yes / No). */
+.ectbe-style-row--2col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Done-step note (Pro): pointer to the full Elementor editor. */
+.ectbe-success-note {
+  max-width: 34rem; margin: 0.25rem auto 1.25rem; text-align: center;
+  font-size: 0.8125rem; color: var(--ectbe-text-muted); line-height: 1.5;
+  display: flex; align-items: center; justify-content: center; gap: 0.375rem;
+}
+.ectbe-success-note .dashicons { width: 1rem; height: 1rem; font-size: 1rem; color: var(--ectbe-primary); flex: 0 0 auto; }

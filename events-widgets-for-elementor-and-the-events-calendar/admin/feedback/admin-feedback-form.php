@@ -181,12 +181,18 @@ class ectbe_feedback {
 			];
 		}
 	
+		$extra_details = [
+			'wp_theme'       => $theme_data,
+			'active_plugins' => $plugin_data,
+		];
+
+		if ( class_exists( 'CPFM_Onboarding_Optin', false ) ) {
+			$extra_details['user_preference_onboarding'] = \CPFM_Onboarding_Optin::get_preferences_for_extra_details();
+		}
+
 		return [
 			'server_info'   => $server_info,
-			'extra_details' => [
-				'wp_theme'       => $theme_data,
-				'active_plugins' => $plugin_data,
-			],
+			'extra_details' => $extra_details,
 		];
 	}
 

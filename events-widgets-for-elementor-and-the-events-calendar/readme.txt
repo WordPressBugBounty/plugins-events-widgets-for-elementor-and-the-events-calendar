@@ -3,9 +3,9 @@ Contributors: narinder-singh, satindersingh, coolplugins, eventscalendaraddons
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: the events calendar, events, event calendar, elementor widget, events calendar
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 1.8.2
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Elementor tested up to: 4.1.5
@@ -395,6 +395,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 ---
 
 == Changelog ==
+
+= 1.9.0 | Aug 24, 2026 =
+* New: Introduced a "Get Started" onboarding page for a smoother setup experience.
+* New: Added a guided sample events demo creation flow to help users get started quickly.
+* Removed: Removed the legacy dashboard and replaced it with the new onboarding experience.
+* Improved: Simplified the initial setup process with a quick-start demo.
 
 = 1.8.2 | Jul 16, 2026 =
 * Improved: Code quality and overall plugin stability.
