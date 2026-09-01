@@ -52,7 +52,6 @@ if ( ! class_exists( 'CPFM_Review_Notice' ) ) {
 			$done = true;
 
 			add_action( 'admin_notices', array( __CLASS__, 'cpfm_maybe_render' ));
-			add_action( 'ect_display_admin_notices', array( __CLASS__, 'cpfm_maybe_render' ));
 		}
 
 		/**
