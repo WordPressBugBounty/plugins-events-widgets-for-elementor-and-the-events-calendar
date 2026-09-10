@@ -77,6 +77,7 @@ if ( ! class_exists( 'CPFM_Loader' ) ) {
 				'class-cpfm-environment.php',
 				'class-cpfm-review.php',
 				'cpfm-feedback-notice.php',
+				'class-cpfm-welcome-notice.php',
 				'cpfm-deactivation-feedback.php',
 				'cron/class-cron.php',
 			);
