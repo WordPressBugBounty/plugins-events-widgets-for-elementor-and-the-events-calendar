@@ -461,11 +461,8 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'ectbe_main_skin_section',
 			array(
-				'label'     => __( 'Main Skin', 'events-widgets-for-elementor-and-the-events-calendar' ),
-				'type'      => \Elementor\Controls_Manager::HEADING,
-				'condition' => array(
-					'ectbe_layout!' => 'minimal-list',
-				),
+				'label' => __( 'Main Skin', 'events-widgets-for-elementor-and-the-events-calendar' ),
+				'type'  => \Elementor\Controls_Manager::HEADING,
 			)
 		);
 		$this->add_control(
@@ -473,9 +470,6 @@ class ECTBE_Widget extends \Elementor\Widget_Base {
 			array(
 				'label'     => __( 'Color', 'events-widgets-for-elementor-and-the-events-calendar' ),
 				'type'      => Controls_Manager::COLOR,
-				'condition' => array(
-					'ectbe_layout!' => 'minimal-list',
-				),
 				'selectors' => array(
 					'{{WRAPPER}} .ectbe-wrapper' => '--e-ectbe-date-area-background: {{VALUE}}',
 				),
