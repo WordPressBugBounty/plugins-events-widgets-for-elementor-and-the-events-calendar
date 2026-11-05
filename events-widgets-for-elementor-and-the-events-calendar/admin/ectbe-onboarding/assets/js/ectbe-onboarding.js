@@ -201,17 +201,28 @@ else document.addEventListener('DOMContentLoaded', window.__ECTBE.applyUtm);
       var vals = getValues();
       chips.innerHTML = '';
       vals.forEach(function (v) {
-        var opt = root.querySelector('[data-multiselect-option][data-value="' + v + '"]');
+        var opt = null;
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].dataset.value === v) {
+            opt = options[i];
+            break;
+          }
+        }
         if (!opt) return;
         var label = opt.querySelector('.ectbe-multiselect__label').textContent;
         var chip = document.createElement('span');
         chip.className = 'ectbe-multiselect__chip';
-        chip.innerHTML =
-          '<span>' + label + '</span>' +
-          '<span class="ectbe-multiselect__chip-remove" role="button" tabindex="0" ' +
-            'data-multiselect-remove="' + v + '" aria-label="Remove ' + label + '">' +
-            '<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>' +
-          '</span>';
+        var labelEl = document.createElement('span');
+        labelEl.textContent = label;
+        var remove = document.createElement('span');
+        remove.className = 'ectbe-multiselect__chip-remove';
+        remove.setAttribute('role', 'button');
+        remove.setAttribute('tabindex', '0');
+        remove.dataset.multiselectRemove = v;
+        remove.setAttribute('aria-label', 'Remove ' + label);
+        remove.innerHTML = '<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>';
+        chip.appendChild(labelEl);
+        chip.appendChild(remove);
         chips.appendChild(chip);
       });
       if (placeholder) placeholder.hidden = vals.length > 0;
