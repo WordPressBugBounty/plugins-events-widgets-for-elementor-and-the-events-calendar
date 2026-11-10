@@ -84,6 +84,11 @@ function ectbe_get_the_events_calendar_events( $settings ) {
 	}
 	$calendar_data = array();
 	foreach ( $events as $key => $event ) {
+
+		if ( ! ( $event instanceof WP_Post ) || 'publish' !== $event->post_status || post_password_required( $event->ID ) ) {
+			continue;
+		}
+
 		$all_day = 'yes';
 		if ( ! tribe_event_is_all_day( $event->ID ) ) {
 			$all_day = '';
